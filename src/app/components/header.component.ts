@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   template: `
     <div class="title">Polpetta</div>
-    <div class="add-player" routerLink="add-player">Add Player</div>
     <div class="remove-all" (click)="removeAllPlayers()">
       Remove All Players
     </div>

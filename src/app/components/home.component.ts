@@ -1,16 +1,24 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { PlayerComponent } from './player.component';
 import { HeaderComponent } from './header.component';
 import { Observable } from 'rxjs';
 import { Player } from '../types';
 import { AppService } from '../app.service';
+import { FloatingBtnComponent } from './floating-btn.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, PlayerComponent, HeaderComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    PlayerComponent,
+    HeaderComponent,
+    FloatingBtnComponent,
+    RouterLink,
+  ],
   template: `
     <app-header />
     <div class="player-list">
@@ -19,6 +27,7 @@ import { AppService } from '../app.service';
         [player]="player"
       />
     </div>
+    <app-floating-btn routerLink="add-player" />
   `,
   styles: [
     `
