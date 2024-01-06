@@ -10,7 +10,9 @@
           "style": "scss",
           "changeDetection": "OnPush",
           "standalone": true,
-          "flat": true
+          "flat": true,
+          "inlineStyle": true,
+          "inlineTemplate": true
         }
       },
       "root": "",
@@ -100,5 +102,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
