@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppService } from '../app.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   template: `
     <div class="title">Polpetta</div>
-    <div class="add-player" (click)="addPlayer()">Add Player</div>
+    <div class="add-player" routerLink="add-player">Add Player</div>
     <div class="remove-all" (click)="removeAllPlayers()">
       Remove All Players
     </div>
@@ -26,11 +27,6 @@ import { AppService } from '../app.service';
 })
 export class HeaderComponent {
   constructor(private app: AppService) {}
-
-  addPlayer(): void {
-    const rnd = Math.floor(Math.random() * 100);
-    this.app.addPlayer(`Player ${rnd}`, rnd % 2 === 0 ? 'M' : 'F');
-  }
 
   removeAllPlayers(): void {
     this.app.removeAllPlayers();

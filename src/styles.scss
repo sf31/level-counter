@@ -11,3 +11,19 @@ html, body {
   background-color: #5D4037;
   font-family: 'MedievalSharp', cursive;
 }
+
+:root {
+  --border-radius-1: 0.4rem
+}
+
+input,
+button,
+textarea {
+  margin: 0;
+  border-radius: var(--radius-1);
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+  vertical-align: center;
+}

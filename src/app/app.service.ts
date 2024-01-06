@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Player } from './types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PLAYER_COLORS } from './const';
+import * as uuid from 'uuid';
+import { randomIntFromInterval } from './utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,29 +26,19 @@ export class AppService {
     localStorage.setItem(this.LSK, JSON.stringify(playerList));
   }
 
-  addPlayer(playerName: string, gender: 'M' | 'F'): void {
+  addPlayer(name: string): void {
     const playersCount = this._playerList.getValue().length;
-    const existingPlayer = this.getPlayer(playerName);
-    if (existingPlayer) throw new Error('Player already exists');
     if (playersCount >= PLAYER_COLORS.length)
       throw new Error('Too many players');
 
     const player: Player = {
-      name: playerName,
-      gender,
+      id: uuid.v4(),
+      name,
+      gender: randomIntFromInterval(0, 10) % 2 === 0 ? 'M' : 'F',
       level: 1,
       color: PLAYER_COLORS[playersCount],
     };
     this.setPlayerList([...this._playerList.getValue(), player]);
-  }
-
-  removePlayer(player: Player): void {
-    const playerList = this._playerList.getValue();
-    const index = playerList.findIndex((p) => p.name === player.name);
-    if (index !== -1) {
-      playerList.splice(index, 1);
-      this.setPlayerList(playerList);
-    }
   }
 
   updatePlayer(player: Player): void {
@@ -62,8 +54,8 @@ export class AppService {
     this.setPlayerList([]);
   }
 
-  private getPlayer(name: string): Player | null {
+  private getPlayer(playerId: string): Player | null {
     const playerList = this._playerList.getValue();
-    return playerList.find((p) => p.name === name) || null;
+    return playerList.find((p) => p.id === playerId) || null;
   }
 }
