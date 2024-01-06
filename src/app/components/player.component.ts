@@ -4,17 +4,18 @@ import { NgIf } from '@angular/common';
 import { AppService } from '../app.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { GenderComponent } from './gender.component';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [NgIf, FontAwesomeModule],
+  imports: [NgIf, FontAwesomeModule, GenderComponent],
   template: `
-    <div class="player" *ngIf="player">
+    <div class="player" *ngIf="player" (contextmenu)="removePlayer()">
       <div class="band" [style.background-color]="player.color"></div>
       <div class="left">
         <div class="name">{{ player.name }}</div>
-        <div class="gender" (click)="toggleGender()">{{ player.gender }}</div>
+        <app-gender (click)="toggleGender()" [player]="player" />
       </div>
       <div class="right">
         <fa-icon (click)="increment()" [icon]="iconPlus" />
@@ -91,5 +92,10 @@ export class PlayerComponent {
     if (!this.player) return;
     const gender = this.player.gender === 'M' ? 'F' : 'M';
     this.app.updatePlayer({ ...this.player, gender });
+  }
+
+  removePlayer(): void {
+    if (!this.player) return;
+    this.app.removePlayer(this.player);
   }
 }

@@ -17,13 +17,13 @@ export class AppService {
     if (playerList) this._playerList.next(JSON.parse(playerList));
   }
 
-  getPlayerList(): Observable<Player[]> {
-    return this._playerList.asObservable();
-  }
-
   private setPlayerList(playerList: Player[]): void {
     this._playerList.next(playerList);
     localStorage.setItem(this.LSK, JSON.stringify(playerList));
+  }
+
+  getPlayerList(): Observable<Player[]> {
+    return this._playerList.asObservable();
   }
 
   addPlayer(name: string): void {
@@ -39,6 +39,15 @@ export class AppService {
       color: PLAYER_COLORS[playersCount],
     };
     this.setPlayerList([...this._playerList.getValue(), player]);
+  }
+
+  removePlayer(player: Player): void {
+    const playerList = this._playerList.getValue();
+    const index = playerList.findIndex((p) => p.name === player.name);
+    if (index !== -1) {
+      playerList.splice(index, 1);
+      this.setPlayerList(playerList);
+    }
   }
 
   updatePlayer(player: Player): void {
