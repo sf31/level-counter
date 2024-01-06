@@ -13,9 +13,11 @@ import { GenderComponent } from './gender.component';
   template: `
     <div class="player" *ngIf="player" (contextmenu)="removePlayer()">
       <div class="band" [style.background-color]="player.color"></div>
-      <div class="left">
-        <div class="name">{{ player.name }}</div>
-        <app-gender (click)="toggleGender()" [player]="player" />
+      <div class="left ">
+        <div class="name text-ellipsis">{{ player.name }}</div>
+        <div class="gender">
+          <app-gender (click)="toggleGender()" [player]="player" />
+        </div>
       </div>
       <div class="right">
         <fa-icon (click)="increment()" [icon]="iconPlus" />
@@ -27,37 +29,30 @@ import { GenderComponent } from './gender.component';
   styles: [
     `
       .player {
+        display: grid;
+        grid-template-columns: 20px 1fr auto;
         background-color: #8d6e63;
-        color: #fff;
-        display: flex;
-        justify-content: space-between;
-        //padding: 1rem 2rem;
         margin: 1rem;
-        border-radius: 0.5rem;
-        align-items: center;
+        border-radius: var(--border-radius-1);
+        font-size: 1.5rem;
+        overflow: hidden;
+        color: #fff;
         box-shadow:
           0 3px 6px rgba(0, 0, 0, 0.16),
           0 3px 6px rgba(0, 0, 0, 0.23);
-        font-size: 1.5rem;
-        overflow: hidden;
-      }
-
-      .band {
-        width: 1.5rem;
-        height: 120px;
       }
 
       fa-icon {
-        font-size: 2.5rem;
+        font-size: 2.7rem;
         padding: 0 1rem;
       }
 
       .left {
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
         gap: 1rem;
+        padding: 1rem;
       }
 
       .right {

@@ -27,3 +27,9 @@ textarea {
   border: none;
   vertical-align: center;
 }
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

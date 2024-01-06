@@ -23,6 +23,7 @@ import { NgIf } from '@angular/common';
         display: flex;
         background-color: #a1887f;
         border-radius: 30px;
+        width: fit-content;
       }
       .icon {
         display: flex;
