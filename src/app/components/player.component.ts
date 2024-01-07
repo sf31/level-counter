@@ -3,13 +3,13 @@ import { Player } from '../types';
 import { NgIf } from '@angular/common';
 import { AppService } from '../app.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { GenderComponent } from './gender.component';
+import { PlusMinusComponent } from './plus-minus.component';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [NgIf, FontAwesomeModule, GenderComponent],
+  imports: [NgIf, FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
     <div class="player" *ngIf="player" (contextmenu)="removePlayer()">
       <div class="band" [style.background-color]="player.color"></div>
@@ -19,11 +19,11 @@ import { GenderComponent } from './gender.component';
           <app-gender (click)="toggleGender()" [player]="player" />
         </div>
       </div>
-      <div class="right">
-        <fa-icon (click)="increment()" [icon]="iconPlus" />
-        <div class="level">{{ player.level }}</div>
-        <fa-icon (click)="decrement()" [icon]="iconMinus" />
-      </div>
+      <app-plus-minus
+        [value]="player.level"
+        (plus)="increment()"
+        (minus)="decrement()"
+      />
     </div>
   `,
   styles: [
@@ -54,21 +54,12 @@ import { GenderComponent } from './gender.component';
         gap: 1rem;
         padding: 1rem;
       }
-
-      .right {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerComponent {
   @Input() player?: Player;
-
-  iconPlus = faCaretUp;
-  iconMinus = faCaretDown;
 
   constructor(private app: AppService) {}
 
