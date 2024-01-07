@@ -36,7 +36,7 @@ import { AppService } from '../app.service';
       }
 
       input {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         background-color: #a1887f;
         border-radius: var(--border-radius-1);
         padding: 0.5rem;

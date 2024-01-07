@@ -11,7 +11,7 @@ import { PlusMinusComponent } from './plus-minus.component';
   standalone: true,
   imports: [NgIf, FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
-    <div class="player" *ngIf="player" (contextmenu)="removePlayer()">
+    <div class="player shadow" *ngIf="player" (contextmenu)="removePlayer()">
       <div class="band" [style.background-color]="player.color"></div>
       <div class="left ">
         <div class="name text-ellipsis">{{ player.name }}</div>
@@ -32,18 +32,14 @@ import { PlusMinusComponent } from './plus-minus.component';
         display: grid;
         grid-template-columns: 20px 1fr auto;
         background-color: #8d6e63;
-        margin: 1rem;
+        margin: 0.5rem;
         border-radius: var(--border-radius-1);
-        font-size: 1.5rem;
         overflow: hidden;
         color: #fff;
-        box-shadow:
-          0 3px 6px rgba(0, 0, 0, 0.16),
-          0 3px 6px rgba(0, 0, 0, 0.23);
+        padding-right: 0.5rem;
       }
 
       fa-icon {
-        font-size: 2.7rem;
         padding: 0 1rem;
       }
 

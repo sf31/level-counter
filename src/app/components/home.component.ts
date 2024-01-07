@@ -27,7 +27,6 @@ import { FloatingBtnComponent } from './floating-btn.component';
         [player]="player"
       />
     </div>
-    <app-floating-btn routerLink="add-player" />
   `,
   styles: [
     `

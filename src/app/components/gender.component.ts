@@ -29,8 +29,8 @@ import { NgIf } from '@angular/common';
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 50%;
         padding: 0.4rem;
       }

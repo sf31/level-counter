@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "@angular/cdk/overlay-prebuilt.css";
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=MedievalSharp&display=swap');
 
 
@@ -10,6 +10,8 @@ html, body {
   padding: 0;
   background-color: #5D4037;
   font-family: 'MedievalSharp', cursive;
+  user-select: none;
+  font-size: 1.2rem;
 }
 
 :root {
@@ -33,3 +35,8 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.shadow {
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.16),
+    0 3px 6px rgba(0, 0, 0, 0.23);}
