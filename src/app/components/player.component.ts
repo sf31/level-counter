@@ -19,7 +19,7 @@ import { PlusMinusComponent } from './plus-minus.component';
       <div class="left">
         <app-plus-minus
           label="gear"
-          [value]="player.equipment"
+          [value]="player.gears"
           (plus)="onChangeEquipment(1)"
           (minus)="onChangeEquipment(-1)"
         />
@@ -32,7 +32,7 @@ import { PlusMinusComponent } from './plus-minus.component';
           <app-gender (click)="toggleGender()" [player]="player" />
           <div class="fill-remaining-space"></div>
           <div class="total">
-            {{ player.level + player.equipment }}
+            {{ player.level + player.gears }}
           </div>
           <div class="label">Strength</div>
         </div>
@@ -108,8 +108,9 @@ export class PlayerComponent {
 
   onChangeEquipment(delta: number): void {
     if (!this.player) return;
-    const equipment = this.player.equipment + delta;
-    if (equipment >= 0) this.app.updatePlayer({ ...this.player, equipment });
+    const equipment = this.player.gears + delta;
+    if (equipment >= 0)
+      this.app.updatePlayer({ ...this.player, gears: equipment });
   }
 
   toggleGender(): void {

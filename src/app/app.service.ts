@@ -3,7 +3,7 @@ import { Player } from './types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PLAYER_COLORS } from './const';
 import * as uuid from 'uuid';
-import { randomIntFromInterval } from './utils';
+import { randomIntFromInterval, validateLocalStorage } from './utils';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,8 @@ export class AppService {
   private readonly LSK = 'level-count-app-state';
 
   constructor() {
-    const playerList = localStorage.getItem(this.LSK);
-    if (playerList) this._playerList.next(JSON.parse(playerList));
+    const playerListRaw = localStorage.getItem(this.LSK);
+    this._playerList.next(validateLocalStorage(playerListRaw));
   }
 
   private setPlayerList(playerList: Player[]): void {
@@ -36,7 +36,7 @@ export class AppService {
       name,
       gender: randomIntFromInterval(0, 10) % 2 === 0 ? 'M' : 'F',
       level: 1,
-      equipment: 0,
+      gears: 0,
       color: PLAYER_COLORS[playersCount],
     };
     this.setPlayerList([...this._playerList.getValue(), player]);
@@ -68,7 +68,7 @@ export class AppService {
     const playerList = this._playerList.getValue();
     this.setPlayerList(
       playerList.map((p) => {
-        return { ...p, level: 1, equipment: 0 };
+        return { ...p, level: 1, gears: 0 };
       }),
     );
   }

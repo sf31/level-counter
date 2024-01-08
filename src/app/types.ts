@@ -2,7 +2,7 @@ export type Player = {
   id: string;
   name: string;
   level: number;
-  equipment: number;
+  gears: number;
   gender: 'M' | 'F';
   color: string;
 };
