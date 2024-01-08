@@ -21,22 +21,25 @@ import { NgIf } from '@angular/common';
     `
       :host {
         display: flex;
-        background-color: #a1887f;
+        //background-color: #a1887f;
+        background-color: #c9c9c9;
         border-radius: 30px;
         width: fit-content;
       }
+
       .icon {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 1rem;
+        height: 1rem;
         border-radius: 50%;
         padding: 0.4rem;
       }
 
       .active {
-        background-color: #5d4037;
+        //background-color: #5d4037;
+        background-color: #818181;
       }
     `,
   ],

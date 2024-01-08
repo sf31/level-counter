@@ -11,44 +11,86 @@ import { PlusMinusComponent } from './plus-minus.component';
   standalone: true,
   imports: [NgIf, FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
-    <div class="player shadow" *ngIf="player" (contextmenu)="removePlayer()">
-      <div class="band" [style.background-color]="player.color"></div>
-      <div class="left ">
+    <div
+      class="player shadow"
+      [style.background-color]="player.color"
+      *ngIf="player"
+    >
+      <div class="left">
+        <app-plus-minus
+          label="gear"
+          [value]="player.equipment"
+          (plus)="onChangeEquipment(1)"
+          (minus)="onChangeEquipment(-1)"
+        />
+        <div class="label">Gear</div>
+      </div>
+
+      <div class="central">
         <div class="name text-ellipsis">{{ player.name }}</div>
-        <div class="gender">
+        <div class="central-inner">
           <app-gender (click)="toggleGender()" [player]="player" />
+          <div class="fill-remaining-space"></div>
+          <div class="total">
+            {{ player.level + player.equipment }}
+          </div>
+          <div class="label">Strength</div>
         </div>
       </div>
-      <app-plus-minus
-        [value]="player.level"
-        (plus)="increment()"
-        (minus)="decrement()"
-      />
+
+      <div class="right">
+        <app-plus-minus
+          label="level"
+          [value]="player.level"
+          (plus)="onChangeLevel(1)"
+          (minus)="onChangeLevel(-1)"
+        />
+        <div class="label">Level</div>
+      </div>
     </div>
   `,
   styles: [
     `
       .player {
         display: grid;
-        grid-template-columns: 20px 1fr auto;
+        grid-template-columns: auto 1fr auto;
         background-color: #8d6e63;
         margin: 0.5rem;
         border-radius: var(--border-radius-1);
         overflow: hidden;
         color: #fff;
-        padding-right: 0.5rem;
+        padding: 0.5rem;
+        gap: 0.5rem;
       }
 
-      fa-icon {
-        padding: 0 1rem;
-      }
-
-      .left {
+      .central {
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
+        justify-content: space-between;
+      }
+
+      .central-inner {
+        flex: 1 1 auto;
+        padding-top: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .name,
+      .total {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .total {
+        font-size: 2.5rem;
+      }
+
+      .fill-remaining-space {
+        flex: 1 1 auto;
       }
     `,
   ],
@@ -59,25 +101,21 @@ export class PlayerComponent {
 
   constructor(private app: AppService) {}
 
-  increment(): void {
+  onChangeLevel(delta: number): void {
     if (!this.player) return;
-    this.app.updatePlayer({ ...this.player, level: this.player.level + 1 });
+    const level = this.player.level + delta;
+    if (level >= 1) this.app.updatePlayer({ ...this.player, level });
   }
 
-  decrement(): void {
+  onChangeEquipment(delta: number): void {
     if (!this.player) return;
-    if (this.player.level <= 1) return;
-    this.app.updatePlayer({ ...this.player, level: this.player.level - 1 });
+    const equipment = this.player.equipment + delta;
+    if (equipment >= 0) this.app.updatePlayer({ ...this.player, equipment });
   }
 
   toggleGender(): void {
     if (!this.player) return;
     const gender = this.player.gender === 'M' ? 'F' : 'M';
     this.app.updatePlayer({ ...this.player, gender });
-  }
-
-  removePlayer(): void {
-    if (!this.player) return;
-    this.app.removePlayer(this.player);
   }
 }

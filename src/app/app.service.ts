@@ -36,6 +36,7 @@ export class AppService {
       name,
       gender: randomIntFromInterval(0, 10) % 2 === 0 ? 'M' : 'F',
       level: 1,
+      equipment: 0,
       color: PLAYER_COLORS[playersCount],
     };
     this.setPlayerList([...this._playerList.getValue(), player]);

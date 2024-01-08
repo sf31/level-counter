@@ -6,7 +6,6 @@ import { HeaderComponent } from './header.component';
 import { Observable } from 'rxjs';
 import { Player } from '../types';
 import { AppService } from '../app.service';
-import { FloatingBtnComponent } from './floating-btn.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +15,6 @@ import { FloatingBtnComponent } from './floating-btn.component';
     RouterOutlet,
     PlayerComponent,
     HeaderComponent,
-    FloatingBtnComponent,
     RouterLink,
   ],
   template: `
