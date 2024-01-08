@@ -36,10 +36,12 @@ type SettingActions = {
 
     <app-btn> Install App</app-btn>
 
-    <pre>
+    <div class="debug">
+      <pre>
       {{ swMsgList | json }}
     </pre
-    >
+      >
+    </div>
 
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
@@ -64,6 +66,10 @@ type SettingActions = {
         display: flex;
         padding-top: 2rem;
         width: 100px;
+      }
+
+      .debug {
+        width: 300px;
       }
 
       .done {
