@@ -17,16 +17,4 @@ export class AppComponent {
     e.preventDefault();
     this.app.patchPwaState({ promptEvent: e as any });
   }
-
-  // public installPWA() {
-  //   this.promptEvent?.prompt();
-  // }
-
-  // public shouldInstall(): boolean {
-  //   return !this.isRunningStandalone() && this.promptEvent;
-  // }
-
-  // public isRunningStandalone(): boolean {
-  //   return window.matchMedia('(display-mode: standalone)').matches;
-  // }
 }

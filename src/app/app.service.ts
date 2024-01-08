@@ -15,6 +15,7 @@ export class AppService {
     promptEvent: null,
     isRunningStandalone: window.matchMedia('(display-mode: standalone)')
       .matches,
+    updateAvailable: false,
   });
   private readonly LSK = 'level-count-app-state';
 
@@ -22,9 +23,13 @@ export class AppService {
     const playerListRaw = localStorage.getItem(this.LSK);
     this._playerList$.next(validateLocalStorage(playerListRaw));
 
-    // this.sw.versionUpdates.subscribe((e) => {
-    //   this.swMsgList.push(e);
-    // });
+    this.sw.versionUpdates.subscribe((e) => {
+      if (e.type === 'VERSION_READY')
+        this._pwaState.next({
+          ...this._pwaState.getValue(),
+          updateAvailable: true,
+        });
+    });
   }
 
   private setPlayerList(playerList: Player[]): void {

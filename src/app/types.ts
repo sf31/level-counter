@@ -16,4 +16,5 @@ export type PwaUpdateState = {
       })
     | null;
   isRunningStandalone: boolean;
+  updateAvailable: boolean;
 };

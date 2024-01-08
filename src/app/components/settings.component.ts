@@ -35,12 +35,17 @@ type SettingActions = {
     </ng-container>
 
     <ng-container *ngIf="pwaState | async as pwa">
-      <app-btn
-        *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
-        (click)="install(pwa)"
-      >
-        Install App
+      <app-btn *ngIf="pwa.updateAvailable; else installTmpl" (click)="reload()">
+        Update Available! Tap to install
       </app-btn>
+      <ng-template #installTmpl>
+        <app-btn
+          *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
+          (click)="install(pwa)"
+        >
+          Install App
+        </app-btn>
+      </ng-template>
     </ng-container>
 
     <div class="actions">
@@ -107,6 +112,10 @@ export class SettingsComponent {
 
   install(pwa: PwaUpdateState): void {
     pwa.promptEvent?.prompt();
+  }
+
+  reload(): void {
+    window.location.reload();
   }
 
   private setAction(target: keyof SettingActions, value: boolean): void {
