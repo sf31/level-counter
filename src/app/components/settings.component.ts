@@ -34,12 +34,12 @@ type SettingActions = {
       </app-btn>
     </ng-container>
 
-    <app-btn> Install App</app-btn>
-
-    <div class="debug" *ngIf="pwaState | async as pwa">
-      <app-btn (click)="install(pwa)"> install </app-btn>
+    <ng-container *ngIf="pwaState | async as pwa">
+      <app-btn *ngIf="!pwa.isRunningStandalone" (click)="install(pwa)">
+        Install App
+      </app-btn>
       <pre>{{ pwa | json }}</pre>
-    </div>
+    </ng-container>
 
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
