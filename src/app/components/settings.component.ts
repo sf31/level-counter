@@ -36,8 +36,9 @@ type SettingActions = {
 
     <app-btn> Install App</app-btn>
 
-    <div class="debug">
-      <pre>{{ pwaState | async | json }}</pre>
+    <div class="debug" *ngIf="pwaState | async as pwa">
+      <app-btn (click)="install(pwa)"> install </app-btn>
+      <pre>{{ pwa | json }}</pre>
     </div>
 
     <div class="actions">
@@ -100,6 +101,10 @@ export class SettingsComponent {
     if (this.settingsActions.getValue()[target]) return;
     this.setAction(target, true);
     setTimeout(() => this.setAction(target, false), 1500);
+  }
+
+  install(pwa: PwaUpdateState): void {
+    pwa.promptEvent?.prompt();
   }
 
   private setAction(target: keyof SettingActions, value: boolean): void {
