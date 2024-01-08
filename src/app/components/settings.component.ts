@@ -35,7 +35,11 @@ type SettingActions = {
     </ng-container>
 
     <ng-container *ngIf="pwaState | async as pwa">
-      <app-btn *ngIf="pwa.updateAvailable; else installTmpl" (click)="reload()">
+      <app-btn
+        class="install"
+        *ngIf="pwa.updateAvailable; else installTmpl"
+        (click)="reload()"
+      >
         Update Available! Tap to install
       </app-btn>
       <ng-template #installTmpl>
@@ -77,7 +81,8 @@ type SettingActions = {
         width: 100px;
       }
 
-      .done {
+      .done,
+      .install {
         background-color: #43a047;
       }
     `,
