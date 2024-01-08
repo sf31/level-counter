@@ -3,7 +3,13 @@ import { AppService } from '../app.service';
 import { RouterLink } from '@angular/router';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCog,
+  faUserMinus,
+  faUserPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { BtnComponent } from './btn.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -14,24 +20,25 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
     FontAwesomeModule,
     CdkMenu,
     CdkMenuItem,
+    BtnComponent,
+    NgIf,
   ],
   template: `
-    <div routerLink="add-player">Add Player</div>
-    <fa-icon [icon]="iconSettings" [cdkMenuTriggerFor]="menu" />
+    <div class="row">
+      <app-btn routerLink="add-player"> Add Player</app-btn>
+      <app-btn (click)="showSettings = !showSettings"> Settings</app-btn>
+    </div>
 
-    <ng-template #menu>
-      <div class="menu shadow" cdkMenu>
-        <div (click)="reset()" cdkMenuItem>Reset levels</div>
-        <div (click)="removeAllPlayers()" cdkMenuItem>Remove All Players</div>
-      </div>
-    </ng-template>
+    <div class="settings row" *ngIf="showSettings">
+      <app-btn (click)="reset()"> Reset Levels </app-btn>
+      <!--      <app-btn (click)="removeAllPlayers()"> Remove All Players </app-btn>-->
+    </div>
   `,
   styles: [
     `
-      :host {
+      .row {
         display: flex;
         justify-content: space-between;
-        background-color: #9e9e9e;
         padding: 0.5rem;
       }
 
@@ -49,12 +56,17 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 })
 export class HeaderComponent {
   iconSettings = faCog;
+  iconAddPlayer = faUserPlus;
+  iconRemovePlayer = faUserMinus;
+  showSettings = false;
   constructor(private app: AppService) {}
 
   reset(): void {
     this.app.resetPlayers();
+    this.showSettings = false;
   }
   removeAllPlayers(): void {
     this.app.removeAllPlayers();
+    this.showSettings = false;
   }
 }

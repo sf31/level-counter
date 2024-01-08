@@ -66,12 +66,10 @@ export class AppService {
 
   resetPlayers(): void {
     const playerList = this._playerList.getValue();
-    const newPlayerList = playerList.map((p) => ({ ...p, level: 1 }));
-    this.setPlayerList(newPlayerList);
-  }
-
-  private getPlayer(playerId: string): Player | null {
-    const playerList = this._playerList.getValue();
-    return playerList.find((p) => p.id === playerId) || null;
+    this.setPlayerList(
+      playerList.map((p) => {
+        return { ...p, level: 1, equipment: 0 };
+      }),
+    );
   }
 }

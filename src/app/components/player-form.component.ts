@@ -14,7 +14,7 @@ import { AppService } from '../app.service';
     </div>
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
-      <app-btn (click)="addPlayer(playerName.value)"> Save </app-btn>
+      <app-btn (click)="addPlayer(playerName.value)"> Add </app-btn>
     </div>
   `,
   styles: [
@@ -27,7 +27,6 @@ import { AppService } from '../app.service';
         gap: 1rem;
         margin: 1rem;
         border-radius: var(--border-radius-1);
-        padding: 1rem;
         font-size: 1.5rem;
       }
 

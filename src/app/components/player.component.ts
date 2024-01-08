@@ -54,8 +54,7 @@ import { PlusMinusComponent } from './plus-minus.component';
       .player {
         display: grid;
         grid-template-columns: auto 1fr auto;
-        background-color: #8d6e63;
-        margin: 0.5rem;
+        //background-color: #8d6e63;
         border-radius: var(--border-radius-1);
         overflow: hidden;
         color: #fff;
