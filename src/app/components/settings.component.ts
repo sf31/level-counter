@@ -10,6 +10,7 @@ import { PwaUpdateState } from '../types';
 type SettingActions = {
   reset: boolean;
   removeAll: boolean;
+  updated: boolean;
 };
 
 @Component({
@@ -32,29 +33,34 @@ type SettingActions = {
       <app-btn [class.done]="actions.removeAll" (click)="removePlayers()">
         {{ actions.removeAll ? 'Players removed!' : 'Remove All Players' }}
       </app-btn>
-    </ng-container>
 
-    <div class="pwa" *ngIf="pwaState | async as pwa">
-      <app-btn
-        class="install"
-        *ngIf="pwa.updateAvailable; else installTmpl"
-        (click)="reload()"
-      >
-        Update available! Tap to install
-      </app-btn>
-      <ng-template #installTmpl>
+      <div class="pwa" *ngIf="pwaState | async as pwa">
         <app-btn
-          *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
-          (click)="install(pwa)"
+          class="install"
+          *ngIf="pwa.updateAvailable; else installTmpl"
+          (click)="reload()"
         >
-          {{ pwa.installPending ? 'Installing...' : 'Install App' }}
+          Update available! Tap to install
         </app-btn>
-      </ng-template>
-    </div>
+        <ng-template #installTmpl>
+          <app-btn
+            *ngIf="
+              pwa.promptEvent && !pwa.isRunningStandalone && !actions.updated
+            "
+            (click)="install(pwa)"
+          >
+            {{ pwa.installPending ? 'Installing...' : 'Install App' }}
+          </app-btn>
+        </ng-template>
+        <app-btn [class.done]="actions.updated" *ngIf="actions.updated">
+          Updated!
+        </app-btn>
+      </div>
 
-    <div class="actions">
-      <app-btn routerLink=""> Back </app-btn>
-    </div>
+      <div class="actions">
+        <app-btn routerLink=""> Back </app-btn>
+      </div>
+    </ng-container>
   `,
   styles: [
     `
@@ -93,6 +99,7 @@ export class SettingsComponent {
   settingsActions = new BehaviorSubject<SettingActions>({
     reset: false,
     removeAll: false,
+    updated: false,
   });
 
   pwaState: Observable<PwaUpdateState> = this.app.getPwaState();
@@ -124,8 +131,11 @@ export class SettingsComponent {
   }
 
   reload(): void {
-    this.router.navigate(['']).catch();
-    window.location.reload();
+    this.setAction('updated', true);
+    setTimeout(() => {
+      this.setAction('updated', false);
+      window.location.reload();
+    }, 1000);
   }
 
   private setAction(target: keyof SettingActions, value: boolean): void {
