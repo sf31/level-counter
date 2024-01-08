@@ -15,12 +15,7 @@ export class AppComponent {
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
     e.preventDefault();
-    console.log(e);
-    this.app.setPwaState({
-      promptEvent: e as any,
-      isRunningStandalone: window.matchMedia('(display-mode: standalone)')
-        .matches,
-    });
+    this.app.patchPwaState({ promptEvent: e as any });
   }
 
   // public installPWA() {

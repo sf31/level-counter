@@ -38,6 +38,7 @@ type SettingActions = {
       <app-btn *ngIf="!pwa.isRunningStandalone" (click)="install(pwa)">
         Install App
       </app-btn>
+      <div *ngIf="pwa.isRunningStandalone">Running standalone!</div>
       <pre>{{ pwa | json }}</pre>
     </ng-container>
 

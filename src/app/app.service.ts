@@ -13,7 +13,8 @@ export class AppService {
   private _playerList$ = new BehaviorSubject<Player[]>([]);
   private _pwaState = new BehaviorSubject<PwaUpdateState>({
     promptEvent: null,
-    isRunningStandalone: false,
+    isRunningStandalone: window.matchMedia('(display-mode: standalone)')
+      .matches,
   });
   private readonly LSK = 'level-count-app-state';
 
@@ -31,8 +32,8 @@ export class AppService {
     localStorage.setItem(this.LSK, JSON.stringify(playerList));
   }
 
-  setPwaState(state: PwaUpdateState): void {
-    this._pwaState.next(state);
+  patchPwaState(state: Partial<PwaUpdateState>): void {
+    this._pwaState.next({ ...this._pwaState.getValue(), ...state });
   }
 
   getPwaState(): Observable<PwaUpdateState> {
