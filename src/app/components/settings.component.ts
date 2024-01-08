@@ -124,8 +124,8 @@ export class SettingsComponent {
   }
 
   reload(): void {
-    window.location.reload();
     this.router.navigate(['']).catch();
+    window.location.reload();
   }
 
   private setAction(target: keyof SettingActions, value: boolean): void {
