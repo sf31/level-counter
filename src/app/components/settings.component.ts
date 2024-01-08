@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { AppService } from '../app.service';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { PlayerComponent } from './screen-title.component';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import { SwUpdate } from '@angular/service-worker';
 
 type SettingActions = {
   reset: boolean;
@@ -14,7 +15,14 @@ type SettingActions = {
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [BtnComponent, PlayerComponent, RouterLink, NgIf, AsyncPipe],
+  imports: [
+    BtnComponent,
+    PlayerComponent,
+    RouterLink,
+    NgIf,
+    AsyncPipe,
+    JsonPipe,
+  ],
   template: `
     <app-screen-title title="Settings" />
     <ng-container *ngIf="settingsActions | async as actions">
@@ -25,6 +33,13 @@ type SettingActions = {
         {{ actions.removeAll ? 'Players removed!' : 'Remove All Players' }}
       </app-btn>
     </ng-container>
+
+    <app-btn> Install App</app-btn>
+
+    <pre>
+      {{ swMsgList | json }}
+    </pre
+    >
 
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
@@ -56,7 +71,7 @@ type SettingActions = {
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent {
   settingsActions = new BehaviorSubject<SettingActions>({
@@ -64,10 +79,16 @@ export class SettingsComponent {
     removeAll: false,
   });
 
+  swMsgList: any[] = [];
+
   constructor(
     private app: AppService,
-    private router: Router,
-  ) {}
+    private sw: SwUpdate,
+  ) {
+    this.sw.versionUpdates.subscribe((e) => {
+      this.swMsgList.push(e);
+    });
+  }
 
   removePlayers(): void {
     this.app.removeAllPlayers();
