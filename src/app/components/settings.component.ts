@@ -35,7 +35,10 @@ type SettingActions = {
     </ng-container>
 
     <ng-container *ngIf="pwaState | async as pwa">
-      <app-btn *ngIf="!pwa.isRunningStandalone" (click)="install(pwa)">
+      <app-btn
+        *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
+        (click)="install(pwa)"
+      >
         Install App
       </app-btn>
       <div *ngIf="pwa.isRunningStandalone">Running standalone!</div>
