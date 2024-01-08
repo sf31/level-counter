@@ -2,14 +2,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
 import { AppService } from '../app.service';
+import { PlayerComponent } from './screen-title.component';
 
 @Component({
   selector: 'app-player-form',
   standalone: true,
-  imports: [BtnComponent, RouterLink],
+  imports: [BtnComponent, RouterLink, PlayerComponent],
   template: `
     <div class="form">
-      <div class="label">Player name</div>
+      <app-screen-title title="Player name" />
       <input #playerName type="text" />
     </div>
     <div class="actions">
@@ -28,10 +29,6 @@ import { AppService } from '../app.service';
         margin: 1rem;
         border-radius: var(--border-radius-1);
         font-size: 1.5rem;
-      }
-
-      .label {
-        color: #fff;
       }
 
       input {

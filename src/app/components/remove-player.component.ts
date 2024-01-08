@@ -5,14 +5,23 @@ import { AppService } from '../app.service';
 import { Observable } from 'rxjs';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
-import { PlayerComponent } from './player.component';
+import { PlayerComponent } from './screen-title.component';
 
 @Component({
   selector: 'app-player-to-remove',
   standalone: true,
-  imports: [AsyncPipe, NgForOf, BtnComponent, RouterLink, PlayerComponent],
+  imports: [
+    AsyncPipe,
+    NgForOf,
+    BtnComponent,
+    RouterLink,
+    PlayerComponent,
+    PlayerComponent,
+  ],
   template: `
-    <div class="label">Tap to remove</div>
+    <div class="title">
+      <app-screen-title title="Tap to remove" />
+    </div>
     <div class="player-list">
       <div
         *ngFor="let player of playerList$ | async as list"
@@ -30,11 +39,10 @@ import { PlayerComponent } from './player.component';
   `,
   styles: [
     `
-      .label {
-        color: #fff;
-        text-align: center;
-        margin: 1rem 0;
-        font-size: 1.5rem;
+      .title {
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
       }
 
       .player-list {

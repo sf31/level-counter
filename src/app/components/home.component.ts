@@ -39,7 +39,7 @@ import { RemovePlayerComponent } from './remove-player.component';
           <fa-icon [icon]="iconRemovePlayer" />
         </app-btn>
         <div class="fill-remaining-space"></div>
-        <app-btn>
+        <app-btn routerLink="settings">
           <fa-icon [icon]="iconSettings" />
         </app-btn>
       </div>
