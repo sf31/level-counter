@@ -6,3 +6,14 @@ export type Player = {
   gender: 'M' | 'F';
   color: string;
 };
+
+export type PwaUpdateState = {
+  promptEvent:
+    | (Event & {
+        prompt: () => void;
+        userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+        platforms: string[];
+      })
+    | null;
+  isRunningStandalone: boolean;
+};

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppService } from '../app.service';
 import { RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { PlayerComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
-import { SwUpdate } from '@angular/service-worker';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PwaUpdateState } from '../types';
 
 type SettingActions = {
   reset: boolean;
@@ -37,10 +37,7 @@ type SettingActions = {
     <app-btn> Install App</app-btn>
 
     <div class="debug">
-      <pre>
-      {{ swMsgList | json }}
-    </pre
-      >
+      <pre>{{ pwaState | async | json }}</pre>
     </div>
 
     <div class="actions">
@@ -62,14 +59,14 @@ type SettingActions = {
         width: 300px;
       }
 
+      .debug {
+        width: 300px;
+      }
+
       .actions {
         display: flex;
         padding-top: 2rem;
         width: 100px;
-      }
-
-      .debug {
-        width: 300px;
       }
 
       .done {
@@ -77,7 +74,7 @@ type SettingActions = {
       }
     `,
   ],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent {
   settingsActions = new BehaviorSubject<SettingActions>({
@@ -85,16 +82,9 @@ export class SettingsComponent {
     removeAll: false,
   });
 
-  swMsgList: any[] = [];
+  pwaState: Observable<PwaUpdateState> = this.app.getPwaState();
 
-  constructor(
-    private app: AppService,
-    private sw: SwUpdate,
-  ) {
-    this.sw.versionUpdates.subscribe((e) => {
-      this.swMsgList.push(e);
-    });
-  }
+  constructor(private app: AppService) {}
 
   removePlayers(): void {
     this.app.removeAllPlayers();
