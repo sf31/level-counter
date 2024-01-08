@@ -47,7 +47,7 @@ type SettingActions = {
           *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
           (click)="install(pwa)"
         >
-          Install App
+          {{ pwa.installPending ? 'Installing...' : 'Install App' }}
         </app-btn>
       </ng-template>
     </div>
@@ -120,6 +120,7 @@ export class SettingsComponent {
 
   install(pwa: PwaUpdateState): void {
     pwa.promptEvent?.prompt();
+    this.app.patchPwaState({ installPending: true });
   }
 
   reload(): void {

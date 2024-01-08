@@ -17,4 +17,5 @@ export type PwaUpdateState = {
     | null;
   isRunningStandalone: boolean;
   updateAvailable: boolean;
+  installPending: boolean; // set true when user accepts install prompt
 };

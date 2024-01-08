@@ -16,6 +16,7 @@ export class AppService {
     isRunningStandalone: window.matchMedia('(display-mode: standalone)')
       .matches,
     updateAvailable: false,
+    installPending: false,
   });
   private readonly LSK = 'level-count-app-state';
 
