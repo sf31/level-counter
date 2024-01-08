@@ -34,6 +34,7 @@ type SettingActions = {
         {{ actions.removeAll ? 'Players removed!' : 'Remove All Players' }}
       </app-btn>
 
+      <!-- TODO refactor this...  -->
       <div class="pwa" *ngIf="pwaState | async as pwa">
         <app-btn
           class="install"
