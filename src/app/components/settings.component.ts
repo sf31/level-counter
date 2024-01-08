@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppService } from '../app.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { PlayerComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
@@ -34,13 +34,13 @@ type SettingActions = {
       </app-btn>
     </ng-container>
 
-    <ng-container *ngIf="pwaState | async as pwa">
+    <div class="pwa" *ngIf="pwaState | async as pwa">
       <app-btn
         class="install"
         *ngIf="pwa.updateAvailable; else installTmpl"
         (click)="reload()"
       >
-        Update Available! Tap to install
+        Update available! Tap to install
       </app-btn>
       <ng-template #installTmpl>
         <app-btn
@@ -50,7 +50,7 @@ type SettingActions = {
           Install App
         </app-btn>
       </ng-template>
-    </ng-container>
+    </div>
 
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
@@ -68,11 +68,7 @@ type SettingActions = {
       }
 
       app-btn {
-        width: 300px;
-      }
-
-      .debug {
-        width: 300px;
+        width: 330px;
       }
 
       .actions {
@@ -84,6 +80,10 @@ type SettingActions = {
       .done,
       .install {
         background-color: #43a047;
+      }
+
+      .pwa {
+        margin-top: 2rem;
       }
     `,
   ],
@@ -97,7 +97,10 @@ export class SettingsComponent {
 
   pwaState: Observable<PwaUpdateState> = this.app.getPwaState();
 
-  constructor(private app: AppService) {}
+  constructor(
+    private app: AppService,
+    private router: Router,
+  ) {}
 
   removePlayers(): void {
     this.app.removeAllPlayers();
@@ -121,6 +124,7 @@ export class SettingsComponent {
 
   reload(): void {
     window.location.reload();
+    this.router.navigate(['']).catch();
   }
 
   private setAction(target: keyof SettingActions, value: boolean): void {
