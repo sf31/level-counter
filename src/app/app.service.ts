@@ -84,10 +84,6 @@ export class AppService {
     }
   }
 
-  removeAllPlayers(): void {
-    this.setPlayerList([]);
-  }
-
   resetPlayers(): void {
     const playerList = this._playerList$.getValue();
     this.setPlayerList(

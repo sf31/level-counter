@@ -30,9 +30,6 @@ type SettingActions = {
       <app-btn [class.done]="actions.reset" (click)="reset()">
         {{ actions.reset ? 'Done!' : 'Reset Levels & Gears' }}
       </app-btn>
-      <app-btn [class.done]="actions.removeAll" (click)="removePlayers()">
-        {{ actions.removeAll ? 'Players removed!' : 'Remove All Players' }}
-      </app-btn>
 
       <!-- TODO refactor this...  -->
       <div class="pwa" *ngIf="pwaState | async as pwa">
@@ -120,11 +117,6 @@ export class SettingsComponent {
     private app: AppService,
     private router: Router,
   ) {}
-
-  removePlayers(): void {
-    this.app.removeAllPlayers();
-    this.processSetting('removeAll');
-  }
 
   reset(): void {
     this.app.resetPlayers();

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { PlayerComponent } from './player.component';
-import { HeaderComponent } from './header.component';
 import { Observable } from 'rxjs';
 import { Player } from '../types';
 import { AppService } from '../app.service';
@@ -24,7 +23,6 @@ import { RemovePlayerComponent } from './remove-player.component';
     CommonModule,
     RouterOutlet,
     PlayerComponent,
-    HeaderComponent,
     RouterLink,
     BtnComponent,
     FontAwesomeModule,
