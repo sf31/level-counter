@@ -9,12 +9,14 @@ import { BtnComponent } from './btn.component';
 import {
   faCog,
   faDice,
+  faDownLong,
   faRotateLeft,
   faUserMinus,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RemovePlayerComponent } from './remove-player.component';
+import { IconBtnComponent } from './icon-btn.component';
 
 @Component({
   selector: 'app-home',
@@ -28,24 +30,18 @@ import { RemovePlayerComponent } from './remove-player.component';
     FontAwesomeModule,
     PlayerComponent,
     RemovePlayerComponent,
+    IconBtnComponent,
   ],
   template: `
     <ng-container *ngIf="playerList$ | async as list">
       <div class="actions">
-        <app-btn routerLink="add-player">
-          <fa-icon [icon]="iconAddPlayer" />
-        </app-btn>
-        <app-btn routerLink="remove-player">
-          <fa-icon [icon]="iconRemovePlayer" />
-        </app-btn>
-        <!--        <div class="fill-remaining-space"></div>-->
-        <!--        <app-btn>-->
-        <!--          <fa-icon [icon]="iconDice" />-->
-        <!--        </app-btn>-->
+        <app-icon-btn routerLink="add-player" [icon]="iconAddPlayer" />
+        <app-icon-btn routerLink="remove-player" [icon]="iconRemovePlayer" />
         <div class="fill-remaining-space"></div>
-        <app-btn routerLink="reset">
-          <fa-icon [icon]="iconReset" />
-        </app-btn>
+        <!--        <app-icon-btn [icon]="iconDice" />-->
+        <!--        <div class="fill-remaining-space"></div>-->
+        <!--        <app-icon-btn routerLink="pwa" color="red" [icon]="iconPwa" />-->
+        <app-icon-btn routerLink="reset" [icon]="iconReset" />
       </div>
 
       <div class="player-list">
@@ -91,6 +87,7 @@ import { RemovePlayerComponent } from './remove-player.component';
       .no-player > div:first-child {
         font-size: 2.5rem;
       }
+
       .no-player > div {
         margin: 2rem;
       }
@@ -105,6 +102,7 @@ export class HomeComponent {
   iconRemovePlayer = faUserMinus;
   iconDice = faDice;
   iconReset = faRotateLeft;
+  iconPwa = faDownLong;
 
   constructor(private app: AppService) {
     this.playerList$ = this.app.select$('playerList');
