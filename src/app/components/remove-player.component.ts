@@ -5,19 +5,12 @@ import { AppService } from '../app.service';
 import { Observable } from 'rxjs';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
-import { PlayerComponent } from './screen-title.component';
+import { ScreenTitleComponent } from './screen-title.component';
 
 @Component({
   selector: 'app-player-to-remove',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    NgForOf,
-    BtnComponent,
-    RouterLink,
-    PlayerComponent,
-    PlayerComponent,
-  ],
+  imports: [AsyncPipe, NgForOf, BtnComponent, RouterLink, ScreenTitleComponent],
   template: `
     <div class="title">
       <app-screen-title title="Tap to remove" />

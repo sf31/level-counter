@@ -10,6 +10,7 @@ import { BtnComponent } from './btn.component';
 import {
   faCog,
   faDice,
+  faRotateLeft,
   faUserMinus,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
@@ -44,8 +45,8 @@ import { RemovePlayerComponent } from './remove-player.component';
         <!--          <fa-icon [icon]="iconDice" />-->
         <!--        </app-btn>-->
         <div class="fill-remaining-space"></div>
-        <app-btn routerLink="settings">
-          <fa-icon [icon]="iconSettings" />
+        <app-btn routerLink="reset">
+          <fa-icon [icon]="iconReset" />
         </app-btn>
       </div>
 
@@ -105,6 +106,7 @@ export class HomeComponent {
   iconAddPlayer = faUserPlus;
   iconRemovePlayer = faUserMinus;
   iconDice = faDice;
+  iconReset = faRotateLeft;
 
   constructor(private app: AppService) {
     this.playerList$ = this.app.getPlayerList();

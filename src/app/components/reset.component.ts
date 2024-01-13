@@ -1,64 +1,66 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AppService } from '../app.service';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
-import { AppService } from '../app.service';
 import { ScreenTitleComponent } from './screen-title.component';
 
 @Component({
-  selector: 'app-player-form',
+  selector: 'app-reset',
   standalone: true,
   imports: [BtnComponent, RouterLink, ScreenTitleComponent],
   template: `
-    <div class="form">
-      <app-screen-title title="Player name" />
-      <input #playerName type="text" />
+    <app-screen-title title="Reset Levels & Gears" />
+    <div class="text">
+      <p>This will reset all levels and gears for all players</p>
+      <p>Are you sure?</p>
     </div>
     <div class="actions">
       <app-btn routerLink=""> Back </app-btn>
-      <app-btn (click)="addPlayer(playerName.value)"> Add </app-btn>
+      <app-btn (click)="reset()"> Confirm </app-btn>
     </div>
   `,
   styles: [
     `
-      .form {
+      :host {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 1rem;
-        margin: 1rem;
-        border-radius: var(--border-radius-1);
-        font-size: 1.5rem;
+        padding: 1rem;
       }
 
-      input {
-        font-size: 1.2rem;
-        background-color: #a1887f;
-        border-radius: var(--border-radius-1);
-        padding: 0.5rem;
+      .text {
+        text-align: center;
+        color: #fff;
+        margin: 1rem 0;
       }
 
       .actions {
         display: flex;
-        justify-content: space-around;
-        margin-top: 2rem;
+        justify-content: space-between;
+        gap: 2rem;
       }
 
       app-btn {
         width: 100px;
       }
+
+      .actions app-btn:last-child {
+        background-color: #43a047;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerFormComponent {
+export class ResetComponent {
   constructor(
     private app: AppService,
     private router: Router,
   ) {}
-  addPlayer(playerName: string): void {
-    if (!playerName || playerName.length === 0) return;
-    this.app.addPlayer(playerName);
+
+  reset(): void {
+    this.app.resetPlayers();
     this.router.navigate(['']).catch();
   }
 }

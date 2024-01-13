@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppService } from '../app.service';
 import { Router, RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
-import { PlayerComponent } from './screen-title.component';
+import { ScreenTitleComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PwaUpdateState } from '../types';
@@ -18,7 +18,7 @@ type SettingActions = {
   standalone: true,
   imports: [
     BtnComponent,
-    PlayerComponent,
+    ScreenTitleComponent,
     RouterLink,
     NgIf,
     AsyncPipe,
@@ -36,6 +36,17 @@ type SettingActions = {
 
       <!-- TODO refactor this...  -->
       <div class="pwa" *ngIf="pwaState | async as pwa">
+        <app-btn
+          *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"
+          (click)="install(pwa)"
+        >
+          {{ pwa.installPending ? 'Installing...' : 'Install App' }}
+        </app-btn>
+
+        <app-btn *ngIf="pwa.isRunningStandalone">
+          {{ pwa.installPending ? 'Installing...' : 'Install App' }}
+        </app-btn>
+
         <app-btn
           class="install"
           *ngIf="pwa.updateAvailable; else installTmpl"
