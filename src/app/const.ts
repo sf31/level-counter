@@ -1,3 +1,12 @@
+import { AppState } from './types';
+
+export const INITIAL_APP_STATE: AppState = {
+  playerList: [],
+  dismissPwa: false,
+};
+
+export const LSK_APP_STATE = 'level-counter-app-state';
+
 export const PLAYER_COLORS: string[] = [
   '#C62828',
   '#2E7D32',

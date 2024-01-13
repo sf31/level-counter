@@ -107,6 +107,6 @@ export class HomeComponent {
   iconReset = faRotateLeft;
 
   constructor(private app: AppService) {
-    this.playerList$ = this.app.getPlayerList();
+    this.playerList$ = this.app.select$('playerList');
   }
 }

@@ -111,7 +111,7 @@ export class SettingsComponent {
     updated: false,
   });
 
-  pwaState: Observable<PwaUpdateState> = this.app.getPwaState();
+  pwaState: Observable<PwaUpdateState> = this.app.getPwaState$();
 
   constructor(
     private app: AppService,

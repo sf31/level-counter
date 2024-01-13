@@ -1,15 +1,28 @@
-import { Player } from './types';
+import { AppState, Player } from './types';
+import { INITIAL_APP_STATE } from './const';
 
 export function randomIntFromInterval(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export function validateLocalStorage(storageValue: any): Player[] {
+export function validateLocalStorage(storageValue: string | null): AppState {
   // TODO add stricter validation
+  try {
+    if (!storageValue) return INITIAL_APP_STATE;
+    const parsed = JSON.parse(storageValue);
+    const playerList = validatePlayerList(parsed['playerList']);
+    const dismissPwa = parsed['dismissPwa'] ?? INITIAL_APP_STATE.dismissPwa;
+    return { playerList, dismissPwa };
+  } catch (error) {
+    console.log(error);
+    return INITIAL_APP_STATE;
+  }
+}
+
+export function validatePlayerList(storageValue: any): Player[] {
   if (!storageValue) return [];
-  const parsed = JSON.parse(storageValue);
-  if (!Array.isArray(parsed)) return [];
-  for (const player of parsed) {
+  if (!Array.isArray(storageValue)) return [];
+  for (const player of storageValue) {
     try {
       validateString(player.id);
       validateString(player.name);
@@ -22,7 +35,7 @@ export function validateLocalStorage(storageValue: any): Player[] {
     }
   }
 
-  return parsed;
+  return storageValue;
 }
 
 function validateString(value: any): void {

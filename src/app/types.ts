@@ -1,3 +1,8 @@
+export type AppState = {
+  playerList: Player[];
+  dismissPwa: boolean;
+};
+
 export type Player = {
   id: string;
   name: string;

@@ -74,7 +74,7 @@ export class RemovePlayerComponent {
     private app: AppService,
     private router: Router,
   ) {
-    this.playerList$ = this.app.getPlayerList();
+    this.playerList$ = this.app.select$('playerList');
   }
 
   removePlayer(p: Player, playerList: Player[]): void {
