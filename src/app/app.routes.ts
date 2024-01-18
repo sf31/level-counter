@@ -26,6 +26,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/pwa.component').then((m) => m.PwaComponent),
   },
+  {
+    path: 'dice',
+    loadComponent: () =>
+      import('./components/dice.component').then((m) => m.DiceComponent),
+  },
   { path: '', component: HomeComponent },
   { path: '**', redirectTo: '' },
 ];

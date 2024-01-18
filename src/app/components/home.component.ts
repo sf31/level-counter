@@ -38,8 +38,8 @@ import { PwaService } from '../pwa.service';
         <app-icon-btn routerLink="add-player" [icon]="iconAddPlayer" />
         <app-icon-btn routerLink="remove-player" [icon]="iconRemovePlayer" />
         <div class="fill-remaining-space"></div>
-        <!--        <app-icon-btn [icon]="iconDice" />-->
-        <!--        <div class="fill-remaining-space"></div>-->
+        <app-icon-btn [icon]="iconDice" routerLink="dice" />
+        <div class="fill-remaining-space"></div>
         <ng-container *ngIf="showPwa$ | async as showPwa">
           <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
         </ng-container>
