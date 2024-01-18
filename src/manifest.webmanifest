@@ -2,7 +2,7 @@
   "name": "level-counter",
   "short_name": "level-counter",
   "theme_color": "#4E342E",
-  "background_color": "#fafafa",
+  "background_color": "#4E342E",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
