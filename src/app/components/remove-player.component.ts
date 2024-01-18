@@ -41,7 +41,7 @@ import { ScreenTitleComponent } from './screen-title.component';
       .player-list {
         overflow: auto;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 0.5rem;
         padding: 0.5rem;
       }
