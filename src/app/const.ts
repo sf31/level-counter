@@ -2,7 +2,7 @@ import { AppState } from './types';
 
 export const INITIAL_APP_STATE: AppState = {
   playerList: [],
-  dismissPwa: false,
+  dismissPwa: null,
 };
 
 export const LSK_APP_STATE = 'level-counter-app-state';

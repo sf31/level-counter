@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwaUpdateState } from '../types';
 import { Observable } from 'rxjs';
 import { PwaService } from '../pwa.service';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-pwa',
@@ -44,6 +45,9 @@ import { PwaService } from '../pwa.service';
         <ng-container *ngIf="!pwa.installPending">
           <app-btn class="success-btn" (click)="install(pwa)">
             Install now
+          </app-btn>
+          <app-btn class="dismiss" (click)="dismiss()">
+            Do not show again
           </app-btn>
         </ng-container>
 
@@ -99,7 +103,7 @@ import { PwaService } from '../pwa.service';
 
       app-btn {
         margin-top: 1rem;
-        width: 200px;
+        width: 220px;
       }
 
       .success {
@@ -109,6 +113,12 @@ import { PwaService } from '../pwa.service';
       .success-btn {
         background-color: #43a047;
       }
+
+      .dismiss {
+        background-color: #455a64;
+        position: absolute;
+        bottom: 3rem;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -117,12 +127,21 @@ export class PwaComponent {
   pwa$: Observable<PwaUpdateState>;
   iconLink = faUpRightFromSquare;
 
-  constructor(private pwa: PwaService) {
+  constructor(
+    private app: AppService,
+    private pwa: PwaService,
+    private router: Router,
+  ) {
     this.pwa$ = this.pwa.getState$();
   }
 
   openLink(): void {
     window.open('https://en.wikipedia.org/wiki/Progressive_web_app', '_blank');
+  }
+
+  dismiss(): void {
+    this.app.patchState({ dismissPwa: Date.now() });
+    this.router.navigate(['']).catch();
   }
 
   async install(pwa: PwaUpdateState): Promise<void> {

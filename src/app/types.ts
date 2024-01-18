@@ -1,6 +1,6 @@
 export type AppState = {
   playerList: Player[];
-  dismissPwa: boolean;
+  dismissPwa: number | null; // unix time when user dismisses PWA prompt
 };
 
 export type Player = {

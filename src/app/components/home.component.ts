@@ -116,7 +116,7 @@ export class HomeComponent {
       this.pwa.getState$(),
     ]).pipe(
       map(([dismiss, pwa]) => {
-        return !pwa.isRunningStandalone && !dismiss;
+        return !pwa.isRunningStandalone && dismiss === null;
       }),
     );
   }

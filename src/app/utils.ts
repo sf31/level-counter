@@ -15,7 +15,7 @@ export function validateLocalStorage(storageValue: string | null): AppState {
     if (!storageValue) return INITIAL_APP_STATE;
     const parsed = JSON.parse(storageValue);
     const playerList = validatePlayerList(parsed['playerList']);
-    const dismissPwa = parsed['dismissPwa'] ?? INITIAL_APP_STATE.dismissPwa;
+    const dismissPwa = validateDismissPwa(parsed['dismissPwa']);
     return { playerList, dismissPwa };
   } catch (error) {
     console.log(error);
@@ -53,4 +53,16 @@ function validateNumber(value: any): void {
 
 function validateGender(value: any): void {
   if (value !== 'M' && value !== 'F') throw Error('Invalid gender');
+}
+
+function validateDismissPwa(value: any): number | null {
+  if (!value) return null;
+  const parsed = parseInt(value);
+  if (isNaN(parsed)) return null;
+  const now = Date.now();
+  const week = 7 * 24 * 60 * 60 * 1000;
+  // if last dismissed is more than a week ago, reset user choice to trigger the PWA prompt again
+  // (yes, I'll get you installed, one way or another :) )
+  if (parsed < now - week) return null;
+  return parsed;
 }
