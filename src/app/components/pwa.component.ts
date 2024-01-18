@@ -5,9 +5,9 @@ import { ScreenTitleComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AppService } from '../app.service';
 import { PwaUpdateState } from '../types';
 import { Observable } from 'rxjs';
+import { PwaService } from '../pwa.service';
 
 @Component({
   selector: 'app-pwa',
@@ -53,11 +53,11 @@ import { Observable } from 'rxjs';
         </div>
       </ng-container>
 
-      <ng-container *ngIf="!pwa.promptEvent">
-        <div class="text success" *ngIf="pwa.isRunningStandalone">
-          App already installed!
-        </div>
+      <div class="text success" *ngIf="pwa.isRunningStandalone">
+        App successfully installed!
+      </div>
 
+      <ng-container *ngIf="!pwa.promptEvent">
         <ng-container *ngIf="!pwa.isRunningStandalone">
           <div class="text">Install prompt not available</div>
           <div class="text">Open your browser menu to install the app</div>
@@ -117,16 +117,20 @@ export class PwaComponent {
   pwa$: Observable<PwaUpdateState>;
   iconLink = faUpRightFromSquare;
 
-  constructor(private app: AppService) {
-    this.pwa$ = this.app.getPwaState$();
+  constructor(private pwa: PwaService) {
+    this.pwa$ = this.pwa.getState$();
   }
 
   openLink(): void {
     window.open('https://en.wikipedia.org/wiki/Progressive_web_app', '_blank');
   }
 
-  install(pwa: PwaUpdateState): void {
-    pwa.promptEvent?.prompt();
-    this.app.patchPwaState({ installPending: true });
+  async install(pwa: PwaUpdateState): Promise<void> {
+    if (!pwa.promptEvent) return;
+    pwa.promptEvent.prompt();
+    this.pwa.patchState({ installPending: true });
+    const choice = await pwa.promptEvent.userChoice;
+    if (choice.outcome === 'accepted') this.pwa.updateIsRunningStandalone();
+    else this.pwa.patchState({ installPending: false });
   }
 }

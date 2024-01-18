@@ -1,36 +1,20 @@
 import { Injectable } from '@angular/core';
-import { AppState, Player, PwaUpdateState } from './types';
+import { AppState, Player } from './types';
 import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 import { INITIAL_APP_STATE, LSK_APP_STATE, PLAYER_COLORS } from './const';
 import * as uuid from 'uuid';
 import { randomIntFromInterval, validateLocalStorage } from './utils';
-import { SwUpdate } from '@angular/service-worker';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
   private _state = new BehaviorSubject<AppState>(INITIAL_APP_STATE);
-  private _pwaState = new BehaviorSubject<PwaUpdateState>({
-    promptEvent: null,
-    isRunningStandalone: window.matchMedia('(display-mode: standalone)')
-      .matches,
-    updateAvailable: false,
-    installPending: false,
-  });
 
-  constructor(private sw: SwUpdate) {
+  constructor() {
     const playerListRaw = localStorage.getItem(LSK_APP_STATE);
     const state = validateLocalStorage(playerListRaw);
     this.patchState(state);
-
-    this.sw.versionUpdates.subscribe((e) => {
-      if (e.type === 'VERSION_READY')
-        this._pwaState.next({
-          ...this._pwaState.getValue(),
-          updateAvailable: true,
-        });
-    });
   }
 
   private getPlayerList(): Player[] {
@@ -51,14 +35,6 @@ export class AppService {
   patchState(state: Partial<AppState>): void {
     this._state.next({ ...this._state.getValue(), ...state });
     localStorage.setItem(LSK_APP_STATE, JSON.stringify(this._state.getValue()));
-  }
-
-  patchPwaState(state: Partial<PwaUpdateState>): void {
-    this._pwaState.next({ ...this._pwaState.getValue(), ...state });
-  }
-
-  getPwaState$(): Observable<PwaUpdateState> {
-    return this._pwaState.asObservable();
   }
 
   addPlayer(name: string): void {

@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { AppService } from './app.service';
+import { PwaService } from './pwa.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +10,11 @@ import { AppService } from './app.service';
   template: ` <router-outlet /> `,
 })
 export class AppComponent {
-  constructor(private app: AppService) {}
+  constructor(private pwa: PwaService) {}
 
   @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
     e.preventDefault();
-    this.app.patchPwaState({ promptEvent: e as any });
+    this.pwa.patchState({ promptEvent: e as any });
   }
 }

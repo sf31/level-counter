@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { PlayerComponent } from './player.component';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { Player } from '../types';
 import { AppService } from '../app.service';
 import { BtnComponent } from './btn.component';
@@ -16,6 +16,7 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RemovePlayerComponent } from './remove-player.component';
 import { IconBtnComponent } from './icon-btn.component';
+import { PwaService } from '../pwa.service';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,9 @@ import { IconBtnComponent } from './icon-btn.component';
         <div class="fill-remaining-space"></div>
         <!--        <app-icon-btn [icon]="iconDice" />-->
         <!--        <div class="fill-remaining-space"></div>-->
-        <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
+        <ng-container *ngIf="showPwa$ | async as showPwa">
+          <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
+        </ng-container>
         <app-icon-btn routerLink="reset" [icon]="iconReset" />
       </div>
 
@@ -101,8 +104,20 @@ export class HomeComponent {
   iconDice = faDice;
   iconReset = faRotateLeft;
   iconPwa = faCloudArrowDown;
+  showPwa$: Observable<boolean>;
 
-  constructor(private app: AppService) {
+  constructor(
+    private app: AppService,
+    private pwa: PwaService,
+  ) {
     this.playerList$ = this.app.select$('playerList');
+    this.showPwa$ = combineLatest([
+      this.app.select$('dismissPwa'),
+      this.pwa.getState$(),
+    ]).pipe(
+      map(([dismiss, pwa]) => {
+        return !pwa.isRunningStandalone && !dismiss;
+      }),
+    );
   }
 }

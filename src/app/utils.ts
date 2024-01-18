@@ -1,6 +1,10 @@
 import { AppState, Player } from './types';
 import { INITIAL_APP_STATE } from './const';
 
+export function isRunningStandalone(): boolean {
+  return window.matchMedia('(display-mode: standalone)').matches;
+}
+
 export function randomIntFromInterval(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
