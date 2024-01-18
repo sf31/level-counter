@@ -65,6 +65,9 @@ import { AppService } from '../app.service';
         <ng-container *ngIf="!pwa.isRunningStandalone">
           <div class="text">Install prompt not available</div>
           <div class="text">Open your browser menu to install the app</div>
+          <app-btn class="dismiss" (click)="dismiss()">
+            Do not show again
+          </app-btn>
         </ng-container>
       </ng-container>
       <app-btn routerLink=""> Back </app-btn>
