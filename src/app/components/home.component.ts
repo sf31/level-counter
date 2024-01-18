@@ -40,7 +40,7 @@ import { IconBtnComponent } from './icon-btn.component';
         <div class="fill-remaining-space"></div>
         <!--        <app-icon-btn [icon]="iconDice" />-->
         <!--        <div class="fill-remaining-space"></div>-->
-        <!--        <app-icon-btn routerLink="pwa" color="red" [icon]="iconPwa" />-->
+        <app-icon-btn routerLink="pwa" color="red" [icon]="iconPwa" />
         <app-icon-btn routerLink="reset" [icon]="iconReset" />
       </div>
 

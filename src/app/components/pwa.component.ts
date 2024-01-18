@@ -3,6 +3,11 @@ import { RouterLink } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppService } from '../app.service';
+import { PwaUpdateState } from '../types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pwa',
@@ -14,59 +19,114 @@ import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
     NgIf,
     AsyncPipe,
     JsonPipe,
+    FontAwesomeModule,
   ],
   template: `
-    <!--    TODO-->
-    <!--    <app-screen-title title="Settings" />-->
-    <!--    <ng-container *ngIf="settingsActions | async as actions">-->
-    <!--      <app-btn [class.done]="actions.reset" (click)="reset()">-->
-    <!--        {{ actions.reset ? 'Done!' : 'Reset Levels & Gears' }}-->
-    <!--      </app-btn>-->
-    <!--      <app-btn [class.done]="actions.removeAll" (click)="removePlayers()">-->
-    <!--        {{ actions.removeAll ? 'Players removed!' : 'Remove All Players' }}-->
-    <!--      </app-btn>-->
+    <ng-container *ngIf="pwa$ | async as pwa">
+      <app-screen-title title="PWA support detected!" />
+      <ng-container *ngIf="!pwa.installPending && !pwa.isRunningStandalone">
+        <div class="text">
+          <p>
+            Looks like your browser supports
+            <span class="link" (click)="openLink()">
+              <span class="link-inner">Progressive Web Apps</span>
+              <fa-icon [icon]="iconLink" />
+            </span>
+          </p>
 
-    <!--      &lt;!&ndash; TODO refactor this...  &ndash;&gt;-->
-    <!--      <div class="pwa" *ngIf="pwaState | async as pwa">-->
-    <!--        <app-btn-->
-    <!--          *ngIf="pwa.promptEvent && !pwa.isRunningStandalone"-->
-    <!--          (click)="install(pwa)"-->
-    <!--        >-->
-    <!--          {{ pwa.installPending ? 'Installing...' : 'Install App' }}-->
-    <!--        </app-btn>-->
+          <p *ngIf="!pwa.isRunningStandalone">
+            Install this app on your device for a better experience.
+          </p>
+        </div>
+      </ng-container>
 
-    <!--        <app-btn *ngIf="pwa.isRunningStandalone">-->
-    <!--          {{ pwa.installPending ? 'Installing...' : 'Install App' }}-->
-    <!--        </app-btn>-->
+      <ng-container *ngIf="pwa.promptEvent && !pwa.isRunningStandalone">
+        <ng-container *ngIf="!pwa.installPending">
+          <app-btn class="success-btn" (click)="install(pwa)">
+            Install now
+          </app-btn>
+        </ng-container>
 
-    <!--        <app-btn-->
-    <!--          class="install"-->
-    <!--          *ngIf="pwa.updateAvailable; else installTmpl"-->
-    <!--          (click)="reload()"-->
-    <!--        >-->
-    <!--          Update available! Tap to install-->
-    <!--        </app-btn>-->
-    <!--        <ng-template #installTmpl>-->
-    <!--          <app-btn-->
-    <!--            *ngIf="-->
-    <!--              pwa.promptEvent && !pwa.isRunningStandalone && !actions.updated-->
-    <!--            "-->
-    <!--            (click)="install(pwa)"-->
-    <!--          >-->
-    <!--            {{ pwa.installPending ? 'Installing...' : 'Install App' }}-->
-    <!--          </app-btn>-->
-    <!--        </ng-template>-->
-    <!--        <app-btn [class.done]="actions.updated" *ngIf="actions.updated">-->
-    <!--          Updated!-->
-    <!--        </app-btn>-->
-    <!--      </div>-->
+        <div class="text" *ngIf="pwa.installPending">
+          <p>Installing...</p>
+          <p>Follow the instructions of your browser</p>
+        </div>
+      </ng-container>
 
-    <!--      <div class="actions">-->
-    <!--        <app-btn routerLink=""> Back </app-btn>-->
-    <!--      </div>-->
-    <!--    </ng-container>-->
+      <ng-container *ngIf="!pwa.promptEvent">
+        <div class="text success" *ngIf="pwa.isRunningStandalone">
+          App already installed!
+        </div>
+
+        <ng-container *ngIf="!pwa.isRunningStandalone">
+          <div class="text">Install prompt not available</div>
+          <div class="text">Open your browser menu to install the app</div>
+        </ng-container>
+      </ng-container>
+      <app-btn routerLink=""> Back </app-btn>
+    </ng-container>
   `,
-  styles: [``],
+  styles: [
+    `
+      :host {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem;
+      }
+
+      .text {
+        text-align: center;
+        color: #fff;
+        &.success {
+          margin: 2rem 0;
+        }
+      }
+
+      .link {
+        white-space: nowrap;
+      }
+
+      .link-inner {
+        text-decoration: underline;
+        margin-right: 0.5rem;
+      }
+
+      .link fa-icon {
+        font-size: 0.9rem;
+      }
+
+      app-btn {
+        margin-top: 1rem;
+        width: 200px;
+      }
+
+      .success {
+        color: #43a047;
+      }
+
+      .success-btn {
+        background-color: #43a047;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PwaComponent {}
+export class PwaComponent {
+  pwa$: Observable<PwaUpdateState>;
+  iconLink = faUpRightFromSquare;
+
+  constructor(private app: AppService) {
+    this.pwa$ = this.app.getPwaState$();
+  }
+
+  openLink(): void {
+    window.open('https://en.wikipedia.org/wiki/Progressive_web_app', '_blank');
+  }
+
+  install(pwa: PwaUpdateState): void {
+    pwa.promptEvent?.prompt();
+    this.app.patchPwaState({ installPending: true });
+  }
+}
