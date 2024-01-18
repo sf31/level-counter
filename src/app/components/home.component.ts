@@ -7,9 +7,8 @@ import { Player } from '../types';
 import { AppService } from '../app.service';
 import { BtnComponent } from './btn.component';
 import {
-  faCog,
+  faCloudArrowDown,
   faDice,
-  faDownLong,
   faRotateLeft,
   faUserMinus,
   faUserPlus,
@@ -40,7 +39,7 @@ import { IconBtnComponent } from './icon-btn.component';
         <div class="fill-remaining-space"></div>
         <!--        <app-icon-btn [icon]="iconDice" />-->
         <!--        <div class="fill-remaining-space"></div>-->
-        <app-icon-btn routerLink="pwa" color="red" [icon]="iconPwa" />
+        <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
         <app-icon-btn routerLink="reset" [icon]="iconReset" />
       </div>
 
@@ -72,7 +71,7 @@ import { IconBtnComponent } from './icon-btn.component';
       .player-list {
         overflow: auto;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 0.5rem;
         padding: 0.5rem;
       }
@@ -97,12 +96,11 @@ import { IconBtnComponent } from './icon-btn.component';
 })
 export class HomeComponent {
   playerList$: Observable<Player[]>;
-  iconSettings = faCog;
   iconAddPlayer = faUserPlus;
   iconRemovePlayer = faUserMinus;
   iconDice = faDice;
   iconReset = faRotateLeft;
-  iconPwa = faDownLong;
+  iconPwa = faCloudArrowDown;
 
   constructor(private app: AppService) {
     this.playerList$ = this.app.select$('playerList');
