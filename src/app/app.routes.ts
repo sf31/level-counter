@@ -1,15 +1,31 @@
 import { Routes } from '@angular/router';
-import { PlayerFormComponent } from './components/player-form.component';
 import { HomeComponent } from './components/home.component';
-import { RemovePlayerComponent } from './components/remove-player.component';
-import { ResetComponent } from './components/reset.component';
-import { PwaComponent } from './components/pwa.component';
 
 export const routes: Routes = [
-  { path: 'add-player', component: PlayerFormComponent },
-  { path: 'remove-player', component: RemovePlayerComponent },
-  { path: 'reset', component: ResetComponent },
-  { path: 'pwa', component: PwaComponent },
+  {
+    path: 'add-player',
+    loadComponent: () =>
+      import('./components/player-form.component').then(
+        (m) => m.PlayerFormComponent,
+      ),
+  },
+  {
+    path: 'remove-player',
+    loadComponent: () =>
+      import('./components/remove-player.component').then(
+        (m) => m.RemovePlayerComponent,
+      ),
+  },
+  {
+    path: 'reset',
+    loadComponent: () =>
+      import('./components/reset.component').then((m) => m.ResetComponent),
+  },
+  {
+    path: 'pwa',
+    loadComponent: () =>
+      import('./components/pwa.component').then((m) => m.PwaComponent),
+  },
   { path: '', component: HomeComponent },
   { path: '**', redirectTo: '' },
 ];
