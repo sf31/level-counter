@@ -9,6 +9,7 @@ import { PwaUpdateState } from '../types';
 import { Observable } from 'rxjs';
 import { PwaService } from '../pwa.service';
 import { AppService } from '../app.service';
+import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-pwa',
@@ -21,6 +22,7 @@ import { AppService } from '../app.service';
     AsyncPipe,
     JsonPipe,
     FontAwesomeModule,
+    BackBtnComponent,
   ],
   template: `
     <ng-container *ngIf="pwa$ | async as pwa">
@@ -70,7 +72,7 @@ import { AppService } from '../app.service';
           </app-btn>
         </ng-container>
       </ng-container>
-      <app-btn routerLink=""> Back </app-btn>
+      <app-back-btn route="" />
     </ng-container>
   `,
   styles: [
@@ -107,6 +109,11 @@ import { AppService } from '../app.service';
       app-btn {
         margin-top: 1rem;
         width: 220px;
+      }
+
+      app-back-btn {
+        margin-top: 1rem;
+        width: 150px;
       }
 
       .success {

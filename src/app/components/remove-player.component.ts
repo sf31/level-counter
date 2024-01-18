@@ -6,11 +6,19 @@ import { Observable } from 'rxjs';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
 import { ScreenTitleComponent } from './screen-title.component';
+import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-player-to-remove',
   standalone: true,
-  imports: [AsyncPipe, NgForOf, BtnComponent, RouterLink, ScreenTitleComponent],
+  imports: [
+    AsyncPipe,
+    NgForOf,
+    BtnComponent,
+    RouterLink,
+    ScreenTitleComponent,
+    BackBtnComponent,
+  ],
   template: `
     <div class="title">
       <app-screen-title title="Tap to remove" />
@@ -27,7 +35,7 @@ import { ScreenTitleComponent } from './screen-title.component';
     </div>
 
     <div class="actions">
-      <app-btn routerLink=""> Back </app-btn>
+      <app-back-btn route="" />
     </div>
   `,
   styles: [
@@ -56,12 +64,12 @@ import { ScreenTitleComponent } from './screen-title.component';
 
       .actions {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         margin-top: 2rem;
       }
 
-      app-btn {
-        width: 100px;
+      app-back-btn {
+        width: 200px;
       }
     `,
   ],

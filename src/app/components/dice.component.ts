@@ -6,6 +6,7 @@ import { BtnComponent } from './btn.component';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterLink } from '@angular/router';
+import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-dice',
@@ -17,6 +18,7 @@ import { RouterLink } from '@angular/router';
     NgIf,
     FontAwesomeModule,
     RouterLink,
+    BackBtnComponent,
   ],
   template: `
     <div class="dice-wrapper" (click)="roll()">
@@ -36,7 +38,7 @@ import { RouterLink } from '@angular/router';
         </div>
       </div>
       <div class="bottom">
-        <app-btn routerLink=""> Back </app-btn>
+        <app-back-btn route="" />
       </div>
     </div>
   `,
@@ -197,7 +199,7 @@ import { RouterLink } from '@angular/router';
         }
       }
 
-      app-btn {
+      .bottom {
         width: 200px;
       }
     `,

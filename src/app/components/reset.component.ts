@@ -3,11 +3,12 @@ import { AppService } from '../app.service';
 import { BtnComponent } from './btn.component';
 import { Router, RouterLink } from '@angular/router';
 import { ScreenTitleComponent } from './screen-title.component';
+import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-reset',
   standalone: true,
-  imports: [BtnComponent, RouterLink, ScreenTitleComponent],
+  imports: [BtnComponent, RouterLink, ScreenTitleComponent, BackBtnComponent],
   template: `
     <app-screen-title title="Reset Levels & Gears" />
     <div class="text">
@@ -15,7 +16,7 @@ import { ScreenTitleComponent } from './screen-title.component';
       <p>Are you sure?</p>
     </div>
     <div class="actions">
-      <app-btn routerLink=""> Back </app-btn>
+      <app-back-btn route="" />
       <app-btn (click)="reset()"> Confirm </app-btn>
     </div>
   `,
@@ -38,10 +39,10 @@ import { ScreenTitleComponent } from './screen-title.component';
 
       .actions {
         display: flex;
-        justify-content: space-between;
         gap: 2rem;
       }
 
+      app-back-btn,
       app-btn {
         width: 100px;
       }
