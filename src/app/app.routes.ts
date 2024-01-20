@@ -3,18 +3,9 @@ import { HomeComponent } from './components/home.component';
 
 export const routes: Routes = [
   {
-    path: 'add-player',
+    path: 'users',
     loadComponent: () =>
-      import('./components/player-form.component').then(
-        (m) => m.PlayerFormComponent,
-      ),
-  },
-  {
-    path: 'remove-player',
-    loadComponent: () =>
-      import('./components/remove-player.component').then(
-        (m) => m.RemovePlayerComponent,
-      ),
+      import('./components/users.component').then((m) => m.UsersComponent),
   },
   {
     path: 'reset',

@@ -10,11 +10,9 @@ import {
   faCloudArrowDown,
   faDice,
   faRotateLeft,
-  faUserMinus,
-  faUserPlus,
+  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RemovePlayerComponent } from './remove-player.component';
 import { IconBtnComponent } from './icon-btn.component';
 import { PwaService } from '../pwa.service';
 
@@ -29,14 +27,12 @@ import { PwaService } from '../pwa.service';
     BtnComponent,
     FontAwesomeModule,
     PlayerComponent,
-    RemovePlayerComponent,
     IconBtnComponent,
   ],
   template: `
     <ng-container *ngIf="playerList$ | async as list">
       <div class="actions">
-        <app-icon-btn routerLink="add-player" [icon]="iconAddPlayer" />
-        <app-icon-btn routerLink="remove-player" [icon]="iconRemovePlayer" />
+        <app-icon-btn routerLink="users" [icon]="iconUsers" />
         <div class="fill-remaining-space"></div>
         <app-icon-btn [icon]="iconDice" routerLink="dice" />
         <div class="fill-remaining-space"></div>
@@ -53,7 +49,7 @@ import { PwaService } from '../pwa.service';
       <div class="no-player" *ngIf="list.length === 0">
         <div>Mmmh...</div>
         <div>No one here yet!</div>
-        <div>Use <fa-icon [icon]="iconAddPlayer" /> above to start</div>
+        <div>Use <fa-icon [icon]="iconUsers" /> above to start</div>
       </div>
     </ng-container>
   `,
@@ -99,8 +95,7 @@ import { PwaService } from '../pwa.service';
 })
 export class HomeComponent {
   playerList$: Observable<Player[]>;
-  iconAddPlayer = faUserPlus;
-  iconRemovePlayer = faUserMinus;
+  iconUsers = faUsers;
   iconDice = faDice;
   iconReset = faRotateLeft;
   iconPwa = faCloudArrowDown;

@@ -4,6 +4,10 @@ import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 import { INITIAL_APP_STATE, LSK_APP_STATE, PLAYER_COLORS } from './const';
 import * as uuid from 'uuid';
 import { randomIntFromInterval, validateLocalStorage } from './utils';
+import {
+  removeElementFromArray,
+  upsertElementInArray,
+} from './utils/array.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -55,21 +59,15 @@ export class AppService {
   }
 
   removePlayer(player: Player): void {
-    const playerList = this.getPlayerList();
-    const index = playerList.findIndex((p) => p.name === player.name);
-    if (index !== -1) {
-      playerList.splice(index, 1);
-      this.patchState({ playerList: playerList });
-    }
+    this.patchState({
+      playerList: removeElementFromArray(this.getPlayerList(), player, 'id'),
+    });
   }
 
   updatePlayer(player: Player): void {
-    const playerList = this.getPlayerList();
-    const index = playerList.findIndex((p) => p.name === player.name);
-    if (index !== -1) {
-      playerList[index] = player;
-      this.patchState({ playerList: playerList });
-    }
+    this.patchState({
+      playerList: upsertElementInArray(this.getPlayerList(), player, 'id'),
+    });
   }
 
   resetPlayers(): void {
