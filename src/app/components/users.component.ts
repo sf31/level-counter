@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BtnComponent } from './btn.component';
-import { Router } from '@angular/router';
 import { ScreenTitleComponent } from './screen-title.component';
 import { BackBtnComponent } from './back-btn.component';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
@@ -31,7 +30,7 @@ import { Player } from '../types';
           <app-screen-title title="New Player Name" />
 
           <input #playerName type="text" placeholder="" />
-          <app-btn (click)="addPlayer(playerName.value)"> Add</app-btn>
+          <app-btn (click)="addPlayer(playerName)"> Add</app-btn>
         </ng-template>
       </div>
 
@@ -130,10 +129,7 @@ export class UsersComponent {
     maximumPlayersReached: boolean;
   }>;
 
-  constructor(
-    private app: AppService,
-    private router: Router,
-  ) {
+  constructor(private app: AppService) {
     this.view$ = this.app
       .select$('playerList')
       .pipe(tap((playerList) => console.log(playerList)))
@@ -147,10 +143,11 @@ export class UsersComponent {
       );
   }
 
-  addPlayer(playerName: string): void {
+  addPlayer(input: HTMLInputElement): void {
+    const playerName = input.value;
     if (!playerName || playerName.length === 0) return;
     this.app.addPlayer(playerName);
-    this.router.navigate([''], { replaceUrl: true }).catch();
+    input.value = '';
   }
 
   removePlayer(p: Player): void {

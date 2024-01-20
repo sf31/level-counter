@@ -43,7 +43,8 @@ export class AppService {
 
   addPlayer(name: string): void {
     const playersCount = this.getPlayerList().length;
-    if (playersCount >= PLAYER_COLORS.length)
+    const color = getFirstAvailableColor(this.getPlayerList());
+    if (playersCount >= PLAYER_COLORS.length || !color)
       throw new Error('Too many players');
 
     const player: Player = {
@@ -52,7 +53,7 @@ export class AppService {
       gender: randomIntFromInterval(0, 10) % 2 === 0 ? 'M' : 'F',
       level: 1,
       gears: 0,
-      color: PLAYER_COLORS[playersCount],
+      color,
     };
     const playerList = [...this.getPlayerList(), player];
     this.patchState({ playerList });
@@ -76,4 +77,11 @@ export class AppService {
     });
     this.patchState({ playerList });
   }
+}
+
+function getFirstAvailableColor(playerList: Player[]): string | null {
+  const availableColors = PLAYER_COLORS.filter(
+    (c) => !playerList.find((p) => p.color === c),
+  );
+  return availableColors.length > 0 ? availableColors[0] : null;
 }
