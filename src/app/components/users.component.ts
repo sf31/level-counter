@@ -3,7 +3,7 @@ import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
 import { BackBtnComponent } from './back-btn.component';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AppService } from '../app.service';
 import { PLAYER_COLORS } from '../const';
 import { Player } from '../types';
@@ -28,7 +28,6 @@ import { Player } from '../types';
 
         <ng-template #form>
           <app-screen-title title="New Player Name" />
-
           <input #playerName type="text" placeholder="" />
           <app-btn (click)="addPlayer(playerName)"> Add</app-btn>
         </ng-template>
@@ -41,11 +40,11 @@ import { Player } from '../types';
 
         <div
           *ngFor="let player of view.playerList"
-          class="player text-ellipsis"
+          class="player "
           [style.background-color]="player.color"
           (click)="removePlayer(player)"
         >
-          <div class="player-name">
+          <div class="player-name text-ellipsis">
             {{ player.name }}
           </div>
         </div>
@@ -67,8 +66,8 @@ import { Player } from '../types';
       .new-player {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         gap: 1rem;
         padding: 1rem;
       }
@@ -93,20 +92,29 @@ import { Player } from '../types';
       }
 
       .player-list {
-        overflow: auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 0.5rem;
-        padding: 0 0.5rem;
-        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        padding: 0.5rem;
+        align-items: center;
       }
 
       .player {
+        width: 80dvw;
         padding: 1rem;
         border-radius: var(--border-radius-1);
         text-align: center;
         color: #fff;
         font-weight: bold;
+      }
+
+      @media (min-width: 500px) {
+        .player-list {
+          align-items: center;
+        }
+        .player {
+          width: 400px;
+        }
       }
 
       .actions {
@@ -130,17 +138,14 @@ export class UsersComponent {
   }>;
 
   constructor(private app: AppService) {
-    this.view$ = this.app
-      .select$('playerList')
-      .pipe(tap((playerList) => console.log(playerList)))
-      .pipe(
-        map((playerList) => {
-          return {
-            playerList,
-            maximumPlayersReached: playerList.length >= PLAYER_COLORS.length,
-          };
-        }),
-      );
+    this.view$ = this.app.select$('playerList').pipe(
+      map((playerList) => {
+        return {
+          playerList,
+          maximumPlayersReached: playerList.length >= PLAYER_COLORS.length,
+        };
+      }),
+    );
   }
 
   addPlayer(input: HTMLInputElement): void {
