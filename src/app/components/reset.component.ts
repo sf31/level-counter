@@ -62,6 +62,6 @@ export class ResetComponent {
 
   reset(): void {
     this.app.resetPlayers();
-    this.router.navigate(['']).catch();
+    this.router.navigate([''], { replaceUrl: true }).catch();
   }
 }

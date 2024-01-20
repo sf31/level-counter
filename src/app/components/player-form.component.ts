@@ -61,6 +61,6 @@ export class PlayerFormComponent {
   addPlayer(playerName: string): void {
     if (!playerName || playerName.length === 0) return;
     this.app.addPlayer(playerName);
-    this.router.navigate(['']).catch();
+    this.router.navigate([''], { replaceUrl: true }).catch();
   }
 }
