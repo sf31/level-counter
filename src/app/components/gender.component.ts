@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Player } from '../types';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faMars } from '@fortawesome/free-solid-svg-icons/faMars';
-import { faVenus } from '@fortawesome/free-solid-svg-icons/faVenus';
+import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -21,7 +20,6 @@ import { NgIf } from '@angular/common';
     `
       :host {
         display: flex;
-        //background-color: #a1887f;
         background-color: #c9c9c9;
         border-radius: 30px;
         width: fit-content;
@@ -38,7 +36,6 @@ import { NgIf } from '@angular/common';
       }
 
       .active {
-        //background-color: #5d4037;
         background-color: #818181;
       }
     `,
