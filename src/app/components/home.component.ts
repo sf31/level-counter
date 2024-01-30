@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { PlayerComponent } from './player.component';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -20,7 +20,6 @@ import { PwaService } from '../pwa.service';
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     PlayerComponent,
     RouterLink,
@@ -28,6 +27,9 @@ import { PwaService } from '../pwa.service';
     FontAwesomeModule,
     PlayerComponent,
     IconBtnComponent,
+    AsyncPipe,
+    NgIf,
+    NgForOf,
   ],
   template: `
     <ng-container *ngIf="playerList$ | async as list">
