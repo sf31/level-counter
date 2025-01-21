@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ScreenTitleComponent } from './screen-title.component';
 import { NgForOf, NgIf } from '@angular/common';
-import { randomIntFromInterval } from '../utils';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BackBtnComponent } from './back-btn.component';
+import { randomIntFromInterval } from '../utils/app.utils';
 
 @Component({
   selector: 'app-dice',

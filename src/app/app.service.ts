@@ -3,11 +3,12 @@ import { AppState, Player } from './types';
 import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 import { INITIAL_APP_STATE, LSK_APP_STATE, PLAYER_COLORS } from './const';
 import * as uuid from 'uuid';
-import { randomIntFromInterval, validateLocalStorage } from './utils';
 import {
   removeElementFromArray,
   upsertElementInArray,
 } from './utils/array.utils';
+import { validateLocalStorage } from './utils/validation.utils';
+import { randomIntFromInterval } from './utils/app.utils';
 
 @Injectable({
   providedIn: 'root',

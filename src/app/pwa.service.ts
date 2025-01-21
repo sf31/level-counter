@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PwaUpdateState } from './types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SwUpdate } from '@angular/service-worker';
-import { isRunningStandalone } from './utils';
+import { isRunningStandalone } from './utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
