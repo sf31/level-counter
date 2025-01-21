@@ -2,12 +2,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Player } from '../types';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-gender',
-  standalone: true,
-  imports: [FontAwesomeModule, NgIf],
+  imports: [FontAwesomeModule],
   template: `
     <div class="icon" [class.active]="player?.gender === 'M'">
       <fa-icon [icon]="iconMale" />

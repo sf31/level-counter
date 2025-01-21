@@ -4,7 +4,6 @@ import { PwaService } from './pwa.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet],
   template: ` <router-outlet /> `,
 })

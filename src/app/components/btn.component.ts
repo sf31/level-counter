@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-btn',
-  standalone: true,
   imports: [],
   template: ` <ng-content /> `,
   styles: [

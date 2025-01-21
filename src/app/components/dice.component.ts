@@ -2,22 +2,17 @@ import { Component, OnDestroy } from '@angular/core';
 import { ScreenTitleComponent } from './screen-title.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { randomIntFromInterval } from '../utils';
-import { BtnComponent } from './btn.component';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RouterLink } from '@angular/router';
 import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-dice',
-  standalone: true,
   imports: [
     ScreenTitleComponent,
     NgForOf,
-    BtnComponent,
     NgIf,
     FontAwesomeModule,
-    RouterLink,
     BackBtnComponent,
   ],
   template: `

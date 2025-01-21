@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwaUpdateState } from '../types';
@@ -13,14 +13,11 @@ import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-pwa',
-  standalone: true,
   imports: [
     BtnComponent,
     ScreenTitleComponent,
-    RouterLink,
     NgIf,
     AsyncPipe,
-    JsonPipe,
     FontAwesomeModule,
     BackBtnComponent,
   ],

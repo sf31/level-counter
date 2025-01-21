@@ -10,7 +10,6 @@ import { Player } from '../types';
 
 @Component({
   selector: 'app-users',
-  standalone: true,
   imports: [
     BtnComponent,
     ScreenTitleComponent,

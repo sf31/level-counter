@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { PlayerComponent } from './player.component';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Player } from '../types';
 import { AppService } from '../app.service';
-import { BtnComponent } from './btn.component';
 import {
   faCloudArrowDown,
   faDice,
@@ -18,12 +17,9 @@ import { PwaService } from '../pwa.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [
-    RouterOutlet,
     PlayerComponent,
     RouterLink,
-    BtnComponent,
     FontAwesomeModule,
     PlayerComponent,
     IconBtnComponent,

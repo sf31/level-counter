@@ -8,7 +8,6 @@ import { PlusMinusComponent } from './plus-minus.component';
 
 @Component({
   selector: 'app-player',
-  standalone: true,
   imports: [NgIf, FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
     <div

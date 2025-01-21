@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppService } from '../app.service';
 import { BtnComponent } from './btn.component';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ScreenTitleComponent } from './screen-title.component';
 import { BackBtnComponent } from './back-btn.component';
 
 @Component({
   selector: 'app-reset',
-  standalone: true,
-  imports: [BtnComponent, RouterLink, ScreenTitleComponent, BackBtnComponent],
+  imports: [BtnComponent, ScreenTitleComponent, BackBtnComponent],
   template: `
     <app-screen-title title="Reset Levels & Gears" />
     <div class="text">

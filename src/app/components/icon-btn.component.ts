@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { BtnComponent } from './btn.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-icon-btn',
-  standalone: true,
-  imports: [BtnComponent, FontAwesomeModule, NgIf],
+  imports: [FontAwesomeModule, NgIf],
   template: `
     <div class="icon-btn" *ngIf="icon" [style.background-color]="color">
       <fa-icon [icon]="icon" />

@@ -1,7 +1,7 @@
 export function removeElementFromArray<T>(
   array: T[],
   element: T,
-  key?: string
+  key?: string,
 ): T[] {
   const elementIndex = getElementIndex(array, element, key);
   return removeElementFromArrayByIndex(array, elementIndex);
@@ -12,7 +12,7 @@ export function removeElementFromArray<T>(
 
 export function removeElementFromArrayByIndex<T>(
   array: T[],
-  index: number
+  index: number,
 ): T[] {
   return index !== -1
     ? [...array.slice(0, index), ...array.slice(index + 1)]
@@ -22,7 +22,7 @@ export function removeElementFromArrayByIndex<T>(
 export function upsertElementInArray<T>(
   array: T[],
   element: T,
-  key?: string
+  key?: string,
 ): T[] {
   const elementIndex = getElementIndex(array, element, key);
   return elementIndex !== -1
@@ -37,11 +37,11 @@ export function upsertElementInArray<T>(
 export function getElementIndex<T>(
   array: T[],
   element: T,
-  key?: string
+  key?: string,
 ): number {
   if (key === undefined)
     return array.findIndex(
-      (item) => JSON.stringify(item) === JSON.stringify(element)
+      (item) => JSON.stringify(item) === JSON.stringify(element),
     );
   return array.findIndex((item: any) => {
     if (item[key] === undefined) return false;
@@ -52,7 +52,7 @@ export function getElementIndex<T>(
 export function insertElementArrayAtIndex<T>(
   array: T[],
   elem: T,
-  index: number
+  index: number,
 ): T[] {
   if (index < 0 || index > array.length - 1) throw Error('Invalid index');
   return [...array.slice(0, index), elem, ...array.slice(index + 1)];
@@ -61,7 +61,7 @@ export function insertElementArrayAtIndex<T>(
 export function addElementArrayAtIndex<T>(
   array: T[],
   elem: T,
-  index: number
+  index: number,
 ): T[] {
   if (index < 0 || index > array.length) throw Error('Invalid index');
   const newArray = [...array];

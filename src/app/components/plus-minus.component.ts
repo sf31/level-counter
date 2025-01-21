@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-plus-minus',
-  standalone: true,
-  imports: [FontAwesomeModule, NgIf],
+  imports: [FontAwesomeModule],
   template: `
     <fa-icon (click)="plus.emit()" [icon]="iconPlus" />
     <div class="value">{{ value }}</div>
