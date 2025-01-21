@@ -202,7 +202,7 @@ import { BackBtnComponent } from './back-btn.component';
 })
 export class DiceComponent implements OnDestroy {
   currentFace: number | null = null;
-  rollTimer: number | null = null;
+  rollTimer: ReturnType<typeof setTimeout> | null = null;
   noFaceIcon = faQuestion;
 
   roll(): void {
