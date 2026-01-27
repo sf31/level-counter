@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ScreenTitleComponent } from './screen-title.component';
-import { NgForOf, NgIf } from '@angular/common';
+
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BackBtnComponent } from './back-btn.component';
@@ -10,11 +10,9 @@ import { randomIntFromInterval } from '../utils/app.utils';
   selector: 'app-dice',
   imports: [
     ScreenTitleComponent,
-    NgForOf,
-    NgIf,
     FontAwesomeModule,
-    BackBtnComponent,
-  ],
+    BackBtnComponent
+],
   template: `
     <div class="dice-wrapper" (click)="roll()">
       <div class="top">
@@ -22,21 +20,23 @@ import { randomIntFromInterval } from '../utils/app.utils';
       </div>
       <div class="dice">
         <div class="face f-{{ currentFace }}">
-          <div class="no-face" *ngIf="currentFace === null">
-            <fa-icon [icon]="noFaceIcon" />
-          </div>
-          <ng-container *ngIf="currentFace">
-            <ng-container *ngFor="let item of [].constructor(currentFace)">
+          @if (currentFace === null) {
+            <div class="no-face">
+              <fa-icon [icon]="noFaceIcon" />
+            </div>
+          }
+          @if (currentFace) {
+            @for (item of [].constructor(currentFace); track item) {
               <div class="dot"></div>
-            </ng-container>
-          </ng-container>
+            }
+          }
         </div>
       </div>
       <div class="bottom">
         <app-back-btn route="" />
       </div>
     </div>
-  `,
+    `,
   styles: [
     `
       .dice-wrapper {

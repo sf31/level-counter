@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwaUpdateState } from '../types';
@@ -16,15 +16,14 @@ import { BackBtnComponent } from './back-btn.component';
   imports: [
     BtnComponent,
     ScreenTitleComponent,
-    NgIf,
     AsyncPipe,
     FontAwesomeModule,
-    BackBtnComponent,
-  ],
+    BackBtnComponent
+],
   template: `
-    <ng-container *ngIf="pwa$ | async as pwa">
+    @if (pwa$ | async; as pwa) {
       <app-screen-title title="PWA support detected!" />
-      <ng-container *ngIf="!pwa.installPending && !pwa.isRunningStandalone">
+      @if (!pwa.installPending && !pwa.isRunningStandalone) {
         <div class="text">
           <p>
             Looks like your browser supports
@@ -33,45 +32,46 @@ import { BackBtnComponent } from './back-btn.component';
               <fa-icon [icon]="iconLink" />
             </span>
           </p>
-
-          <p *ngIf="!pwa.isRunningStandalone">
-            Install this app on your device for a better experience.
-          </p>
+          @if (!pwa.isRunningStandalone) {
+            <p>
+              Install this app on your device for a better experience.
+            </p>
+          }
         </div>
-      </ng-container>
-
-      <ng-container *ngIf="pwa.promptEvent && !pwa.isRunningStandalone">
-        <ng-container *ngIf="!pwa.installPending">
+      }
+      @if (pwa.promptEvent && !pwa.isRunningStandalone) {
+        @if (!pwa.installPending) {
           <app-btn class="success-btn" (click)="install(pwa)">
             Install now
           </app-btn>
           <app-btn class="dismiss" (click)="dismiss()">
             Do not show again
           </app-btn>
-        </ng-container>
-
-        <div class="text" *ngIf="pwa.installPending">
-          <p>Installing...</p>
-          <p>Follow the instructions of your browser</p>
+        }
+        @if (pwa.installPending) {
+          <div class="text">
+            <p>Installing...</p>
+            <p>Follow the instructions of your browser</p>
+          </div>
+        }
+      }
+      @if (pwa.isRunningStandalone) {
+        <div class="text success">
+          App successfully installed!
         </div>
-      </ng-container>
-
-      <div class="text success" *ngIf="pwa.isRunningStandalone">
-        App successfully installed!
-      </div>
-
-      <ng-container *ngIf="!pwa.promptEvent">
-        <ng-container *ngIf="!pwa.isRunningStandalone">
+      }
+      @if (!pwa.promptEvent) {
+        @if (!pwa.isRunningStandalone) {
           <div class="text">Install prompt not available</div>
           <div class="text">Open your browser menu to install the app</div>
           <app-btn class="dismiss" (click)="dismiss()">
             Do not show again
           </app-btn>
-        </ng-container>
-      </ng-container>
+        }
+      }
       <app-back-btn route="" />
-    </ng-container>
-  `,
+    }
+    `,
   styles: [
     `
       :host {

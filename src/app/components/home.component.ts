@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PlayerComponent } from './player.component';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -23,34 +23,34 @@ import { PwaService } from '../pwa.service';
     FontAwesomeModule,
     PlayerComponent,
     IconBtnComponent,
-    AsyncPipe,
-    NgIf,
-    NgForOf,
-  ],
+    AsyncPipe
+],
   template: `
-    <ng-container *ngIf="playerList$ | async as list">
+    @if (playerList$ | async; as list) {
       <div class="actions">
         <app-icon-btn routerLink="users" [icon]="iconUsers" />
         <div class="fill-remaining-space"></div>
         <app-icon-btn [icon]="iconDice" routerLink="dice" />
         <div class="fill-remaining-space"></div>
-        <ng-container *ngIf="showPwa$ | async as showPwa">
+        @if (showPwa$ | async; as showPwa) {
           <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
-        </ng-container>
+        }
         <app-icon-btn routerLink="reset" [icon]="iconReset" />
       </div>
-
       <div class="player-list">
-        <app-player *ngFor="let player of list" [player]="player" />
+        @for (player of list; track player) {
+          <app-player [player]="player" />
+        }
       </div>
-
-      <div class="no-player" *ngIf="list.length === 0">
-        <div>Mmmh...</div>
-        <div>No one here yet!</div>
-        <div>Use <fa-icon [icon]="iconUsers" /> above to start</div>
-      </div>
-    </ng-container>
-  `,
+      @if (list.length === 0) {
+        <div class="no-player">
+          <div>Mmmh...</div>
+          <div>No one here yet!</div>
+          <div>Use <fa-icon [icon]="iconUsers" /> above to start</div>
+        </div>
+      }
+    }
+    `,
   styles: [
     `
       :host {

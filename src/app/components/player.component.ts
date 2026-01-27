@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Player } from '../types';
-import { NgIf } from '@angular/common';
+
 import { AppService } from '../app.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GenderComponent } from './gender.component';
@@ -8,46 +8,45 @@ import { PlusMinusComponent } from './plus-minus.component';
 
 @Component({
   selector: 'app-player',
-  imports: [NgIf, FontAwesomeModule, GenderComponent, PlusMinusComponent],
+  imports: [FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
-    <div
-      class="player shadow"
-      [style.background-color]="player.color"
-      *ngIf="player"
-    >
-      <div class="left">
-        <app-plus-minus
-          label="gear"
-          [value]="player.gears"
-          (plus)="onChangeEquipment(1)"
-          (minus)="onChangeEquipment(-1)"
-        />
-        <div class="label">Gear</div>
-      </div>
-
-      <div class="central">
-        <div class="name text-ellipsis">{{ player.name }}</div>
-        <div class="central-inner">
-          <app-gender (click)="toggleGender()" [player]="player" />
-          <div class="fill-remaining-space"></div>
-          <div class="total">
-            {{ player.level + player.gears }}
+    @if (player) {
+      <div
+        class="player shadow"
+        [style.background-color]="player.color"
+        >
+        <div class="left">
+          <app-plus-minus
+            label="gear"
+            [value]="player.gears"
+            (plus)="onChangeEquipment(1)"
+            (minus)="onChangeEquipment(-1)"
+            />
+          <div class="label">Gear</div>
+        </div>
+        <div class="central">
+          <div class="name text-ellipsis">{{ player.name }}</div>
+          <div class="central-inner">
+            <app-gender (click)="toggleGender()" [player]="player" />
+            <div class="fill-remaining-space"></div>
+            <div class="total">
+              {{ player.level + player.gears }}
+            </div>
+            <div class="label">Strength</div>
           </div>
-          <div class="label">Strength</div>
+        </div>
+        <div class="right">
+          <app-plus-minus
+            label="level"
+            [value]="player.level"
+            (plus)="onChangeLevel(1)"
+            (minus)="onChangeLevel(-1)"
+            />
+          <div class="label">Level</div>
         </div>
       </div>
-
-      <div class="right">
-        <app-plus-minus
-          label="level"
-          [value]="player.level"
-          (plus)="onChangeLevel(1)"
-          (minus)="onChangeLevel(-1)"
-        />
-        <div class="label">Level</div>
-      </div>
-    </div>
-  `,
+    }
+    `,
   styles: [
     `
       .player {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BtnComponent } from './btn.component';
 import { ScreenTitleComponent } from './screen-title.component';
 import { BackBtnComponent } from './back-btn.component';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { map, Observable } from 'rxjs';
 import { AppService } from '../app.service';
 import { PLAYER_COLORS } from '../const';
@@ -14,46 +14,44 @@ import { Player } from '../types';
     BtnComponent,
     ScreenTitleComponent,
     BackBtnComponent,
-    NgIf,
-    AsyncPipe,
-    NgForOf,
-  ],
+    AsyncPipe
+],
   template: `
-    <ng-container *ngIf="view$ | async as view">
+    @if (view$ | async; as view) {
       <div class="new-player">
-        <div *ngIf="view.maximumPlayersReached; else form" class="too-many">
-          Maximum number of players reached!
-        </div>
-
-        <ng-template #form>
+        @if (view.maximumPlayersReached) {
+          <div class="too-many">
+            Maximum number of players reached!
+          </div>
+        } @else {
           <app-screen-title title="New Player Name" />
           <input #playerName type="text" placeholder="" />
           <app-btn (click)="addPlayer(playerName)"> Add</app-btn>
-        </ng-template>
+        }
       </div>
-
-      <div class="player-list" *ngIf="view.playerList.length > 0">
-        <div class="title">
-          <app-screen-title title="Tap to remove" />
-        </div>
-
-        <div
-          *ngFor="let player of view.playerList"
-          class="player "
-          [style.background-color]="player.color"
-          (click)="removePlayer(player)"
-        >
-          <div class="player-name text-ellipsis">
-            {{ player.name }}
+      @if (view.playerList.length > 0) {
+        <div class="player-list">
+          <div class="title">
+            <app-screen-title title="Tap to remove" />
           </div>
+          @for (player of view.playerList; track player) {
+            <div
+              class="player "
+              [style.background-color]="player.color"
+              (click)="removePlayer(player)"
+              >
+              <div class="player-name text-ellipsis">
+                {{ player.name }}
+              </div>
+            </div>
+          }
         </div>
-      </div>
-
+      }
       <div class="actions">
         <app-back-btn route="''" />
       </div>
-    </ng-container>
-  `,
+    }
+    `,
   styles: [
     `
       :host {
