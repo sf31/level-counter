@@ -1,71 +1,75 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BtnComponent } from '../../shared/components/btn.component';
-import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
 import { AsyncPipe } from '@angular/common';
-import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwaUpdateState } from '../../types';
 import { Observable } from 'rxjs';
 import { PwaService } from '../../core/services/pwa.service';
 import { AppService } from '../../core/services/app.service';
-import { BackBtnComponent } from '../../shared/components/back-btn.component';
+import { IconBtnComponent } from '../../shared/components/icon-btn.component';
 
 @Component({
   selector: 'app-pwa',
   imports: [
     BtnComponent,
-    ScreenTitleComponent,
     AsyncPipe,
     FontAwesomeModule,
-    BackBtnComponent,
+    IconBtnComponent,
+    RouterLink,
   ],
   template: `
+    <div class="page-header">
+      <app-icon-btn routerLink="" [icon]="iconBack" />
+      <span class="page-header-title">Install App</span>
+      <div style="width: var(--touch-target)"></div>
+    </div>
+
     @if (pwa$ | async; as pwa) {
-      <app-screen-title title="PWA support detected!" />
-      @if (!pwa.installPending && !pwa.isRunningStandalone) {
-        <div class="text">
-          <p>
-            Looks like your browser supports
-            <span class="link" (click)="openLink()">
-              <span class="link-inner">Progressive Web Apps</span>
-              <fa-icon [icon]="iconLink" />
-            </span>
-          </p>
-          @if (!pwa.isRunningStandalone) {
-            <p>Install this app on your device for a better experience.</p>
-          }
-        </div>
-      }
-      @if (pwa.promptEvent && !pwa.isRunningStandalone) {
-        @if (!pwa.installPending) {
-          <app-btn class="success-btn" (click)="install(pwa)">
-            Install now
-          </app-btn>
-          <app-btn class="dismiss" (click)="dismiss()">
-            Do not show again
-          </app-btn>
-        }
-        @if (pwa.installPending) {
+      <div class="content">
+        @if (!pwa.installPending && !pwa.isRunningStandalone) {
           <div class="text">
-            <p>Installing...</p>
-            <p>Follow the instructions of your browser</p>
+            <p>
+              Looks like your browser supports
+              <span class="link" (click)="openLink()">
+                <span class="link-inner">Progressive Web Apps</span>
+                <fa-icon [icon]="iconLink" />
+              </span>
+            </p>
+            <p>Install this app on your device for a better experience.</p>
           </div>
         }
-      }
-      @if (pwa.isRunningStandalone) {
-        <div class="text success">App successfully installed!</div>
-      }
-      @if (!pwa.promptEvent) {
-        @if (!pwa.isRunningStandalone) {
+        @if (pwa.promptEvent && !pwa.isRunningStandalone) {
+          @if (!pwa.installPending) {
+            <app-btn class="success-btn" (click)="install(pwa)">
+              Install now
+            </app-btn>
+            <app-btn class="dismiss-btn" (click)="dismiss()">
+              Do not show again
+            </app-btn>
+          }
+          @if (pwa.installPending) {
+            <div class="text">
+              <p>Installing...</p>
+              <p>Follow the instructions of your browser</p>
+            </div>
+          }
+        }
+        @if (pwa.isRunningStandalone) {
+          <div class="text success">App successfully installed!</div>
+        }
+        @if (!pwa.promptEvent && !pwa.isRunningStandalone) {
           <div class="text">Install prompt not available</div>
           <div class="text">Open your browser menu to install the app</div>
-          <app-btn class="dismiss" (click)="dismiss()">
+          <app-btn class="dismiss-btn" (click)="dismiss()">
             Do not show again
           </app-btn>
         }
-      }
-      <app-back-btn route="" />
+      </div>
     }
   `,
   styles: [
@@ -73,26 +77,39 @@ import { BackBtnComponent } from '../../shared/components/back-btn.component';
       :host {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        min-height: 100dvh;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        margin: 1rem;
+        justify-content: center;
+        padding: var(--space-lg);
+        gap: var(--space-md);
       }
 
       .text {
         text-align: center;
-        color: #fff;
-        &.success {
-          margin: 2rem 0;
-        }
+        color: var(--color-text);
+        line-height: 1.6;
+      }
+
+      .text.success {
+        color: var(--color-success);
+        font-size: 1.3rem;
+        font-weight: bold;
       }
 
       .link {
         white-space: nowrap;
+        cursor: pointer;
       }
 
       .link-inner {
         text-decoration: underline;
-        margin-right: 0.5rem;
+        margin-right: var(--space-xs);
       }
 
       .link fa-icon {
@@ -100,27 +117,15 @@ import { BackBtnComponent } from '../../shared/components/back-btn.component';
       }
 
       app-btn {
-        margin-top: 1rem;
         width: 220px;
       }
 
-      app-back-btn {
-        margin-top: 1rem;
-        width: 150px;
-      }
-
-      .success {
-        color: #43a047;
-      }
-
       .success-btn {
-        background-color: #43a047;
+        background-color: var(--color-success);
       }
 
-      .dismiss {
-        background-color: #455a64;
-        position: absolute;
-        bottom: 3rem;
+      .dismiss-btn {
+        background-color: var(--color-bg-lighter);
       }
     `,
   ],
@@ -128,6 +133,7 @@ import { BackBtnComponent } from '../../shared/components/back-btn.component';
 })
 export class PwaComponent {
   pwa$: Observable<PwaUpdateState>;
+  iconBack = faArrowLeft;
   iconLink = faUpRightFromSquare;
 
   constructor(

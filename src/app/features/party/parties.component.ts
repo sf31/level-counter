@@ -1,302 +1,279 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Party } from '../../types';
 import { AppService } from '../../core/services/app.service';
 import { PartyService } from './party.service';
-import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
-import { BtnComponent } from '../../shared/components/btn.component';
-import { BackBtnComponent } from '../../shared/components/back-btn.component';
+import { IconBtnComponent } from '../../shared/components/icon-btn.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faCheck,
-  faPen,
-  faTrash,
-  faXmark,
+  faArrowLeft,
+  faEllipsis,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
-interface PartyView {
+interface PartiesView {
   parties: Party[];
   activePartyId: string | null;
 }
 
 @Component({
   selector: 'app-parties',
-  imports: [
-    AsyncPipe,
-    ScreenTitleComponent,
-    BtnComponent,
-    BackBtnComponent,
-    FontAwesomeModule,
-  ],
+  imports: [AsyncPipe, IconBtnComponent, FontAwesomeModule, RouterLink],
   template: `
     @if (view$ | async; as view) {
-      <div class="new-party">
-        <app-screen-title title="New Party Name" />
-        <input #partyName type="text" placeholder="" />
-        <app-btn (click)="addParty(partyName)">Create</app-btn>
+      <div class="page-header">
+        <app-icon-btn routerLink="" [icon]="iconBack" />
+        <span class="page-header-title">Parties</span>
+        <div style="width: var(--touch-target)"></div>
       </div>
 
-      @if (view.parties.length > 0) {
-        <div class="party-list">
-          <div class="title">
-            <app-screen-title title="Your Parties" />
-          </div>
-          @for (party of view.parties; track party.id) {
-            <div
-              class="party-card"
-              [class.active]="party.id === view.activePartyId"
-            >
-              <div class="party-header">
-                @if (editingPartyId === party.id) {
-                  <input
-                    #renameInput
-                    class="rename-input"
-                    type="text"
-                    [value]="party.name"
-                    (keyup.enter)="confirmRename(renameInput, party.id)"
-                  />
-                  <div class="party-actions">
-                    <fa-icon
-                      class="action-icon confirm"
-                      [icon]="iconCheck"
-                      (click)="confirmRename(renameInput, party.id)"
-                    />
-                    <fa-icon
-                      class="action-icon cancel"
-                      [icon]="iconCancel"
-                      (click)="cancelRename()"
-                    />
-                  </div>
-                } @else {
-                  <div
-                    class="party-name text-ellipsis"
-                    (click)="switchParty(party.id)"
-                  >
-                    {{ party.name }}
-                  </div>
-                  <div class="party-actions">
-                    <fa-icon
-                      class="action-icon"
-                      [icon]="iconRename"
-                      (click)="startRename(party.id)"
-                    />
-                    <fa-icon
-                      class="action-icon delete"
-                      [icon]="iconDelete"
-                      (click)="removeParty(party)"
-                    />
-                  </div>
-                }
-              </div>
-              <div class="player-preview" (click)="switchParty(party.id)">
-                @if (party.playerList.length === 0) {
-                  <span class="empty">No players yet</span>
-                } @else {
-                  @for (player of party.playerList; track player.id) {
-                    <div
-                      class="player-dot"
-                      [style.background-color]="player.color"
-                      [title]="player.name"
-                    ></div>
-                  }
-                }
-              </div>
-              @if (party.playerList.length > 0) {
-                <div class="player-names" (click)="switchParty(party.id)">
-                  {{ getPlayerNames(party) }}
-                </div>
-              }
-            </div>
-          }
+      <div class="content">
+        <div class="create-row">
+          <input
+            #partyName
+            type="text"
+            placeholder="New party name..."
+            (keyup.enter)="addParty(partyName)"
+          />
+          <button class="add-btn" (click)="addParty(partyName)">
+            <fa-icon [icon]="iconAdd" />
+          </button>
         </div>
-      } @else {
-        <div class="no-parties">
-          <div>No parties yet!</div>
-          <div>Create one above to get started</div>
-        </div>
-      }
 
-      <div class="actions">
-        <app-back-btn route="" />
+        @if (view.parties.length > 0) {
+          <div class="section-label">Your Parties</div>
+          <div class="party-list">
+            @for (party of view.parties; track party.id) {
+              <div
+                class="party-card"
+                [class.active]="party.id === view.activePartyId"
+                (click)="switchParty(party.id)"
+              >
+                <div class="card-body">
+                  <div class="card-name text-ellipsis">{{ party.name }}</div>
+                  <div class="card-meta">
+                    @if (party.playerList.length === 0) {
+                      <span class="meta-empty">No players</span>
+                    } @else {
+                      <div class="player-dots">
+                        @for (
+                          player of party.playerList;
+                          track player.id
+                        ) {
+                          <div
+                            class="dot"
+                            [style.background-color]="player.color"
+                          ></div>
+                        }
+                      </div>
+                      <span class="meta-names text-ellipsis">
+                        {{ getPlayerNames(party) }}
+                      </span>
+                    }
+                  </div>
+                </div>
+                <button
+                  class="card-action"
+                  (click)="goToDetail(party.id); $event.stopPropagation()"
+                >
+                  <fa-icon [icon]="iconMore" />
+                </button>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="empty-state">
+            <div class="empty-title">No parties yet</div>
+            <div class="empty-hint">Create one above to get started</div>
+          </div>
+        }
       </div>
     }
   `,
   styles: [
     `
       :host {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
+        display: flex;
+        flex-direction: column;
         min-height: 100dvh;
       }
 
-      .new-party {
+      .content {
+        flex: 1;
+        padding: var(--space-md);
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+
+      .create-row {
+        display: flex;
+        gap: var(--space-sm);
+        width: 100%;
+        max-width: 440px;
+        margin-bottom: var(--space-lg);
+      }
+
+      .create-row input {
+        flex: 1;
+      }
+
+      .add-btn {
+        display: flex;
+        align-items: center;
         justify-content: center;
-        gap: 1rem;
-        padding: 1.5rem 1rem;
-      }
-
-      input {
-        font-size: 1.2rem;
-        background-color: #a1887f;
+        width: var(--touch-target);
+        height: var(--touch-target);
         border-radius: var(--border-radius-1);
-        padding: 0.5rem;
+        background-color: var(--color-accent);
+        color: var(--color-bg);
+        font-size: 1.2rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: none;
+        transition: opacity 0.15s;
       }
 
-      .title {
-        text-align: center;
-        margin: 0.5rem 0 1rem;
+      .add-btn:active {
+        opacity: 0.8;
+      }
+
+      .section-label {
+        color: var(--color-text-muted);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--space-sm);
+        width: 100%;
+        max-width: 440px;
       }
 
       .party-list {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
-        padding: 0.5rem;
-        align-items: center;
-        overflow: auto;
+        gap: var(--space-sm);
+        width: 100%;
+        max-width: 440px;
       }
 
       .party-card {
-        width: 80dvw;
-        padding: 1rem;
+        display: flex;
+        align-items: center;
+        background-color: var(--color-bg-light);
         border-radius: var(--border-radius-1);
-        background-color: #5d4037;
         border: 2px solid transparent;
+        padding: var(--space-md);
         cursor: pointer;
-        transition: border-color 0.2s;
+        transition:
+          border-color 0.2s,
+          background-color 0.15s;
+        gap: var(--space-sm);
+      }
+
+      .party-card:active {
+        background-color: var(--color-bg-lighter);
       }
 
       .party-card.active {
-        border-color: #fbc02d;
+        border-color: var(--color-accent);
       }
 
-      .party-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.5rem;
+      .card-body {
+        flex: 1;
+        overflow: hidden;
       }
 
-      .party-name {
-        font-size: 1.3rem;
+      .card-name {
+        font-size: 1.2rem;
         font-weight: bold;
-        color: #fff;
-        flex: 1;
       }
 
-      .rename-input {
-        flex: 1;
-        font-size: 1.1rem;
-        padding: 0.3rem 0.5rem;
-        background-color: #a1887f;
-        border-radius: var(--border-radius-1);
-      }
-
-      .party-actions {
+      .card-meta {
         display: flex;
-        gap: 0.75rem;
         align-items: center;
+        gap: var(--space-sm);
+        margin-top: var(--space-xs);
       }
 
-      .action-icon {
-        color: #bcaaa4;
-        font-size: 1.1rem;
-        cursor: pointer;
-        padding: 0.25rem;
-      }
-
-      .action-icon:hover {
-        color: #fff;
-      }
-
-      .action-icon.delete {
-        color: #ef5350;
-      }
-
-      .action-icon.confirm {
-        color: #66bb6a;
-      }
-
-      .action-icon.cancel {
-        color: #ef5350;
-      }
-
-      .player-preview {
+      .player-dots {
         display: flex;
-        gap: 0.4rem;
-        margin-top: 0.75rem;
-        flex-wrap: wrap;
+        gap: 4px;
+        flex-shrink: 0;
       }
 
-      .player-dot {
-        width: 1rem;
-        height: 1rem;
+      .dot {
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
       }
 
-      .player-names {
-        margin-top: 0.4rem;
+      .meta-names {
         font-size: 0.85rem;
-        color: #bcaaa4;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        color: var(--color-text-muted);
       }
 
-      .empty {
+      .meta-empty {
         font-size: 0.85rem;
-        color: #8d6e63;
+        color: var(--color-surface-light);
         font-style: italic;
       }
 
-      .no-parties {
-        text-align: center;
-        font-size: 1.3rem;
-        color: #fff;
-        padding: 3rem 1rem;
-      }
-
-      .no-parties > div {
-        margin: 1rem;
-      }
-
-      .actions {
-        margin: 2rem;
+      .card-action {
         display: flex;
+        align-items: center;
         justify-content: center;
+        width: var(--touch-target);
+        height: var(--touch-target);
+        border-radius: var(--border-radius-1);
+        color: var(--color-text-muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        border: none;
+        background: none;
+        transition: color 0.15s;
       }
 
-      app-btn,
-      app-back-btn {
-        width: 150px;
+      .card-action:active {
+        color: var(--color-text);
       }
 
-      @media (min-width: 500px) {
-        .party-card {
-          width: 400px;
-        }
+      .empty-state {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: var(--space-xl);
+        gap: var(--space-md);
+      }
+
+      .empty-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .empty-hint {
+        color: var(--color-text-muted);
       }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PartiesComponent {
-  view$: Observable<PartyView>;
-  editingPartyId: string | null = null;
+  view$: Observable<PartiesView>;
 
-  iconRename = faPen;
-  iconDelete = faTrash;
-  iconCheck = faCheck;
-  iconCancel = faXmark;
+  iconBack = faArrowLeft;
+  iconAdd = faPlus;
+  iconMore = faEllipsis;
 
   constructor(
     private app: AppService,
     private partyService: PartyService,
+    private router: Router,
   ) {
     this.view$ = combineLatest([
       this.app.select$('parties'),
@@ -316,29 +293,12 @@ export class PartiesComponent {
     input.value = '';
   }
 
-  removeParty(party: Party): void {
-    this.partyService.removeParty(party);
-  }
-
-  startRename(partyId: string): void {
-    this.editingPartyId = partyId;
-  }
-
-  confirmRename(input: HTMLInputElement, partyId: string): void {
-    const newName = input.value.trim();
-    if (newName) {
-      this.partyService.renameParty(partyId, newName);
-    }
-    this.editingPartyId = null;
-  }
-
-  cancelRename(): void {
-    this.editingPartyId = null;
-  }
-
   switchParty(partyId: string): void {
-    if (this.editingPartyId) return;
     this.partyService.switchParty(partyId);
+  }
+
+  goToDetail(partyId: string): void {
+    this.router.navigate(['/parties', partyId]);
   }
 
   getPlayerNames(party: Party): string {

@@ -1,52 +1,55 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
-
-import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  output,
+} from '@angular/core';
+import { OverlayComponent } from './overlay.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { BackBtnComponent } from '../../shared/components/back-btn.component';
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { randomIntFromInterval } from '../../core/utils/app.utils';
 
 @Component({
-  selector: 'app-dice',
-  imports: [ScreenTitleComponent, FontAwesomeModule, BackBtnComponent],
+  selector: 'app-dice-dialog',
+  imports: [OverlayComponent, FontAwesomeModule],
   template: `
-    <div class="dice-wrapper" (click)="roll()">
-      <div class="top">
-        <app-screen-title title="Tap to roll" />
-      </div>
-      <div class="dice">
-        <div class="face f-{{ currentFace }}">
-          @if (currentFace === null) {
-            <div class="no-face">
-              <fa-icon [icon]="noFaceIcon" />
-            </div>
-          }
-          @if (currentFace) {
-            @for (item of [].constructor(currentFace); track item) {
-              <div class="dot"></div>
+    <app-overlay (close)="close.emit()">
+      <div class="dice-content" (click)="roll()">
+        <div class="dice-label">Tap to roll</div>
+        <div class="dice">
+          <div class="face f-{{ currentFace }}">
+            @if (currentFace === null) {
+              <div class="no-face">
+                <fa-icon [icon]="noFaceIcon" />
+              </div>
             }
-          }
+            @if (currentFace) {
+              @for (item of [].constructor(currentFace); track $index) {
+                <div class="dot"></div>
+              }
+            }
+          </div>
+        </div>
+        <div class="dice-close" (click)="close.emit(); $event.stopPropagation()">
+          Close
         </div>
       </div>
-      <div class="bottom">
-        <app-back-btn route="" />
-      </div>
-    </div>
+    </app-overlay>
   `,
   styles: [
     `
-      .dice-wrapper {
-        height: 100dvh;
-        display: grid;
-        grid-template-rows: auto 1fr auto;
+      .dice-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-lg);
+        padding: var(--space-md) 0;
+        cursor: pointer;
       }
 
-      .top,
-      .dice,
-      .bottom {
-        align-self: center;
-        justify-self: center;
-        padding: 1rem;
+      .dice-label {
+        font-size: 1.3rem;
+        color: var(--color-text-muted);
       }
 
       .no-face {
@@ -57,16 +60,20 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .face {
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
         background-color: #fff;
         display: grid;
-        border-radius: 10px;
+        border-radius: 12px;
       }
 
       .dot {
         justify-self: center;
         align-self: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background-color: #000;
       }
 
       .f-1 {
@@ -75,7 +82,6 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .f-2 {
-        display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
         & > .dot:first-child {
@@ -89,7 +95,6 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .f-3 {
-        display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
         & > .dot:first-child {
@@ -107,12 +112,10 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .f-4 {
-        display: grid;
         grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
       }
 
       .f-5 {
-        display: grid;
         grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
         & > .dot:first-child {
           grid-column: 1;
@@ -137,7 +140,6 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .f-6 {
-        display: grid;
         grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
         & > .dot:first-child {
           grid-column: 1;
@@ -165,38 +167,19 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         }
       }
 
-      .dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background-color: #000;
-      }
-
-      @keyframes roll {
-        0% {
-          transform: rotateX(0deg) rotateY(0deg);
-        }
-        25% {
-          transform: rotateX(0deg) rotateY(90deg);
-        }
-        50% {
-          transform: rotateX(0deg) rotateY(180deg);
-        }
-        75% {
-          transform: rotateX(0deg) rotateY(270deg);
-        }
-        100% {
-          transform: rotateX(0deg) rotateY(360deg);
-        }
-      }
-
-      .bottom {
-        width: 200px;
+      .dice-close {
+        color: var(--color-text-muted);
+        font-size: 1.1rem;
+        cursor: pointer;
+        padding: var(--space-sm) var(--space-lg);
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DiceComponent implements OnDestroy {
+export class DiceDialogComponent implements OnDestroy {
+  close = output<void>();
+
   currentFace: number | null = null;
   rollTimer: ReturnType<typeof setTimeout> | null = null;
   noFaceIcon = faQuestion;

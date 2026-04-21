@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PLAYER = z.object({
+const playerSchema = z.object({
   id: z.string(),
   name: z.string().min(1),
   level: z.number().min(1),
@@ -9,28 +9,28 @@ export const PLAYER = z.object({
   color: z.string(),
 });
 
-export const PARTY = z.object({
+const partySchema = z.object({
   id: z.string(),
   name: z.string().min(1),
-  playerList: z.array(PLAYER),
+  playerList: z.array(playerSchema),
 });
 
-export const APP_STATE = z.object({
-  parties: z.array(PARTY),
+export const appStateSchema = z.object({
+  parties: z.array(partySchema),
   activePartyId: z.string().nullable(),
   dismissPwa: z.number().nullable(),
 });
 
 // Legacy schema for migration from old format
-export const LEGACY_APP_STATE = z.object({
-  playerList: z.array(PLAYER),
+export const legacyAppStateSchema = z.object({
+  playerList: z.array(playerSchema),
   dismissPwa: z.number().nullable(),
 });
 
-export type AppState = z.infer<typeof APP_STATE>;
-export type Party = z.infer<typeof PARTY>;
-export type Player = z.infer<typeof PLAYER>;
-export type LegacyAppState = z.infer<typeof LEGACY_APP_STATE>;
+export type AppState = z.infer<typeof appStateSchema>;
+export type Party = z.infer<typeof partySchema>;
+export type Player = z.infer<typeof playerSchema>;
+export type LegacyAppState = z.infer<typeof legacyAppStateSchema>;
 
 export type PwaUpdateState = {
   promptEvent:

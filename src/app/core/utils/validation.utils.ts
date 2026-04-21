@@ -1,4 +1,4 @@
-import { APP_STATE, AppState, LEGACY_APP_STATE } from '../../types';
+import { appStateSchema, AppState, legacyAppStateSchema } from '../../types';
 import { INITIAL_APP_STATE } from '../../const';
 import * as uuid from 'uuid';
 
@@ -13,14 +13,14 @@ export function validateLocalStorage(storageValue: string | null): AppState {
   }
 
   // Try parsing as current format first
-  const currentResult = APP_STATE.safeParse(parsed);
+  const currentResult = appStateSchema.safeParse(parsed);
   if (currentResult.success) {
     const dismissPwa = validateDismissPwa(currentResult.data.dismissPwa);
     return { ...currentResult.data, dismissPwa };
   }
 
   // Try parsing as legacy format (flat playerList) and migrate
-  const legacyResult = LEGACY_APP_STATE.safeParse(parsed);
+  const legacyResult = legacyAppStateSchema.safeParse(parsed);
   if (legacyResult.success) {
     return migrateLegacyState(legacyResult.data);
   }

@@ -8,13 +8,12 @@ import { AppService } from '../../core/services/app.service';
 import {
   faCloudArrowDown,
   faDice,
-  faRotateLeft,
   faShieldHalved,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconBtnComponent } from '../../shared/components/icon-btn.component';
 import { PwaService } from '../../core/services/pwa.service';
+import { DiceDialogComponent } from '../../shared/components/dice-dialog.component';
 
 interface HomeView {
   activeParty: Party | undefined;
@@ -30,29 +29,27 @@ interface HomeView {
     FontAwesomeModule,
     IconBtnComponent,
     AsyncPipe,
+    DiceDialogComponent,
   ],
   template: `
     @if (view$ | async; as view) {
-      <div class="actions">
+      <div class="page-header">
         <app-icon-btn routerLink="parties" [icon]="iconParties" />
-        @if (view.activeParty) {
-          <app-icon-btn routerLink="users" [icon]="iconUsers" />
-        }
-        <div class="fill-remaining-space"></div>
-        <app-icon-btn [icon]="iconDice" routerLink="dice" />
-        <div class="fill-remaining-space"></div>
+        <span class="page-header-title">
+          {{ view.activeParty ? view.activeParty.name : 'LevelCounter' }}
+        </span>
         @if (view.showPwa) {
-          <app-icon-btn routerLink="pwa" color="#FBC02D" [icon]="iconPwa" />
-        }
-        @if (view.activeParty) {
-          <app-icon-btn routerLink="reset" [icon]="iconReset" />
+          <app-icon-btn
+            routerLink="pwa"
+            [color]="'var(--color-accent)'"
+            [icon]="iconPwa"
+          />
         }
       </div>
 
       @if (view.activeParty) {
-        <div class="party-name">{{ view.activeParty.name }}</div>
         <div class="player-list">
-          @for (player of view.playerList; track player) {
+          @for (player of view.playerList; track player.id) {
             <app-player
               [player]="player"
               (playerChange)="onPlayerChange($event)"
@@ -60,63 +57,106 @@ interface HomeView {
           }
         </div>
         @if (view.playerList.length === 0) {
-          <div class="no-player">
-            <div>Mmmh...</div>
-            <div>No one here yet!</div>
-            <div>Use <fa-icon [icon]="iconUsers" /> above to start</div>
+          <div class="empty-state">
+            <div class="empty-title">No players yet</div>
+            <div class="empty-hint">
+              Open <fa-icon [icon]="iconParties" /> Parties to add players
+            </div>
           </div>
         }
+
+        <button class="fab shadow" (click)="showDice = true">
+          <fa-icon [icon]="iconDice" />
+        </button>
       } @else {
-        <div class="no-player">
-          <div>Welcome!</div>
-          <div>Select or create a party</div>
-          <div>Use <fa-icon [icon]="iconParties" /> above to start</div>
+        <div class="empty-state">
+          <div class="empty-title">Welcome!</div>
+          <div class="empty-hint">Create or select a party to start playing</div>
+          <a routerLink="parties" class="empty-cta">Go to Parties</a>
         </div>
+      }
+
+      @if (showDice) {
+        <app-dice-dialog (close)="showDice = false" />
       }
     }
   `,
   styles: [
     `
       :host {
+        display: flex;
+        flex-direction: column;
         height: 100dvh;
         overflow: hidden;
       }
 
-      .actions {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem;
-        gap: 0.5rem;
-      }
-
-      .party-name {
-        text-align: center;
-        color: #bcaaa4;
-        font-size: 1.1rem;
-        padding: 0 0.5rem 0.25rem;
-      }
-
       .player-list {
+        flex: 1;
         overflow: auto;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 0.5rem;
-        padding: 0.5rem;
+        align-content: start;
+        gap: var(--space-sm);
+        padding: var(--space-sm);
       }
 
-      .no-player {
+      .empty-state {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
+        padding: var(--space-xl);
+        gap: var(--space-md);
+      }
+
+      .empty-title {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .empty-hint {
+        font-size: 1.1rem;
+        color: var(--color-text-muted);
+      }
+
+      .empty-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: var(--touch-target);
+        padding: var(--space-sm) var(--space-xl);
+        background-color: var(--color-accent);
+        color: var(--color-bg);
+        border-radius: var(--border-radius-1);
+        font-weight: bold;
+        font-size: 1.1rem;
+        text-decoration: none;
+        margin-top: var(--space-md);
+      }
+
+      .fab {
+        position: fixed;
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--color-surface);
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.5rem;
-        color: #fff;
-        padding: 3rem 1rem;
+        cursor: pointer;
+        border: none;
+        z-index: 5;
+        transition: transform 0.15s;
       }
 
-      .no-player > div:first-child {
-        font-size: 2.5rem;
-      }
-
-      .no-player > div {
-        margin: 2rem;
+      .fab:active {
+        transform: scale(0.92);
       }
     `,
   ],
@@ -124,11 +164,10 @@ interface HomeView {
 })
 export class HomeComponent {
   view$: Observable<HomeView>;
+  showDice = false;
 
   iconParties = faShieldHalved;
-  iconUsers = faUsers;
   iconDice = faDice;
-  iconReset = faRotateLeft;
   iconPwa = faCloudArrowDown;
 
   constructor(

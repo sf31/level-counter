@@ -14,7 +14,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
   imports: [FontAwesomeModule, GenderComponent, PlusMinusComponent],
   template: `
     <div class="player shadow" [style.background-color]="player().color">
-      <div class="left">
+      <div class="side">
         <app-plus-minus
           label="gear"
           [value]="player().gears"
@@ -23,18 +23,18 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
         />
         <div class="label">Gear</div>
       </div>
-      <div class="central">
+      <div class="center">
         <div class="name text-ellipsis">{{ player().name }}</div>
-        <div class="central-inner">
+        <div class="center-inner">
           <app-gender (click)="toggleGender()" [player]="player()" />
           <div class="fill-remaining-space"></div>
-          <div class="total">
+          <div class="strength">
             {{ player().level + player().gears }}
           </div>
           <div class="label">Strength</div>
         </div>
       </div>
-      <div class="right">
+      <div class="side">
         <app-plus-minus
           label="level"
           [value]="player().level"
@@ -50,37 +50,51 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
       .player {
         display: grid;
         grid-template-columns: auto 1fr auto;
-        border-radius: var(--border-radius-1);
+        border-radius: var(--border-radius-2);
         overflow: hidden;
-        color: #fff;
-        padding: 0.5rem;
-        gap: 0.5rem;
+        color: var(--color-text);
+        padding: var(--space-sm) var(--space-md);
+        gap: var(--space-sm);
       }
 
-      .central {
+      .side {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .center {
         overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
       }
 
-      .central-inner {
+      .center-inner {
         flex: 1 1 auto;
-        padding-top: 0.5rem;
+        padding-top: var(--space-sm);
         display: flex;
         flex-direction: column;
         align-items: center;
       }
 
-      .name,
-      .total {
-        font-size: 1.5rem;
+      .name {
+        font-size: 1.4rem;
         font-weight: bold;
         text-align: center;
       }
 
-      .total {
+      .strength {
         font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
       .fill-remaining-space {

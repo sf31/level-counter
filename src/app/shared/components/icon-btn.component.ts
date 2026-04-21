@@ -18,11 +18,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: var(--touch-target);
+        height: var(--touch-target);
         border-radius: var(--border-radius-1);
-        color: #fff;
-        background-color: #8d6e63;
+        color: var(--color-text);
+        background-color: var(--color-surface);
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+
+      .icon-btn:active {
+        opacity: 0.8;
       }
     `,
   ],
