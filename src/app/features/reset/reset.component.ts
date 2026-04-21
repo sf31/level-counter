@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AppService } from '../app.service';
-import { BtnComponent } from './btn.component';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AppService } from '../../core/services/app.service';
+import { BtnComponent } from '../../shared/components/btn.component';
 import { Router } from '@angular/router';
-import { ScreenTitleComponent } from './screen-title.component';
-import { BackBtnComponent } from './back-btn.component';
+import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
+import { BackBtnComponent } from '../../shared/components/back-btn.component';
 
 @Component({
   selector: 'app-reset',
@@ -53,11 +53,18 @@ import { BackBtnComponent } from './back-btn.component';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResetComponent {
+export class ResetComponent implements OnInit {
   constructor(
     private app: AppService,
     private router: Router,
   ) {}
+
+  ngOnInit(): void {
+    const state = this.app.getStateSnapshot();
+    if (!state.activePartyId) {
+      this.router.navigate(['/parties'], { replaceUrl: true });
+    }
+  }
 
   reset(): void {
     this.app.resetPlayers();

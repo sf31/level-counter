@@ -1,28 +1,22 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BtnComponent } from './btn.component';
-import { ScreenTitleComponent } from './screen-title.component';
-import { BackBtnComponent } from './back-btn.component';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BtnComponent } from '../../shared/components/btn.component';
+import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
+import { BackBtnComponent } from '../../shared/components/back-btn.component';
 import { AsyncPipe } from '@angular/common';
 import { map, Observable } from 'rxjs';
-import { AppService } from '../app.service';
-import { PLAYER_COLORS } from '../const';
-import { Player } from '../types';
+import { AppService } from '../../core/services/app.service';
+import { PLAYER_COLORS } from '../../const';
+import { Player } from '../../types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
-  imports: [
-    BtnComponent,
-    ScreenTitleComponent,
-    BackBtnComponent,
-    AsyncPipe
-],
+  imports: [BtnComponent, ScreenTitleComponent, BackBtnComponent, AsyncPipe],
   template: `
     @if (view$ | async; as view) {
       <div class="new-player">
         @if (view.maximumPlayersReached) {
-          <div class="too-many">
-            Maximum number of players reached!
-          </div>
+          <div class="too-many">Maximum number of players reached!</div>
         } @else {
           <app-screen-title title="New Player Name" />
           <input #playerName type="text" placeholder="" />
@@ -39,7 +33,7 @@ import { Player } from '../types';
               class="player "
               [style.background-color]="player.color"
               (click)="removePlayer(player)"
-              >
+            >
               <div class="player-name text-ellipsis">
                 {{ player.name }}
               </div>
@@ -51,7 +45,7 @@ import { Player } from '../types';
         <app-back-btn route="''" />
       </div>
     }
-    `,
+  `,
   styles: [
     `
       :host {
@@ -128,21 +122,29 @@ import { Player } from '../types';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
   view$: Observable<{
     playerList: Player[];
     maximumPlayersReached: boolean;
   }>;
 
-  constructor(private app: AppService) {
-    this.view$ = this.app.select$('playerList').pipe(
-      map((playerList) => {
-        return {
-          playerList,
-          maximumPlayersReached: playerList.length >= PLAYER_COLORS.length,
-        };
-      }),
+  constructor(
+    private app: AppService,
+    private router: Router,
+  ) {
+    this.view$ = this.app.activePlayerList$.pipe(
+      map((playerList) => ({
+        playerList,
+        maximumPlayersReached: playerList.length >= PLAYER_COLORS.length,
+      })),
     );
+  }
+
+  ngOnInit(): void {
+    const state = this.app.getStateSnapshot();
+    if (!state.activePartyId) {
+      this.router.navigate(['/parties'], { replaceUrl: true });
+    }
   }
 
   addPlayer(input: HTMLInputElement): void {

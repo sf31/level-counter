@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { BtnComponent } from './btn.component';
 import { Router } from '@angular/router';
 
@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackBtnComponent {
-  @Input() route?: string;
+  route = input<string>();
 
   constructor(private router: Router) {}
 
   back(): void {
-    this.router.navigate([this.route], { replaceUrl: true });
+    this.router.navigate([this.route()], { replaceUrl: true });
   }
 }

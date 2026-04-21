@@ -1,7 +1,8 @@
 import { AppState } from './types';
 
 export const INITIAL_APP_STATE: AppState = {
-  playerList: [],
+  parties: [],
+  activePartyId: null,
   dismissPwa: null,
 };
 

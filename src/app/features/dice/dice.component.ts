@@ -1,18 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ScreenTitleComponent } from './screen-title.component';
+import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
 
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { BackBtnComponent } from './back-btn.component';
-import { randomIntFromInterval } from '../utils/app.utils';
+import { BackBtnComponent } from '../../shared/components/back-btn.component';
+import { randomIntFromInterval } from '../../core/utils/app.utils';
 
 @Component({
   selector: 'app-dice',
-  imports: [
-    ScreenTitleComponent,
-    FontAwesomeModule,
-    BackBtnComponent
-],
+  imports: [ScreenTitleComponent, FontAwesomeModule, BackBtnComponent],
   template: `
     <div class="dice-wrapper" (click)="roll()">
       <div class="top">
@@ -36,7 +32,7 @@ import { randomIntFromInterval } from '../utils/app.utils';
         <app-back-btn route="" />
       </div>
     </div>
-    `,
+  `,
   styles: [
     `
       .dice-wrapper {

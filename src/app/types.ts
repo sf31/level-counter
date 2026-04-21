@@ -9,13 +9,28 @@ export const PLAYER = z.object({
   color: z.string(),
 });
 
+export const PARTY = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  playerList: z.array(PLAYER),
+});
+
 export const APP_STATE = z.object({
+  parties: z.array(PARTY),
+  activePartyId: z.string().nullable(),
+  dismissPwa: z.number().nullable(),
+});
+
+// Legacy schema for migration from old format
+export const LEGACY_APP_STATE = z.object({
   playerList: z.array(PLAYER),
   dismissPwa: z.number().nullable(),
 });
 
 export type AppState = z.infer<typeof APP_STATE>;
+export type Party = z.infer<typeof PARTY>;
 export type Player = z.infer<typeof PLAYER>;
+export type LegacyAppState = z.infer<typeof LEGACY_APP_STATE>;
 
 export type PwaUpdateState = {
   promptEvent:

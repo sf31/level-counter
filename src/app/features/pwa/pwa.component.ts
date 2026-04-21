@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BtnComponent } from './btn.component';
-import { ScreenTitleComponent } from './screen-title.component';
+import { BtnComponent } from '../../shared/components/btn.component';
+import { ScreenTitleComponent } from '../../shared/components/screen-title.component';
 import { AsyncPipe } from '@angular/common';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PwaUpdateState } from '../types';
+import { PwaUpdateState } from '../../types';
 import { Observable } from 'rxjs';
-import { PwaService } from '../pwa.service';
-import { AppService } from '../app.service';
-import { BackBtnComponent } from './back-btn.component';
+import { PwaService } from '../../core/services/pwa.service';
+import { AppService } from '../../core/services/app.service';
+import { BackBtnComponent } from '../../shared/components/back-btn.component';
 
 @Component({
   selector: 'app-pwa',
@@ -18,8 +18,8 @@ import { BackBtnComponent } from './back-btn.component';
     ScreenTitleComponent,
     AsyncPipe,
     FontAwesomeModule,
-    BackBtnComponent
-],
+    BackBtnComponent,
+  ],
   template: `
     @if (pwa$ | async; as pwa) {
       <app-screen-title title="PWA support detected!" />
@@ -33,9 +33,7 @@ import { BackBtnComponent } from './back-btn.component';
             </span>
           </p>
           @if (!pwa.isRunningStandalone) {
-            <p>
-              Install this app on your device for a better experience.
-            </p>
+            <p>Install this app on your device for a better experience.</p>
           }
         </div>
       }
@@ -56,9 +54,7 @@ import { BackBtnComponent } from './back-btn.component';
         }
       }
       @if (pwa.isRunningStandalone) {
-        <div class="text success">
-          App successfully installed!
-        </div>
+        <div class="text success">App successfully installed!</div>
       }
       @if (!pwa.promptEvent) {
         @if (!pwa.isRunningStandalone) {
@@ -71,7 +67,7 @@ import { BackBtnComponent } from './back-btn.component';
       }
       <app-back-btn route="" />
     }
-    `,
+  `,
   styles: [
     `
       :host {

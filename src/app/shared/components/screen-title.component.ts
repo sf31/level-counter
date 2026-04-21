@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-screen-title',
   imports: [],
-  template: ` {{ title }} `,
+  template: ` {{ title() }} `,
   styles: [
     `
       :host {
@@ -15,5 +15,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenTitleComponent {
-  @Input() title?: string;
+  title = input<string>();
 }

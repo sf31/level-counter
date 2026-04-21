@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PwaService } from './pwa.service';
+import { PwaService } from './core/services/pwa.service';
 
 @Component({
   selector: 'app-root',

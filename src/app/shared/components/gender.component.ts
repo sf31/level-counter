@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Player } from '../types';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Player } from '../../types';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,10 +7,10 @@ import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-gender',
   imports: [FontAwesomeModule],
   template: `
-    <div class="icon" [class.active]="player?.gender === 'M'">
+    <div class="icon" [class.active]="player()?.gender === 'M'">
       <fa-icon [icon]="iconMale" />
     </div>
-    <div class="icon" [class.active]="player?.gender === 'F'">
+    <div class="icon" [class.active]="player()?.gender === 'F'">
       <fa-icon [icon]="iconFemale" />
     </div>
   `,
@@ -41,7 +41,7 @@ import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenderComponent {
-  @Input() player?: Player;
+  player = input<Player>();
   iconMale = faMars;
   iconFemale = faVenus;
 }
