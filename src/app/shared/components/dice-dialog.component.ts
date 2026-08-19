@@ -30,7 +30,10 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
             }
           </div>
         </div>
-        <div class="dice-close" (click)="close.emit(); $event.stopPropagation()">
+        <div
+          class="dice-close"
+          (click)="close.emit(); $event.stopPropagation()"
+        >
           Close
         </div>
       </div>
@@ -48,7 +51,7 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .dice-label {
-        font-size: 1.3rem;
+        font-size: var(--font-size-subtitle);
         color: var(--color-text-muted);
       }
 
@@ -56,15 +59,15 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 2.5rem;
+        font-size: var(--font-size-display);
       }
 
       .face {
         width: 110px;
         height: 110px;
-        background-color: #fff;
+        background-color: var(--color-dice-surface);
         display: grid;
-        border-radius: 12px;
+        border-radius: var(--border-radius-2);
       }
 
       .dot {
@@ -73,7 +76,7 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background-color: #000;
+        background-color: var(--color-dice-dot);
       }
 
       .f-1 {
@@ -169,7 +172,7 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
 
       .dice-close {
         color: var(--color-text-muted);
-        font-size: 1.1rem;
+        font-size: var(--font-size-body);
         cursor: pointer;
         padding: var(--space-sm) var(--space-lg);
       }

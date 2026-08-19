@@ -11,6 +11,32 @@
   --color-accent: #fbc02d;
   --color-success: #43a047;
   --color-danger: #ef5350;
+  --color-on-accent: #4e342e;
+  --color-border: var(--color-surface-light);
+  --color-border-subtle: var(--color-surface);
+  --color-backdrop: rgba(0, 0, 0, 0.6);
+  --color-player-text-muted: rgba(255, 255, 255, 0.85);
+  --color-toggle-track: #c9c9c9;
+  --color-toggle-thumb: #818181;
+  --color-dice-surface: #fff;
+  --color-dice-dot: #000;
+
+  /* Typography */
+  --font-family-base: "MedievalSharp", cursive;
+  --font-size-caption: 0.9rem;
+  --font-size-body: 1.1rem;
+  --font-size-control: 1.2rem;
+  --font-size-subtitle: 1.3rem;
+  --font-size-title: 1.4rem;
+  --font-size-icon: 1.5rem;
+  --font-size-page-title: 1.8rem;
+  --font-size-empty-title: 2rem;
+  --font-size-display: 2.5rem;
+  --font-size-hero: 3rem;
+  --font-weight-strong: 700;
+  --font-weight-heavy: 800;
+  --line-height-body: 1.5;
+  --line-height-relaxed: 1.6;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -21,8 +47,19 @@
 
   /* Sizing */
   --touch-target: 48px;
+
+  /* Borders */
+  --border-width: 1px;
+  --border-width-strong: 2px;
   --border-radius-1: 0.5rem;
   --border-radius-2: 0.75rem;
+  --border-radius-pill: 999px;
+
+  /* Effects */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.2s;
+  --duration-slow: 0.25s;
+  --shadow-raised: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
   /* Header */
   --header-height: 56px;
@@ -34,9 +71,9 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--color-bg);
-  font-family: "MedievalSharp", cursive;
+  font-family: var(--font-family-base);
   user-select: none;
-  font-size: 1.1rem;
+  font-size: var(--font-size-body);
   color: var(--color-text);
   -webkit-tap-highlight-color: transparent;
 }
@@ -63,13 +100,13 @@ textarea {
 /* Inputs */
 input[type="text"] {
   background-color: var(--color-bg-lighter);
-  border: 1px solid var(--color-surface-light);
+  border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-1);
   padding: var(--space-sm) var(--space-md);
   color: var(--color-text);
-  font-size: 1.1rem;
+  font-size: var(--font-size-body);
   width: 100%;
-  transition: border-color 0.2s;
+  transition: border-color var(--duration-normal);
 
   &::placeholder {
     color: var(--color-text-muted);
@@ -89,9 +126,7 @@ input[type="text"] {
 }
 
 .shadow {
-  box-shadow:
-    0 3px 6px rgba(0, 0, 0, 0.16),
-    0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: var(--shadow-raised);
 }
 
 .fill-remaining-space {

@@ -215,7 +215,7 @@ type ConfirmAction =
         display: flex;
         align-items: center;
         gap: var(--space-sm);
-        border-bottom: 1px solid var(--color-bg-lighter);
+        border-bottom: var(--border-width) solid var(--color-bg-lighter);
       }
 
       .detail-title {
@@ -223,7 +223,7 @@ type ConfirmAction =
         flex: 1;
         margin: 0;
         overflow: hidden;
-        font-size: 1.4rem;
+        font-size: var(--font-size-title);
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -231,8 +231,8 @@ type ConfirmAction =
 
       .rename-input {
         flex: 1;
-        font-size: 1.1rem;
-        font-weight: bold;
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-strong);
         min-width: 0;
       }
 
@@ -246,7 +246,7 @@ type ConfirmAction =
         cursor: pointer;
         border: none;
         background: none;
-        font-size: 1.1rem;
+        font-size: var(--font-size-body);
         flex-shrink: 0;
         text-decoration: none;
       }
@@ -287,12 +287,12 @@ type ConfirmAction =
         height: var(--touch-target);
         border-radius: var(--border-radius-1);
         background-color: var(--color-accent);
-        color: var(--color-bg);
-        font-size: 1.2rem;
+        color: var(--color-on-accent);
+        font-size: var(--font-size-control);
         cursor: pointer;
         flex-shrink: 0;
         border: none;
-        transition: opacity 0.15s;
+        transition: opacity var(--duration-fast);
       }
 
       .add-btn:active {
@@ -301,7 +301,7 @@ type ConfirmAction =
 
       .max-warning {
         color: var(--color-accent);
-        font-weight: bold;
+        font-weight: var(--font-weight-strong);
         text-align: center;
         padding: var(--space-md) 0;
         margin-bottom: var(--space-md);
@@ -309,7 +309,7 @@ type ConfirmAction =
 
       .section-label {
         color: var(--color-text-muted);
-        font-size: 0.9rem;
+        font-size: var(--font-size-caption);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: var(--space-sm);
@@ -345,7 +345,7 @@ type ConfirmAction =
 
       .player-name {
         flex: 1;
-        font-size: 1.1rem;
+        font-size: var(--font-size-body);
       }
 
       .player-delete {
@@ -361,7 +361,7 @@ type ConfirmAction =
         font-size: 1rem;
         flex-shrink: 0;
         opacity: 0.7;
-        transition: opacity 0.15s;
+        transition: opacity var(--duration-fast);
       }
 
       .player-delete:active {
@@ -372,11 +372,11 @@ type ConfirmAction =
         text-align: center;
         padding: var(--space-xl);
         color: var(--color-text-muted);
-        font-size: 1.1rem;
+        font-size: var(--font-size-body);
       }
 
       .empty-hint {
-        font-size: 0.9rem;
+        font-size: var(--font-size-caption);
         margin-top: var(--space-sm);
         opacity: 0.7;
       }

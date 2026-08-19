@@ -81,19 +81,19 @@ import { AppService } from '../../core/services/app.service';
 
       h1 {
         margin: 0 0 var(--space-md);
-        font-size: 1.8rem;
+        font-size: var(--font-size-page-title);
       }
 
       .text {
         text-align: center;
         color: var(--color-text);
-        line-height: 1.6;
+        line-height: var(--line-height-relaxed);
       }
 
       .text.success {
         color: var(--color-success);
-        font-size: 1.3rem;
-        font-weight: bold;
+        font-size: var(--font-size-subtitle);
+        font-weight: var(--font-weight-strong);
       }
 
       .link {
@@ -108,7 +108,7 @@ import { AppService } from '../../core/services/app.service';
       }
 
       .link fa-icon {
-        font-size: 0.9rem;
+        font-size: var(--font-size-caption);
       }
 
       app-btn {

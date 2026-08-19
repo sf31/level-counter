@@ -24,7 +24,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         color: var(--color-text);
         background-color: var(--color-surface);
         cursor: pointer;
-        transition: opacity 0.15s;
+        transition: opacity var(--duration-fast);
       }
 
       .icon-btn:active {

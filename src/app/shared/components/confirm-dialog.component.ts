@@ -25,8 +25,8 @@ import { BtnComponent } from './btn.component';
   styles: [
     `
       .dialog-title {
-        font-size: 1.4rem;
-        font-weight: bold;
+        font-size: var(--font-size-title);
+        font-weight: var(--font-weight-strong);
         color: var(--color-text);
         margin-bottom: var(--space-sm);
       }
@@ -34,7 +34,7 @@ import { BtnComponent } from './btn.component';
       .dialog-message {
         color: var(--color-text-muted);
         margin-bottom: var(--space-lg);
-        line-height: 1.5;
+        line-height: var(--line-height-body);
       }
 
       .dialog-actions {

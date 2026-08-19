@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -19,14 +24,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       }
 
       .value {
-        font-size: 1.5rem;
-        font-weight: bold;
+        font-size: var(--font-size-page-title);
+        font-weight: var(--font-weight-strong);
       }
 
       fa-icon {
         cursor: pointer;
         padding: var(--space-sm);
-        font-size: 2.5rem;
+        font-size: var(--font-size-display);
         min-width: var(--touch-target);
         min-height: var(--touch-target);
         display: flex;

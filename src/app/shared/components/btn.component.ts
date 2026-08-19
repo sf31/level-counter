@@ -26,8 +26,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         border-radius: inherit;
         color: var(--color-text);
         cursor: pointer;
-        font-weight: bold;
-        transition: opacity 0.15s;
+        font-weight: var(--font-weight-strong);
+        transition: opacity var(--duration-fast);
       }
 
       button:active {

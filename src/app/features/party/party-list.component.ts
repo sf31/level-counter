@@ -112,7 +112,7 @@ import { PartyListItemComponent } from './party-list-item.component';
 
       h1 {
         margin: 0;
-        font-size: 1.8rem;
+        font-size: var(--font-size-page-title);
       }
 
       p {
@@ -129,8 +129,8 @@ import { PartyListItemComponent } from './party-list-item.component';
         gap: var(--space-sm);
         border-radius: var(--border-radius-1);
         background-color: var(--color-accent);
-        color: var(--color-bg);
-        font-weight: bold;
+        color: var(--color-on-accent);
+        font-weight: var(--font-weight-strong);
         cursor: pointer;
       }
 
@@ -143,7 +143,7 @@ import { PartyListItemComponent } from './party-list-item.component';
         display: block;
         margin-bottom: var(--space-xs);
         color: var(--color-text-muted);
-        font-size: 0.9rem;
+        font-size: var(--font-size-caption);
       }
 
       .create-row {

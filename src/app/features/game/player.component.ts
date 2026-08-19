@@ -26,7 +26,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
       <div class="center">
         <div class="name text-ellipsis">{{ player().name }}</div>
         <div class="center-inner">
-          <app-gender (click)="toggleGender()" [player]="player()" />
+          <app-gender [player]="player()" (toggle)="toggleGender()" />
           <div class="fill-remaining-space"></div>
           <div class="strength">
             {{ player().level + player().gears }}
@@ -79,20 +79,21 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
       }
 
       .name {
-        font-size: 1.4rem;
-        font-weight: bold;
+        font-size: var(--font-size-page-title);
+        font-weight: var(--font-weight-heavy);
         text-align: center;
       }
 
       .strength {
-        font-size: 2.5rem;
-        font-weight: bold;
+        font-size: var(--font-size-display);
+        font-weight: var(--font-weight-heavy);
         text-align: center;
       }
 
       .label {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
+        font-size: var(--font-size-caption);
+        font-weight: var(--font-weight-strong);
+        color: var(--color-player-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }

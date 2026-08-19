@@ -20,8 +20,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       }
 
       .empty-title {
-        font-size: 1.3rem;
-        font-weight: bold;
+        font-size: var(--font-size-subtitle);
+        font-weight: var(--font-weight-strong);
       }
 
       .empty-hint {

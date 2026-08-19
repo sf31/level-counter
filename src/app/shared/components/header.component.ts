@@ -5,8 +5,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faBars,
   faCloudArrowDown,
+  faDiceD20,
   faEllipsisVertical,
-  faHouse,
   faShieldHalved,
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, map } from 'rxjs';
@@ -39,7 +39,7 @@ import { PwaService } from '../../core/services/pwa.service';
               [routerLinkActiveOptions]="{ exact: true }"
               ariaCurrentWhenActive="page"
             >
-              <fa-icon [icon]="iconHome" />
+              <fa-icon [icon]="iconGame" />
               <span>Game</span>
             </a>
             <a
@@ -59,8 +59,6 @@ import { PwaService } from '../../core/services/pwa.service';
           >
             {{ view.activePartyName ?? 'LevelCounter' }}
           </a>
-
-          <div class="mobile-spacer" aria-hidden="true"></div>
 
           @if (view.canInstall) {
             <button
@@ -108,7 +106,7 @@ import { PwaService } from '../../core/services/pwa.service';
                 ariaCurrentWhenActive="page"
                 (click)="closePopover(mobileNavigation)"
               >
-                <fa-icon [icon]="iconHome" />
+                <fa-icon [icon]="iconGame" />
                 <span>Game</span>
               </a>
               <a
@@ -151,9 +149,7 @@ import { PwaService } from '../../core/services/pwa.service';
         margin: 0 auto;
         padding: 0 var(--space-sm);
         display: grid;
-        grid-template-columns: var(--touch-target) minmax(0, 1fr) var(
-            --touch-target
-          );
+        grid-template-columns: var(--touch-target) minmax(0, 1fr);
         align-items: center;
       }
 
@@ -167,8 +163,8 @@ import { PwaService } from '../../core/services/pwa.service';
         min-width: 0;
         grid-column: 2;
         color: var(--color-text);
-        font-size: 1.2rem;
-        font-weight: bold;
+        font-size: var(--font-size-control);
+        font-weight: var(--font-weight-strong);
         text-align: center;
         text-decoration: none;
       }
@@ -233,7 +229,7 @@ import { PwaService } from '../../core/services/pwa.service';
         .brand {
           display: block;
           color: var(--color-text);
-          font-weight: bold;
+          font-weight: var(--font-weight-strong);
           text-decoration: none;
         }
 
@@ -266,7 +262,6 @@ import { PwaService } from '../../core/services/pwa.service';
         }
 
         .mobile-menu-trigger,
-        .mobile-spacer,
         .mobile-navigation {
           display: none;
         }
@@ -281,7 +276,7 @@ export class HeaderComponent {
 
   protected readonly iconMobileMenu = faBars;
   protected readonly iconDesktopMenu = faEllipsisVertical;
-  protected readonly iconHome = faHouse;
+  protected readonly iconGame = faDiceD20;
   protected readonly iconParties = faShieldHalved;
   protected readonly iconInstall = faCloudArrowDown;
 

@@ -51,12 +51,12 @@ import { Party } from '../../types';
         display: flex;
         align-items: stretch;
         background-color: var(--color-bg-light);
-        border: 2px solid transparent;
+        border: var(--border-width-strong) solid transparent;
         border-radius: var(--border-radius-1);
         overflow: hidden;
         transition:
-          border-color 0.15s,
-          background-color 0.15s;
+          border-color var(--duration-fast),
+          background-color var(--duration-fast);
       }
 
       .party-card.active {
@@ -83,7 +83,7 @@ import { Party } from '../../types';
       .name {
         width: 100%;
         font-size: 1.15rem;
-        font-weight: bold;
+        font-weight: var(--font-weight-strong);
       }
 
       .meta {

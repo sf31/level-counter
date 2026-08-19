@@ -23,7 +23,7 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
       .backdrop {
         position: fixed;
         inset: 0;
-        background-color: rgba(0, 0, 0, 0.6);
+        background-color: var(--color-backdrop);
       }
 
       .panel {
@@ -35,7 +35,7 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
         background-color: var(--color-bg-light);
         border-radius: var(--border-radius-2) var(--border-radius-2) 0 0;
         padding: var(--space-lg);
-        animation: slideUp 0.25s ease-out;
+        animation: slideUp var(--duration-slow) ease-out;
       }
 
       @keyframes slideUp {
@@ -57,7 +57,7 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
         .panel {
           border-radius: var(--border-radius-2);
           max-height: 70dvh;
-          animation: fadeIn 0.2s ease-out;
+          animation: fadeIn var(--duration-normal) ease-out;
         }
 
         @keyframes fadeIn {

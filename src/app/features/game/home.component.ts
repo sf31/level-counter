@@ -121,7 +121,7 @@ interface HomeView {
         display: flex;
         align-items: center;
         gap: var(--space-sm);
-        border: 1px solid var(--color-surface);
+        border: var(--border-width) solid var(--color-border-subtle);
         border-radius: var(--border-radius-1);
         background-color: var(--color-bg-light);
       }
@@ -134,7 +134,7 @@ interface HomeView {
         min-width: 0;
         flex: 1;
         color: var(--color-text-muted);
-        font-size: 0.9rem;
+        font-size: var(--font-size-caption);
       }
 
       .install-action {
@@ -143,7 +143,7 @@ interface HomeView {
         display: flex;
         align-items: center;
         color: var(--color-accent);
-        font-weight: bold;
+        font-weight: var(--font-weight-strong);
       }
 
       .install-dismiss {
@@ -170,12 +170,12 @@ interface HomeView {
       }
 
       .empty-title {
-        font-size: 2rem;
-        font-weight: bold;
+        font-size: var(--font-size-empty-title);
+        font-weight: var(--font-weight-strong);
       }
 
       .empty-hint {
-        font-size: 1.1rem;
+        font-size: var(--font-size-body);
         color: var(--color-text-muted);
       }
 
@@ -186,10 +186,10 @@ interface HomeView {
         min-height: var(--touch-target);
         padding: var(--space-sm) var(--space-xl);
         background-color: var(--color-accent);
-        color: var(--color-bg);
+        color: var(--color-on-accent);
         border-radius: var(--border-radius-1);
-        font-weight: bold;
-        font-size: 1.1rem;
+        font-weight: var(--font-weight-strong);
+        font-size: var(--font-size-body);
         text-decoration: none;
         margin-top: var(--space-md);
       }
@@ -206,11 +206,11 @@ interface HomeView {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: var(--font-size-icon);
         cursor: pointer;
         border: none;
         z-index: 5;
-        transition: transform 0.15s;
+        transition: transform var(--duration-fast);
       }
 
       .fab:active {
