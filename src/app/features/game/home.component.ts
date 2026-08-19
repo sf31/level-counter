@@ -5,13 +5,20 @@ import { PlayerComponent } from './player.component';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Party, Player } from '../../types';
 import { AppService } from '../../core/services/app.service';
-import { faDice, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCloudArrowDown,
+  faDice,
+  faShieldHalved,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DiceDialogComponent } from '../../shared/components/dice-dialog.component';
+import { PwaService } from '../../core/services/pwa.service';
 
 interface HomeView {
   activeParty: Party | undefined;
   playerList: Player[];
+  showInstallNotice: boolean;
 }
 
 @Component({
@@ -25,6 +32,24 @@ interface HomeView {
   ],
   template: `
     @if (view$ | async; as view) {
+      @if (view.showInstallNotice) {
+        <aside class="install-notice" aria-label="Install LevelCounter">
+          <fa-icon class="install-icon" [icon]="iconInstall" />
+          <span class="install-copy">
+            Install LevelCounter for offline use.
+          </span>
+          <a class="install-action" routerLink="/pwa">Install</a>
+          <button
+            class="install-dismiss"
+            type="button"
+            aria-label="Dismiss installation notice"
+            (click)="dismissInstall()"
+          >
+            <fa-icon [icon]="iconDismiss" />
+          </button>
+        </aside>
+      }
+
       @if (view.activeParty) {
         <div class="player-list">
           @for (player of view.playerList; track player.id) {
@@ -77,6 +102,49 @@ interface HomeView {
         align-content: start;
         gap: var(--space-sm);
         padding: var(--space-sm);
+      }
+
+      .install-notice {
+        margin: var(--space-sm);
+        padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        border: 1px solid var(--color-surface);
+        border-radius: var(--border-radius-1);
+        background-color: var(--color-bg-light);
+      }
+
+      .install-icon {
+        color: var(--color-accent);
+      }
+
+      .install-copy {
+        min-width: 0;
+        flex: 1;
+        color: var(--color-text-muted);
+        font-size: 0.9rem;
+      }
+
+      .install-action {
+        min-height: var(--touch-target);
+        padding: 0 var(--space-sm);
+        display: flex;
+        align-items: center;
+        color: var(--color-accent);
+        font-weight: bold;
+      }
+
+      .install-dismiss {
+        width: var(--touch-target);
+        height: var(--touch-target);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius-1);
+        color: var(--color-text-muted);
+        cursor: pointer;
       }
 
       .empty-state {
@@ -147,17 +215,29 @@ export class HomeComponent {
 
   iconParties = faShieldHalved;
   iconDice = faDice;
+  iconInstall = faCloudArrowDown;
+  iconDismiss = faXmark;
 
-  constructor(private app: AppService) {
+  constructor(
+    private app: AppService,
+    private pwa: PwaService,
+  ) {
     this.view$ = combineLatest([
       this.app.activeParty$,
       this.app.activePlayerList$,
+      this.app.select$('dismissPwa'),
+      this.pwa.getState$(),
     ]).pipe(
-      map(([activeParty, playerList]) => ({
+      map(([activeParty, playerList, dismissPwa, pwa]) => ({
         activeParty,
         playerList,
+        showInstallNotice: !pwa.isRunningStandalone && dismissPwa === null,
       })),
     );
+  }
+
+  dismissInstall(): void {
+    this.app.patchState({ dismissPwa: Date.now() });
   }
 
   onPlayerChange(player: Player): void {
