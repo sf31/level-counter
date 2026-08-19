@@ -76,12 +76,15 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
       }
 
       .dice.rolling {
-        animation: dice-roll 350ms ease-in-out 2;
+        animation: dice-roll 90ms ease-in-out 8 alternate;
       }
 
       @keyframes dice-roll {
+        from {
+          transform: translate(-5px, -2px) rotate(-8deg);
+        }
         to {
-          transform: rotate(1turn);
+          transform: translate(5px, -8px) rotate(8deg);
         }
       }
 
@@ -100,11 +103,6 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         height: 22px;
         border-radius: 50%;
         background-color: var(--color-dice-dot);
-      }
-
-      .f-1 {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
       }
 
       .f-2 {
@@ -195,7 +193,6 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
 
       .dice-close {
         color: var(--color-text-muted);
-        font-size: var(--font-size-body);
         cursor: pointer;
         padding: var(--space-sm) var(--space-lg);
       }
