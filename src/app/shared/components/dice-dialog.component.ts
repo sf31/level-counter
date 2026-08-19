@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -9,10 +10,17 @@ import { OverlayComponent } from './overlay.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { randomIntFromInterval } from '../../core/utils/app.utils';
+import { BtnComponent } from './btn.component';
+
+type ShakeStatus = 'unavailable' | 'permission-required' | 'enabled' | 'denied';
+
+type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
+  requestPermission?: () => Promise<'granted' | 'denied'>;
+};
 
 @Component({
   selector: 'app-dice-dialog',
-  imports: [OverlayComponent, FontAwesomeModule],
+  imports: [OverlayComponent, FontAwesomeModule, BtnComponent],
   template: `
     <app-overlay (close)="close.emit()">
       <div class="dice-content" (click)="roll()">
@@ -20,7 +28,14 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
           @if (isRolling()) {
             Rolling…
           } @else if (currentFace(); as face) {
-            Rolled {{ face }} · Tap to roll again
+            Rolled {{ face }} ·
+            {{
+              shakeStatus() === 'enabled'
+                ? 'Shake or tap again'
+                : 'Tap to roll again'
+            }}
+          } @else if (shakeStatus() === 'enabled') {
+            Shake or tap to roll
           } @else {
             Tap to roll
           }
@@ -43,6 +58,15 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
             }
           </div>
         </div>
+        @if (shakeStatus() === 'permission-required') {
+          <app-btn class="shake-permission" (click)="enableShake($event)">
+            Enable shake to roll
+          </app-btn>
+        } @else if (shakeStatus() === 'denied') {
+          <div class="dice-label" role="status">
+            Shake access unavailable · Tap to roll
+          </div>
+        }
         <div
           class="dice-close"
           (click)="close.emit(); $event.stopPropagation()"
@@ -206,14 +230,52 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DiceDialogComponent implements OnDestroy {
+export class DiceDialogComponent implements OnInit, OnDestroy {
   readonly close = output<void>();
 
   protected readonly currentFace = signal<number | null>(null);
   protected readonly isRolling = signal(false);
+  protected readonly shakeStatus = signal<ShakeStatus>('unavailable');
   protected readonly noFaceIcon = faQuestion;
 
+  private readonly shakeThreshold = 12;
+  private readonly shakeCooldown = 1000;
   private rollTimer: ReturnType<typeof setInterval> | null = null;
+  private lastMotionMagnitude: number | null = null;
+  private lastShakeAt = 0;
+
+  ngOnInit(): void {
+    if (
+      typeof DeviceMotionEvent === 'undefined' ||
+      navigator.maxTouchPoints === 0
+    ) {
+      return;
+    }
+
+    const motionEvent = DeviceMotionEvent as DeviceMotionEventWithPermission;
+    if (motionEvent.requestPermission) {
+      this.shakeStatus.set('permission-required');
+      return;
+    }
+
+    this.startShakeListener();
+  }
+
+  protected async enableShake(event: MouseEvent): Promise<void> {
+    event.stopPropagation();
+
+    const motionEvent = DeviceMotionEvent as DeviceMotionEventWithPermission;
+    try {
+      const permission = await motionEvent.requestPermission?.();
+      if (permission === 'granted') {
+        this.startShakeListener();
+      } else {
+        this.shakeStatus.set('denied');
+      }
+    } catch {
+      this.shakeStatus.set('denied');
+    }
+  }
 
   protected roll(): void {
     if (this.isRolling()) return;
@@ -233,7 +295,44 @@ export class DiceDialogComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.stopRoll();
+    window.removeEventListener('devicemotion', this.handleDeviceMotion);
     navigator.vibrate?.(0);
+  }
+
+  private readonly handleDeviceMotion = (event: DeviceMotionEvent): void => {
+    const acceleration =
+      event.acceleration ?? event.accelerationIncludingGravity;
+    if (
+      !acceleration ||
+      acceleration.x === null ||
+      acceleration.y === null ||
+      acceleration.z === null
+    ) {
+      return;
+    }
+
+    const magnitude = Math.hypot(
+      acceleration.x,
+      acceleration.y,
+      acceleration.z,
+    );
+    const now = Date.now();
+
+    if (
+      this.lastMotionMagnitude !== null &&
+      Math.abs(magnitude - this.lastMotionMagnitude) >= this.shakeThreshold &&
+      now - this.lastShakeAt >= this.shakeCooldown
+    ) {
+      this.lastShakeAt = now;
+      this.roll();
+    }
+
+    this.lastMotionMagnitude = magnitude;
+  };
+
+  private startShakeListener(): void {
+    window.addEventListener('devicemotion', this.handleDeviceMotion);
+    this.shakeStatus.set('enabled');
   }
 
   private finishRoll(): void {
