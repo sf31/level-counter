@@ -100,7 +100,7 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
       }
 
       .dice.rolling {
-        animation: dice-roll 90ms ease-in-out 8 alternate;
+        animation: dice-roll 100ms ease-in-out 12 alternate;
       }
 
       @keyframes dice-roll {
@@ -238,7 +238,7 @@ export class DiceDialogComponent implements OnInit, OnDestroy {
   protected readonly shakeStatus = signal<ShakeStatus>('unavailable');
   protected readonly noFaceIcon = faQuestion;
 
-  private readonly shakeThreshold = 12;
+  private readonly shakeThreshold = 18;
   private readonly shakeCooldown = 1000;
   private rollTimer: ReturnType<typeof setInterval> | null = null;
   private lastMotionMagnitude: number | null = null;
@@ -283,14 +283,14 @@ export class DiceDialogComponent implements OnInit, OnDestroy {
     this.isRolling.set(true);
     this.currentFace.set(randomIntFromInterval(1, 6));
     navigator.vibrate?.([20, 70, 20, 70, 20]);
-    let rollsRemaining = 10;
+    let rollsRemaining = 15;
     this.rollTimer = setInterval(() => {
       this.currentFace.set(randomIntFromInterval(1, 6));
       rollsRemaining -= 1;
       if (rollsRemaining === 0) {
         this.finishRoll();
       }
-    }, 70);
+    }, 80);
   }
 
   ngOnDestroy(): void {
