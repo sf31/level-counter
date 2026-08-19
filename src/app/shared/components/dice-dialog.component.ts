@@ -220,6 +220,7 @@ export class DiceDialogComponent implements OnDestroy {
 
     this.isRolling.set(true);
     this.currentFace.set(randomIntFromInterval(1, 6));
+    navigator.vibrate?.([20, 70, 20, 70, 20]);
     let rollsRemaining = 10;
     this.rollTimer = setInterval(() => {
       this.currentFace.set(randomIntFromInterval(1, 6));
@@ -231,10 +232,16 @@ export class DiceDialogComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.finishRoll();
+    this.stopRoll();
+    navigator.vibrate?.(0);
   }
 
   private finishRoll(): void {
+    this.stopRoll();
+    navigator.vibrate?.(40);
+  }
+
+  private stopRoll(): void {
     if (this.rollTimer !== null) {
       clearInterval(this.rollTimer);
       this.rollTimer = null;
