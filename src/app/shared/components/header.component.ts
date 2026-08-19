@@ -53,7 +53,10 @@ import { PwaService } from '../../core/services/pwa.service';
             </a>
           </nav>
 
-          <a class="title text-ellipsis" routerLink="/">
+          <a
+            class="title text-ellipsis"
+            [routerLink]="view.activePartyName ? '/parties' : '/'"
+          >
             {{ view.activePartyName ?? 'LevelCounter' }}
           </a>
 

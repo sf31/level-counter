@@ -68,7 +68,12 @@ interface HomeView {
           </div>
         }
 
-        <button class="fab shadow" (click)="showDice = true">
+        <button
+          class="fab shadow"
+          type="button"
+          aria-label="Roll dice"
+          (click)="showDice = true"
+        >
           <fa-icon [icon]="iconDice" />
         </button>
       } @else {
@@ -89,6 +94,8 @@ interface HomeView {
   styles: [
     `
       :host {
+        --fab-size: 56px;
+
         display: flex;
         flex-direction: column;
         min-height: 100%;
@@ -102,6 +109,10 @@ interface HomeView {
         align-content: start;
         gap: var(--space-sm);
         padding: var(--space-sm);
+        padding-bottom: calc(
+          var(--fab-size) + var(--space-lg) + var(--space-sm) +
+            env(safe-area-inset-bottom)
+        );
       }
 
       .install-notice {
@@ -185,10 +196,10 @@ interface HomeView {
 
       .fab {
         position: fixed;
-        bottom: var(--space-lg);
+        bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
         right: var(--space-lg);
-        width: 56px;
-        height: 56px;
+        width: var(--fab-size);
+        height: var(--fab-size);
         border-radius: 50%;
         background-color: var(--color-surface);
         color: var(--color-text);
