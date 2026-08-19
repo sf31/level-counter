@@ -5,20 +5,13 @@ import { PlayerComponent } from './player.component';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Party, Player } from '../../types';
 import { AppService } from '../../core/services/app.service';
-import {
-  faCloudArrowDown,
-  faDice,
-  faShieldHalved,
-} from '@fortawesome/free-solid-svg-icons';
+import { faDice, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconBtnComponent } from '../../shared/components/icon-btn.component';
-import { PwaService } from '../../core/services/pwa.service';
 import { DiceDialogComponent } from '../../shared/components/dice-dialog.component';
 
 interface HomeView {
   activeParty: Party | undefined;
   playerList: Player[];
-  showPwa: boolean;
 }
 
 @Component({
@@ -27,26 +20,11 @@ interface HomeView {
     PlayerComponent,
     RouterLink,
     FontAwesomeModule,
-    IconBtnComponent,
     AsyncPipe,
     DiceDialogComponent,
   ],
   template: `
     @if (view$ | async; as view) {
-      <div class="page-header">
-        <app-icon-btn routerLink="parties" [icon]="iconParties" />
-        <span class="page-header-title">
-          {{ view.activeParty ? view.activeParty.name : 'LevelCounter' }}
-        </span>
-        @if (view.showPwa) {
-          <app-icon-btn
-            routerLink="pwa"
-            [color]="'var(--color-accent)'"
-            [icon]="iconPwa"
-          />
-        }
-      </div>
-
       @if (view.activeParty) {
         <div class="player-list">
           @for (player of view.playerList; track player.id) {
@@ -71,7 +49,9 @@ interface HomeView {
       } @else {
         <div class="empty-state">
           <div class="empty-title">Welcome!</div>
-          <div class="empty-hint">Create or select a party to start playing</div>
+          <div class="empty-hint">
+            Create or select a party to start playing
+          </div>
           <a routerLink="parties" class="empty-cta">Go to Parties</a>
         </div>
       }
@@ -86,8 +66,7 @@ interface HomeView {
       :host {
         display: flex;
         flex-direction: column;
-        height: 100dvh;
-        overflow: hidden;
+        min-height: 100%;
       }
 
       .player-list {
@@ -168,22 +147,15 @@ export class HomeComponent {
 
   iconParties = faShieldHalved;
   iconDice = faDice;
-  iconPwa = faCloudArrowDown;
 
-  constructor(
-    private app: AppService,
-    private pwa: PwaService,
-  ) {
+  constructor(private app: AppService) {
     this.view$ = combineLatest([
       this.app.activeParty$,
       this.app.activePlayerList$,
-      this.app.select$('dismissPwa'),
-      this.pwa.getState$(),
     ]).pipe(
-      map(([activeParty, playerList, dismiss, pwa]) => ({
+      map(([activeParty, playerList]) => ({
         activeParty,
         playerList,
-        showPwa: !pwa.isRunningStandalone && dismiss === null,
       })),
     );
   }

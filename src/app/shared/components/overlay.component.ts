@@ -1,15 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-overlay',
   imports: [],
   template: `
     <div class="backdrop" (click)="close.emit()"></div>
-    <div class="panel">
+    <div class="panel" role="dialog" aria-modal="true">
       <ng-content />
     </div>
   `,

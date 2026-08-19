@@ -6,7 +6,6 @@ import { Party, Player } from '../../types';
 import { AppService } from '../../core/services/app.service';
 import { PartyService } from './party.service';
 import { PLAYER_COLORS } from '../../const';
-import { IconBtnComponent } from '../../shared/components/icon-btn.component';
 import { BtnComponent } from '../../shared/components/btn.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -33,7 +32,6 @@ type ConfirmAction =
   selector: 'app-party-detail',
   imports: [
     AsyncPipe,
-    IconBtnComponent,
     BtnComponent,
     ConfirmDialogComponent,
     FontAwesomeModule,
@@ -41,25 +39,47 @@ type ConfirmAction =
   ],
   template: `
     @if (view$ | async; as view) {
-      <div class="page-header">
-        <app-icon-btn routerLink="/parties" [icon]="iconBack" />
+      <div class="detail-header">
+        <a
+          class="header-action"
+          routerLink="/parties"
+          aria-label="Back to parties"
+        >
+          <fa-icon [icon]="iconBack" />
+        </a>
         @if (isRenaming) {
           <input
             #renameInput
             class="rename-input"
             type="text"
+            aria-label="Party name"
             [value]="view.party.name"
             (keyup.enter)="confirmRename(renameInput, view.party.id)"
           />
-          <button class="header-action confirm" (click)="confirmRename(renameInput, view.party.id)">
+          <button
+            class="header-action confirm"
+            type="button"
+            aria-label="Save party name"
+            (click)="confirmRename(renameInput, view.party.id)"
+          >
             <fa-icon [icon]="iconCheck" />
           </button>
-          <button class="header-action cancel" (click)="isRenaming = false">
+          <button
+            class="header-action cancel"
+            type="button"
+            aria-label="Cancel renaming"
+            (click)="isRenaming = false"
+          >
             <fa-icon [icon]="iconCancel" />
           </button>
         } @else {
-          <span class="page-header-title">{{ view.party.name }}</span>
-          <button class="header-action" (click)="isRenaming = true">
+          <h1 class="detail-title">{{ view.party.name }}</h1>
+          <button
+            class="header-action"
+            type="button"
+            aria-label="Rename party"
+            (click)="isRenaming = true"
+          >
             <fa-icon [icon]="iconRename" />
           </button>
         }
@@ -71,15 +91,23 @@ type ConfirmAction =
             <input
               #playerName
               type="text"
+              aria-label="Player name"
               placeholder="Player name..."
               (keyup.enter)="addPlayer(playerName)"
             />
-            <button class="add-btn" (click)="addPlayer(playerName)">
+            <button
+              class="add-btn"
+              type="button"
+              aria-label="Add player"
+              (click)="addPlayer(playerName)"
+            >
               <fa-icon [icon]="iconAdd" />
             </button>
           </div>
         } @else {
-          <div class="max-warning">Maximum players reached ({{ maxPlayers }})</div>
+          <div class="max-warning">
+            Maximum players reached ({{ maxPlayers }})
+          </div>
         }
 
         @if (view.party.playerList.length > 0) {
@@ -96,7 +124,11 @@ type ConfirmAction =
                 <div class="player-name text-ellipsis">{{ player.name }}</div>
                 <button
                   class="player-delete"
-                  (click)="confirmAction = { type: 'deletePlayer', player: player }"
+                  type="button"
+                  [attr.aria-label]="'Remove ' + player.name"
+                  (click)="
+                    confirmAction = { type: 'deletePlayer', player: player }
+                  "
                 >
                   <fa-icon [icon]="iconDelete" />
                 </button>
@@ -131,7 +163,9 @@ type ConfirmAction =
           @case ('deletePlayer') {
             <app-confirm-dialog
               title="Remove Player"
-              [message]="'Remove ' + confirmAction.player.name + ' from this party?'"
+              [message]="
+                'Remove ' + confirmAction.player.name + ' from this party?'
+              "
               confirmLabel="Remove"
               (confirm)="removePlayer(confirmAction.player)"
               (cancel)="confirmAction = null"
@@ -140,7 +174,11 @@ type ConfirmAction =
           @case ('deleteParty') {
             <app-confirm-dialog
               title="Delete Party"
-              [message]="'Permanently delete ' + view.party.name + ' and all its players?'"
+              [message]="
+                'Permanently delete ' +
+                view.party.name +
+                ' and all its players?'
+              "
               confirmLabel="Delete"
               (confirm)="deleteParty(view.party)"
               (cancel)="confirmAction = null"
@@ -149,7 +187,11 @@ type ConfirmAction =
           @case ('resetLevels') {
             <app-confirm-dialog
               title="Reset Levels & Gears"
-              [message]="'Reset all players in ' + view.party.name + ' to Level 1 and Gear 0?'"
+              [message]="
+                'Reset all players in ' +
+                view.party.name +
+                ' to Level 1 and Gear 0?'
+              "
               confirmLabel="Reset"
               (confirm)="resetLevels()"
               (cancel)="confirmAction = null"
@@ -164,7 +206,27 @@ type ConfirmAction =
       :host {
         display: flex;
         flex-direction: column;
-        min-height: 100dvh;
+        min-height: 100%;
+      }
+
+      .detail-header {
+        min-height: var(--header-height);
+        padding: var(--space-sm) var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        border-bottom: 1px solid var(--color-bg-lighter);
+      }
+
+      .detail-title {
+        min-width: 0;
+        flex: 1;
+        margin: 0;
+        overflow: hidden;
+        font-size: 1.4rem;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .rename-input {
@@ -186,6 +248,7 @@ type ConfirmAction =
         background: none;
         font-size: 1.1rem;
         flex-shrink: 0;
+        text-decoration: none;
       }
 
       .header-action.confirm {

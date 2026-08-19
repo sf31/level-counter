@@ -1,44 +1,33 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { BtnComponent } from '../../shared/components/btn.component';
 import { AsyncPipe } from '@angular/common';
-import {
-  faArrowLeft,
-  faUpRightFromSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PwaUpdateState } from '../../types';
-import { Observable } from 'rxjs';
 import { PwaService } from '../../core/services/pwa.service';
 import { AppService } from '../../core/services/app.service';
-import { IconBtnComponent } from '../../shared/components/icon-btn.component';
 
 @Component({
   selector: 'app-pwa',
-  imports: [
-    BtnComponent,
-    AsyncPipe,
-    FontAwesomeModule,
-    IconBtnComponent,
-    RouterLink,
-  ],
+  imports: [BtnComponent, AsyncPipe, FontAwesomeModule],
   template: `
-    <div class="page-header">
-      <app-icon-btn routerLink="" [icon]="iconBack" />
-      <span class="page-header-title">Install App</span>
-      <div style="width: var(--touch-target)"></div>
-    </div>
-
     @if (pwa$ | async; as pwa) {
       <div class="content">
+        <h1>Install App</h1>
         @if (!pwa.installPending && !pwa.isRunningStandalone) {
           <div class="text">
             <p>
               Looks like your browser supports
-              <span class="link" (click)="openLink()">
+              <a
+                class="link"
+                href="https://en.wikipedia.org/wiki/Progressive_web_app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span class="link-inner">Progressive Web Apps</span>
                 <fa-icon [icon]="iconLink" />
-              </span>
+              </a>
             </p>
             <p>Install this app on your device for a better experience.</p>
           </div>
@@ -77,7 +66,7 @@ import { IconBtnComponent } from '../../shared/components/icon-btn.component';
       :host {
         display: flex;
         flex-direction: column;
-        min-height: 100dvh;
+        min-height: 100%;
       }
 
       .content {
@@ -88,6 +77,11 @@ import { IconBtnComponent } from '../../shared/components/icon-btn.component';
         justify-content: center;
         padding: var(--space-lg);
         gap: var(--space-md);
+      }
+
+      h1 {
+        margin: 0 0 var(--space-md);
+        font-size: 1.8rem;
       }
 
       .text {
@@ -105,6 +99,7 @@ import { IconBtnComponent } from '../../shared/components/icon-btn.component';
       .link {
         white-space: nowrap;
         cursor: pointer;
+        color: inherit;
       }
 
       .link-inner {
@@ -132,28 +127,19 @@ import { IconBtnComponent } from '../../shared/components/icon-btn.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PwaComponent {
-  pwa$: Observable<PwaUpdateState>;
-  iconBack = faArrowLeft;
-  iconLink = faUpRightFromSquare;
+  private readonly app = inject(AppService);
+  private readonly pwa = inject(PwaService);
+  private readonly router = inject(Router);
 
-  constructor(
-    private app: AppService,
-    private pwa: PwaService,
-    private router: Router,
-  ) {
-    this.pwa$ = this.pwa.getState$();
-  }
+  protected readonly pwa$ = this.pwa.getState$();
+  protected readonly iconLink = faUpRightFromSquare;
 
-  openLink(): void {
-    window.open('https://en.wikipedia.org/wiki/Progressive_web_app', '_blank');
-  }
-
-  dismiss(): void {
+  protected dismiss(): void {
     this.app.patchState({ dismissPwa: Date.now() });
-    this.router.navigate(['']).catch();
+    this.router.navigate(['/']).catch();
   }
 
-  async install(pwa: PwaUpdateState): Promise<void> {
+  protected async install(pwa: PwaUpdateState): Promise<void> {
     if (!pwa.promptEvent) return;
     pwa.promptEvent.prompt();
     this.pwa.patchState({ installPending: true });

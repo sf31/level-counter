@@ -5,8 +5,8 @@ export const routes: Routes = [
   {
     path: 'parties',
     loadComponent: () =>
-      import('./features/party/parties.component').then(
-        (m) => m.PartiesComponent,
+      import('./features/party/party-list.component').then(
+        (m) => m.PartyListComponent,
       ),
   },
   {

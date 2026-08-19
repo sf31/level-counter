@@ -34,7 +34,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--color-bg);
-  font-family: 'MedievalSharp', cursive;
+  font-family: "MedievalSharp", cursive;
   user-select: none;
   font-size: 1.1rem;
   color: var(--color-text);
@@ -61,7 +61,7 @@ textarea {
 }
 
 /* Inputs */
-input[type='text'] {
+input[type="text"] {
   background-color: var(--color-bg-lighter);
   border: 1px solid var(--color-surface-light);
   border-radius: var(--border-radius-1);
@@ -96,41 +96,4 @@ input[type='text'] {
 
 .fill-remaining-space {
   flex: 1 1 auto;
-}
-
-/* Page header (reusable pattern) */
-.page-header {
-  display: flex;
-  align-items: center;
-  height: var(--header-height);
-  padding: 0 var(--space-sm);
-  gap: var(--space-sm);
-  background-color: var(--color-bg-light);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.page-header-title {
-  flex: 1;
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Screen layout */
-.screen {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-}
-
-.screen-content {
-  flex: 1;
-  overflow: auto;
-  padding: var(--space-md);
 }
