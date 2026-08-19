@@ -3,6 +3,7 @@ import {
   Component,
   OnDestroy,
   output,
+  signal,
 } from '@angular/core';
 import { OverlayComponent } from './overlay.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -15,16 +16,28 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
   template: `
     <app-overlay (close)="close.emit()">
       <div class="dice-content" (click)="roll()">
-        <div class="dice-label">Tap to roll</div>
-        <div class="dice">
-          <div class="face f-{{ currentFace }}">
-            @if (currentFace === null) {
+        <div class="dice-label" role="status" aria-live="polite">
+          @if (isRolling()) {
+            Rolling…
+          } @else if (currentFace(); as face) {
+            Rolled {{ face }} · Tap to roll again
+          } @else {
+            Tap to roll
+          }
+        </div>
+        <div
+          class="dice"
+          [class.rolling]="isRolling()"
+          [attr.aria-busy]="isRolling()"
+        >
+          <div class="face f-{{ currentFace() }}">
+            @if (currentFace() === null) {
               <div class="no-face">
                 <fa-icon [icon]="noFaceIcon" />
               </div>
             }
-            @if (currentFace) {
-              @for (item of [].constructor(currentFace); track $index) {
+            @if (currentFace(); as face) {
+              @for (item of [].constructor(face); track $index) {
                 <div class="dot"></div>
               }
             }
@@ -60,6 +73,16 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         justify-content: center;
         align-items: center;
         font-size: var(--font-size-display);
+      }
+
+      .dice.rolling {
+        animation: dice-roll 350ms ease-in-out 2;
+      }
+
+      @keyframes dice-roll {
+        to {
+          transform: rotate(1turn);
+        }
       }
 
       .face {
@@ -176,33 +199,49 @@ import { randomIntFromInterval } from '../../core/utils/app.utils';
         cursor: pointer;
         padding: var(--space-sm) var(--space-lg);
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        .dice.rolling {
+          animation: none;
+        }
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiceDialogComponent implements OnDestroy {
-  close = output<void>();
+  readonly close = output<void>();
 
-  currentFace: number | null = null;
-  rollTimer: ReturnType<typeof setTimeout> | null = null;
-  noFaceIcon = faQuestion;
+  protected readonly currentFace = signal<number | null>(null);
+  protected readonly isRolling = signal(false);
+  protected readonly noFaceIcon = faQuestion;
 
-  roll(): void {
-    if (this.rollTimer !== null) return;
-    let runs = 10;
+  private rollTimer: ReturnType<typeof setInterval> | null = null;
+
+  protected roll(): void {
+    if (this.isRolling()) return;
+
+    this.isRolling.set(true);
+    this.currentFace.set(randomIntFromInterval(1, 6));
+    let rollsRemaining = 10;
     this.rollTimer = setInterval(() => {
-      this.currentFace = randomIntFromInterval(1, 6);
-      if (runs-- === 0) {
-        if (this.rollTimer !== null) clearInterval(this.rollTimer);
-        this.rollTimer = null;
+      this.currentFace.set(randomIntFromInterval(1, 6));
+      rollsRemaining -= 1;
+      if (rollsRemaining === 0) {
+        this.finishRoll();
       }
     }, 70);
   }
 
   ngOnDestroy(): void {
+    this.finishRoll();
+  }
+
+  private finishRoll(): void {
     if (this.rollTimer !== null) {
       clearInterval(this.rollTimer);
       this.rollTimer = null;
     }
+    this.isRolling.set(false);
   }
 }
