@@ -238,25 +238,12 @@ type ConfirmAction =
       }
 
       .rename-input {
-        display: block;
-        width: 100%;
         max-width: 440px;
         min-height: var(--touch-target);
         overflow-y: hidden;
         resize: none;
-        padding: var(--space-sm) var(--space-md);
-        border: var(--border-width) solid var(--color-border);
-        border-radius: var(--border-radius-1);
-        background-color: var(--color-bg-lighter);
-        color: var(--color-text);
-        font-size: var(--font-size-body);
         font-weight: var(--font-weight-strong);
         line-height: var(--line-height-body);
-        transition: border-color var(--duration-normal);
-      }
-
-      .rename-input:focus {
-        border-color: var(--color-accent);
       }
 
       .detail-actions {

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AppService } from '../../core/services/app.service';
-import { Party } from '../../types';
+import { Party, Player } from '../../types';
 import * as uuid from 'uuid';
 import {
   removeElementFromArray,
   upsertElementInArray,
 } from '../../core/utils/array.utils';
 import { Router } from '@angular/router';
+import { randomIntFromInterval } from '../../core/utils/app.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +18,22 @@ export class PartyService {
     private router: Router,
   ) {}
 
-  addParty(name: string): Party {
+  createParty(
+    name: string,
+    players: readonly Pick<Player, 'name' | 'color'>[],
+  ): Party {
     const state = this.app.getStateSnapshot();
     const party: Party = {
       id: uuid.v4(),
       name,
-      playerList: [],
+      playerList: players.map((player) => ({
+        id: uuid.v4(),
+        name: player.name,
+        gender: randomIntFromInterval(0, 10) % 2 === 0 ? 'M' : 'F',
+        level: 1,
+        gears: 0,
+        color: player.color,
+      })),
     };
     const parties = [...state.parties, party];
     this.app.patchState({ parties, activePartyId: party.id });
@@ -35,7 +46,7 @@ export class PartyService {
     const isActive = state.activePartyId === party.id;
     this.app.patchState({
       parties,
-      ...(isActive ? { activePartyId: null } : {}),
+      ...(isActive ? { activePartyId: parties[0]?.id ?? null } : {}),
     });
 
     if (isActive) {

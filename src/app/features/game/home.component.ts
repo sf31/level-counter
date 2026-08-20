@@ -86,14 +86,15 @@ interface HomeView {
         <div class="empty-state">
           <div class="empty-title">Welcome!</div>
           <div class="empty-hint">
-            Create or select a party to start playing
+            Create a party and add your players to start.
           </div>
           <a
-            routerLink="parties"
+            routerLink="/parties/new"
             class="empty-cta"
-            [state]="childNavigationState"
+            [state]="partySetupNavigationState"
+            [replaceUrl]="true"
           >
-            Go to Parties
+            Create your first party
           </a>
         </div>
       }
@@ -241,6 +242,7 @@ export class HomeComponent {
   iconInstall = faCloudArrowDown;
   iconDismiss = faXmark;
   childNavigationState = { fromGame: true };
+  partySetupNavigationState = { setupBackUrl: '/' };
 
   constructor(
     private app: AppService,
@@ -255,7 +257,8 @@ export class HomeComponent {
       map(([activeParty, playerList, dismissPwa, pwa]) => ({
         activeParty,
         playerList,
-        showInstallNotice: !pwa.isRunningStandalone && dismissPwa === null,
+        showInstallNotice:
+          !!activeParty && !pwa.isRunningStandalone && dismissPwa === null,
       })),
     );
   }

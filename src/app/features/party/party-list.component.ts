@@ -1,18 +1,8 @@
 import { AsyncPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCheck, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, map } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
 import { PartyService } from './party.service';
@@ -26,7 +16,7 @@ import { PartyListItemComponent } from './party-list-item.component';
     FontAwesomeModule,
     PartyListEmptyComponent,
     PartyListItemComponent,
-    ReactiveFormsModule,
+    RouterLink,
   ],
   template: `
     @if (view$ | async; as view) {
@@ -36,46 +26,15 @@ import { PartyListItemComponent } from './party-list-item.component';
           <p>Select a party to return to the game.</p>
         </div>
 
-        @if (isCreating()) {
-          <form
-            class="create-form"
-            [formGroup]="createPartyForm"
-            (ngSubmit)="addParty()"
-          >
-            <label for="party-name">Party name</label>
-            <div class="create-row">
-              <input
-                id="party-name"
-                type="text"
-                placeholder="New party name..."
-                autocomplete="off"
-                autofocus
-                formControlName="name"
-              />
-              <button
-                class="icon-action confirm"
-                type="submit"
-                [disabled]="createPartyForm.invalid"
-                aria-label="Create party"
-              >
-                <fa-icon [icon]="iconConfirm" />
-              </button>
-              <button
-                class="icon-action cancel"
-                type="button"
-                aria-label="Cancel party creation"
-                (click)="cancelCreating()"
-              >
-                <fa-icon [icon]="iconCancel" />
-              </button>
-            </div>
-          </form>
-        } @else {
-          <button class="create-party" type="button" (click)="startCreating()">
-            <fa-icon [icon]="iconAdd" />
-            Create Party
-          </button>
-        }
+        <a
+          class="create-party"
+          routerLink="/parties/new"
+          [state]="partySetupNavigationState"
+          [replaceUrl]="true"
+        >
+          <fa-icon [icon]="iconAdd" />
+          Create Party
+        </a>
 
         <div class="party-list" aria-label="Parties">
           @for (party of view.parties; track party.id) {
@@ -130,53 +89,7 @@ import { PartyListItemComponent } from './party-list-item.component';
         color: var(--color-on-accent);
         font-weight: var(--font-weight-strong);
         cursor: pointer;
-      }
-
-      .create-form {
-        width: 100%;
-        max-width: 560px;
-      }
-
-      .create-form label {
-        display: block;
-        margin-bottom: var(--space-xs);
-        color: var(--color-text-muted);
-        font-size: var(--font-size-caption);
-      }
-
-      .create-row {
-        display: flex;
-        gap: var(--space-sm);
-      }
-
-      .create-row input {
-        flex: 1;
-        min-width: 0;
-      }
-
-      .icon-action {
-        width: var(--touch-target);
-        height: var(--touch-target);
-        flex-shrink: 0;
-        border-radius: var(--border-radius-1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-
-      .icon-action.confirm {
-        background-color: var(--color-success);
-      }
-
-      .icon-action.confirm:disabled {
-        opacity: 0.45;
-        cursor: default;
-      }
-
-      .icon-action.cancel {
-        background-color: var(--color-bg-lighter);
-        color: var(--color-text-muted);
+        text-decoration: none;
       }
 
       .party-list {
@@ -201,15 +114,9 @@ export class PartyListComponent {
   private readonly partyService = inject(PartyService);
 
   protected readonly iconAdd = faPlus;
-  protected readonly iconConfirm = faCheck;
-  protected readonly iconCancel = faXmark;
-  protected readonly isCreating = signal(false);
-  protected readonly createPartyForm = new FormGroup({
-    name: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.pattern(/\S/)],
-    }),
-  });
+  protected readonly partySetupNavigationState = {
+    setupBackUrl: '/parties',
+  };
 
   protected readonly view$ = combineLatest([
     this.app.select$('parties'),
@@ -220,23 +127,6 @@ export class PartyListComponent {
       activePartyId,
     })),
   );
-
-  protected startCreating(): void {
-    this.isCreating.set(true);
-  }
-
-  protected cancelCreating(): void {
-    this.createPartyForm.reset();
-    this.isCreating.set(false);
-  }
-
-  protected addParty(): void {
-    const name = this.createPartyForm.controls.name.value.trim();
-    if (!name) return;
-
-    this.partyService.addParty(name);
-    this.cancelCreating();
-  }
 
   protected switchParty(partyId: string): void {
     this.partyService.switchParty(partyId);

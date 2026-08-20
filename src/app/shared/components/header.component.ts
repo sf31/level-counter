@@ -11,15 +11,15 @@ import {
   faArrowLeft,
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  map,
-  startWith,
-} from 'rxjs';
+import { combineLatest, filter, map, startWith } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
-import { Party } from '../../types';
+
+type BackMode = 'game' | 'setup';
+
+interface RouteHeader {
+  sectionTitle: string | null;
+  backMode: BackMode;
+}
 
 @Component({
   selector: 'app-header',
@@ -28,17 +28,21 @@ import { Party } from '../../types';
     @if (view$ | async; as view) {
       <header class="header">
         <div class="header-inner">
-          @if (view.sectionTitle) {
+          @if (view.routeHeader.sectionTitle) {
             <button
               class="header-action"
               type="button"
-              aria-label="Back to game"
-              (click)="backToGame()"
+              [attr.aria-label]="
+                view.routeHeader.backMode === 'setup' ? 'Back' : 'Back to game'
+              "
+              (click)="navigateBack(view.routeHeader.backMode)"
             >
               <fa-icon [icon]="backIcon" />
             </button>
-            <div class="title text-ellipsis">{{ view.sectionTitle }}</div>
-          } @else {
+            <div class="title text-ellipsis">
+              {{ view.routeHeader.sectionTitle }}
+            </div>
+          } @else if (view.activeParty) {
             <div class="title text-ellipsis">{{ view.activeParty.name }}</div>
 
             <button
@@ -92,6 +96,8 @@ import { Party } from '../../types';
                 About
               </a>
             </nav>
+          } @else {
+            <div class="title text-ellipsis">LevelCounter</div>
           }
         </div>
       </header>
@@ -171,25 +177,24 @@ export class HeaderComponent {
   protected readonly menuIcon = faEllipsisVertical;
   protected readonly childNavigationState = { fromGame: true };
 
-  private readonly activeParty$ = this.app.activeParty$.pipe(
-    filter((activeParty): activeParty is Party => activeParty !== undefined),
-  );
-
-  private readonly sectionTitle$ = this.router.events.pipe(
+  private readonly routeHeader$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
     startWith(null),
-    map(() => this.getSectionTitle()),
-    distinctUntilChanged(),
+    map(() => this.getRouteHeader()),
   );
 
   protected readonly view$ = combineLatest([
-    this.activeParty$,
-    this.sectionTitle$,
-  ]).pipe(
-    map(([activeParty, sectionTitle]) => ({ activeParty, sectionTitle })),
-  );
+    this.app.activeParty$,
+    this.routeHeader$,
+  ]).pipe(map(([activeParty, routeHeader]) => ({ activeParty, routeHeader })));
 
-  protected backToGame(): void {
+  protected navigateBack(backMode: BackMode): void {
+    if (backMode === 'setup') {
+      const setupBackUrl = history.state.setupBackUrl ?? '/';
+      this.router.navigateByUrl(setupBackUrl, { replaceUrl: true }).catch();
+      return;
+    }
+
     if (history.state.fromGame) {
       this.location.back();
       return;
@@ -198,9 +203,12 @@ export class HeaderComponent {
     this.router.navigate(['/'], { replaceUrl: true }).catch();
   }
 
-  private getSectionTitle(): string | null {
+  private getRouteHeader(): RouteHeader {
     let route = this.route;
     while (route.firstChild) route = route.firstChild;
-    return route.snapshot.data['headerTitle'] ?? null;
+    return {
+      sectionTitle: route.snapshot.data['headerTitle'] ?? null,
+      backMode: route.snapshot.data['backMode'] === 'setup' ? 'setup' : 'game',
+    };
   }
 }

@@ -11,6 +11,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'parties/new',
+    data: { headerTitle: 'Create party', backMode: 'setup' },
+    loadComponent: () =>
+      import('./features/party/party-create.component').then(
+        (m) => m.PartyCreateComponent,
+      ),
+  },
+  {
     path: 'parties/:id',
     data: { headerTitle: 'Party settings' },
     loadComponent: () =>

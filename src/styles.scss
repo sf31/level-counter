@@ -98,7 +98,8 @@ textarea {
 }
 
 /* Inputs */
-input[type="text"] {
+input[type="text"],
+textarea {
   background-color: var(--color-bg-lighter);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-1);

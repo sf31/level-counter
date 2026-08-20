@@ -16,7 +16,12 @@ export function validateLocalStorage(storageValue: string | null): AppState {
   const currentResult = appStateSchema.safeParse(parsed);
   if (currentResult.success) {
     const dismissPwa = validateDismissPwa(currentResult.data.dismissPwa);
-    return { ...currentResult.data, dismissPwa };
+    const activePartyId = currentResult.data.parties.some(
+      (party) => party.id === currentResult.data.activePartyId,
+    )
+      ? currentResult.data.activePartyId
+      : (currentResult.data.parties[0]?.id ?? null);
+    return { ...currentResult.data, activePartyId, dismissPwa };
   }
 
   // Try parsing as legacy format (flat playerList) and migrate
