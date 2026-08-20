@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable, switchMap } from 'rxjs';
 import { Party, Player } from '../../types';
@@ -28,7 +28,6 @@ type ConfirmAction =
     ConfirmDialogComponent,
     FontAwesomeModule,
     ReactiveFormsModule,
-    RouterLink,
   ],
   template: `
     @if (view$ | async; as view) {
@@ -141,11 +140,7 @@ type ConfirmAction =
               <div class="empty-hint">Add players above to start playing</div>
             </div>
           }
-        </div>
-      </div>
 
-      <footer class="footer">
-        <div class="footer-actions">
           <button
             class="reset-action"
             type="button"
@@ -153,9 +148,8 @@ type ConfirmAction =
           >
             Reset Levels & Gears
           </button>
-          <a class="return-game" routerLink="/">Return to game</a>
         </div>
-      </footer>
+      </div>
 
       @if (confirmAction) {
         @switch (confirmAction.type) {
@@ -399,45 +393,16 @@ type ConfirmAction =
         opacity: 0.7;
       }
 
-      .footer {
-        flex-shrink: 0;
-        width: 100%;
-        padding: var(--space-sm) var(--space-md)
-          calc(var(--space-sm) + env(safe-area-inset-bottom));
-        border-top: var(--border-width) solid var(--color-bg-lighter);
-        background-color: var(--color-bg);
-      }
-
-      .footer-actions {
+      .reset-action {
         width: 100%;
         max-width: 440px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: var(--space-sm);
-      }
-
-      .reset-action,
-      .return-game {
         min-height: var(--touch-target);
-        padding: var(--space-xs) var(--space-sm);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--border-radius-1);
-        font-weight: var(--font-weight-strong);
-        text-align: center;
-      }
-
-      .reset-action {
+        margin-top: var(--space-lg);
+        padding: var(--space-sm);
         color: var(--color-text-muted);
         cursor: pointer;
-      }
-
-      .return-game {
-        background-color: var(--color-accent);
-        color: var(--color-on-accent);
-        text-decoration: none;
+        font-weight: var(--font-weight-strong);
+        text-align: center;
       }
     `,
   ],

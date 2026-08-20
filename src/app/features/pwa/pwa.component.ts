@@ -136,7 +136,7 @@ export class PwaComponent {
 
   protected dismiss(): void {
     this.app.patchState({ dismissPwa: Date.now() });
-    this.router.navigate(['/']).catch();
+    this.router.navigate(['/'], { replaceUrl: true }).catch();
   }
 
   protected async install(pwa: PwaUpdateState): Promise<void> {

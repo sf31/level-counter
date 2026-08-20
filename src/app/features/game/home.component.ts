@@ -38,7 +38,13 @@ interface HomeView {
           <span class="install-copy">
             Install LevelCounter for offline use.
           </span>
-          <a class="install-action" routerLink="/pwa">Install</a>
+          <a
+            class="install-action"
+            routerLink="/pwa"
+            [state]="childNavigationState"
+          >
+            Install
+          </a>
           <button
             class="install-dismiss"
             type="button"
@@ -82,7 +88,13 @@ interface HomeView {
           <div class="empty-hint">
             Create or select a party to start playing
           </div>
-          <a routerLink="parties" class="empty-cta">Go to Parties</a>
+          <a
+            routerLink="parties"
+            class="empty-cta"
+            [state]="childNavigationState"
+          >
+            Go to Parties
+          </a>
         </div>
       }
 
@@ -228,6 +240,7 @@ export class HomeComponent {
   iconDice = faDice;
   iconInstall = faCloudArrowDown;
   iconDismiss = faXmark;
+  childNavigationState = { fromGame: true };
 
   constructor(
     private app: AppService,
