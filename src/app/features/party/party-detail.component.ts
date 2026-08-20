@@ -1,22 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable, switchMap } from 'rxjs';
 import { Party, Player } from '../../types';
 import { AppService } from '../../core/services/app.service';
 import { PartyService } from './party.service';
 import { PLAYER_COLORS } from '../../const';
-import { BtnComponent } from '../../shared/components/btn.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faArrowLeft,
-  faCheck,
-  faPen,
-  faPlus,
-  faTrash,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 interface DetailView {
   party: Party;
@@ -32,131 +25,137 @@ type ConfirmAction =
   selector: 'app-party-detail',
   imports: [
     AsyncPipe,
-    BtnComponent,
     ConfirmDialogComponent,
     FontAwesomeModule,
+    ReactiveFormsModule,
     RouterLink,
   ],
   template: `
     @if (view$ | async; as view) {
-      <div class="detail-header">
-        <a
-          class="header-action"
-          routerLink="/parties"
-          aria-label="Back to parties"
-        >
-          <fa-icon [icon]="iconBack" />
-        </a>
-        @if (isRenaming) {
-          <input
-            #renameInput
-            class="rename-input"
-            type="text"
-            aria-label="Party name"
-            [value]="view.party.name"
-            (keyup.enter)="confirmRename(renameInput, view.party.id)"
-          />
-          <button
-            class="header-action confirm"
-            type="button"
-            aria-label="Save party name"
-            (click)="confirmRename(renameInput, view.party.id)"
-          >
-            <fa-icon [icon]="iconCheck" />
-          </button>
-          <button
-            class="header-action cancel"
-            type="button"
-            aria-label="Cancel renaming"
-            (click)="isRenaming = false"
-          >
-            <fa-icon [icon]="iconCancel" />
-          </button>
-        } @else {
-          <h1 class="detail-title">{{ view.party.name }}</h1>
-          <button
-            class="header-action"
-            type="button"
-            aria-label="Rename party"
-            (click)="isRenaming = true"
-          >
-            <fa-icon [icon]="iconRename" />
-          </button>
-        }
+      <div class="scrollable-section">
+        <div class="detail-header">
+          @if (isRenaming) {
+            <input
+              class="rename-input"
+              type="text"
+              aria-label="Party name"
+              [formControl]="partyNameControl"
+              (keyup.enter)="confirmRename(view.party.id)"
+            />
+            <div class="detail-actions">
+              <button
+                class="detail-action save"
+                type="button"
+                [disabled]="partyNameControl.invalid"
+                (click)="confirmRename(view.party.id)"
+              >
+                Save name
+              </button>
+              <button
+                class="detail-action"
+                type="button"
+                (click)="isRenaming = false"
+              >
+                Cancel
+              </button>
+            </div>
+          } @else {
+            <h1 class="detail-title">{{ view.party.name }}</h1>
+            <div class="detail-actions">
+              <button
+                class="detail-action"
+                type="button"
+                (click)="startRenaming(view.party.name)"
+              >
+                Rename
+              </button>
+              <button
+                class="detail-action delete"
+                type="button"
+                (click)="confirmAction = { type: 'deleteParty' }"
+              >
+                Delete
+              </button>
+            </div>
+          }
+        </div>
+
+        <div class="content">
+          @if (!view.maximumPlayersReached) {
+            <form
+              class="add-row"
+              (submit)="addPlayer(); $event.preventDefault()"
+            >
+              <input
+                type="text"
+                aria-label="Player name"
+                placeholder="Player name..."
+                autocomplete="off"
+                [formControl]="playerNameControl"
+              />
+              <button
+                class="add-btn"
+                type="submit"
+                aria-label="Add player"
+                [disabled]="playerNameControl.invalid"
+              >
+                <fa-icon [icon]="iconAdd" />
+              </button>
+            </form>
+          } @else {
+            <div class="max-warning">
+              Maximum players reached ({{ maxPlayers }})
+            </div>
+          }
+
+          @if (view.party.playerList.length > 0) {
+            <div class="section-label">
+              Players ({{ view.party.playerList.length }}/{{ maxPlayers }})
+            </div>
+            <div class="player-list">
+              @for (player of view.party.playerList; track player.id) {
+                <div class="player-row">
+                  <div
+                    class="player-color"
+                    [style.background-color]="player.color"
+                  ></div>
+                  <div class="player-name text-ellipsis">
+                    {{ player.name }}
+                  </div>
+                  <button
+                    class="player-delete"
+                    type="button"
+                    [attr.aria-label]="'Remove ' + player.name"
+                    (click)="
+                      confirmAction = { type: 'deletePlayer', player: player }
+                    "
+                  >
+                    <fa-icon [icon]="iconDelete" />
+                  </button>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="empty-players">
+              <div>No players yet</div>
+              <div class="empty-hint">Add players above to start playing</div>
+            </div>
+          }
+        </div>
       </div>
 
-      <div class="content">
-        @if (!view.maximumPlayersReached) {
-          <div class="add-row">
-            <input
-              #playerName
-              type="text"
-              aria-label="Player name"
-              placeholder="Player name..."
-              (keyup.enter)="addPlayer(playerName)"
-            />
-            <button
-              class="add-btn"
-              type="button"
-              aria-label="Add player"
-              (click)="addPlayer(playerName)"
-            >
-              <fa-icon [icon]="iconAdd" />
-            </button>
-          </div>
-        } @else {
-          <div class="max-warning">
-            Maximum players reached ({{ maxPlayers }})
-          </div>
-        }
-
-        @if (view.party.playerList.length > 0) {
-          <div class="section-label">
-            Players ({{ view.party.playerList.length }}/{{ maxPlayers }})
-          </div>
-          <div class="player-list">
-            @for (player of view.party.playerList; track player.id) {
-              <div class="player-row">
-                <div
-                  class="player-color"
-                  [style.background-color]="player.color"
-                ></div>
-                <div class="player-name text-ellipsis">{{ player.name }}</div>
-                <button
-                  class="player-delete"
-                  type="button"
-                  [attr.aria-label]="'Remove ' + player.name"
-                  (click)="
-                    confirmAction = { type: 'deletePlayer', player: player }
-                  "
-                >
-                  <fa-icon [icon]="iconDelete" />
-                </button>
-              </div>
-            }
-          </div>
-        } @else {
-          <div class="empty-players">
-            <div>No players yet</div>
-            <div class="empty-hint">Add players above to start playing</div>
-          </div>
-        }
-
-        <div class="danger-zone">
-          <app-btn
-            class="btn-reset"
+      <footer class="footer">
+        <div class="footer-actions">
+          <button
+            class="reset-action"
+            type="button"
             (click)="confirmAction = { type: 'resetLevels' }"
           >
             Reset Levels & Gears
-          </app-btn>
-          <app-btn
-            class="btn-delete"
-            (click)="confirmAction = { type: 'deleteParty' }"
-          >
-            Delete Party
-          </app-btn>
+          </button>
+          <a class="return-game" routerLink="/">Return to game</a>
         </div>
-      </div>
+      </footer>
 
       @if (confirmAction) {
         @switch (confirmAction.type) {
@@ -167,6 +166,7 @@ type ConfirmAction =
                 'Remove ' + confirmAction.player.name + ' from this party?'
               "
               confirmLabel="Remove"
+              [danger]="true"
               (confirm)="removePlayer(confirmAction.player)"
               (cancel)="confirmAction = null"
             />
@@ -174,12 +174,9 @@ type ConfirmAction =
           @case ('deleteParty') {
             <app-confirm-dialog
               title="Delete Party"
-              [message]="
-                'Permanently delete ' +
-                view.party.name +
-                ' and all its players?'
-              "
+              message="This party will be deleted. This action can not be undone."
               confirmLabel="Delete"
+              [danger]="true"
               (confirm)="deleteParty(view.party)"
               (cancel)="confirmAction = null"
             />
@@ -187,11 +184,7 @@ type ConfirmAction =
           @case ('resetLevels') {
             <app-confirm-dialog
               title="Reset Levels & Gears"
-              [message]="
-                'Reset all players in ' +
-                view.party.name +
-                ' to Level 1 and Gear 0?'
-              "
+              message="All players will be reseted to Level 1 and Gear 0"
               confirmLabel="Reset"
               (confirm)="resetLevels()"
               (cancel)="confirmAction = null"
@@ -204,63 +197,83 @@ type ConfirmAction =
   styles: [
     `
       :host {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        min-height: 100%;
+      }
+
+      .scrollable-section {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
       }
 
       .detail-header {
-        min-height: var(--header-height);
         padding: var(--space-sm) var(--space-md);
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: var(--space-sm);
         border-bottom: var(--border-width) solid var(--color-bg-lighter);
       }
 
       .detail-title {
-        min-width: 0;
-        flex: 1;
+        width: 100%;
+        max-width: 440px;
         margin: 0;
-        overflow: hidden;
         font-size: var(--font-size-title);
         text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow-wrap: anywhere;
       }
 
       .rename-input {
-        flex: 1;
+        width: 100%;
+        max-width: 440px;
         font-size: var(--font-size-body);
         font-weight: var(--font-weight-strong);
-        min-width: 0;
       }
 
-      .header-action {
+      .detail-actions {
+        width: 100%;
+        max-width: 440px;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        width: var(--touch-target);
-        height: var(--touch-target);
+        gap: var(--space-sm);
+      }
+
+      .detail-action {
+        min-height: var(--touch-target);
+        flex: 1;
+        padding: 0 var(--space-md);
+        background-color: transparent;
         color: var(--color-text-muted);
         cursor: pointer;
-        border: none;
-        background: none;
-        font-size: var(--font-size-body);
-        flex-shrink: 0;
-        text-decoration: none;
+        font-weight: var(--font-weight-strong);
+        transition: opacity var(--duration-fast);
       }
 
-      .header-action.confirm {
+      .detail-action.save {
         color: var(--color-success);
       }
 
-      .header-action.cancel {
+      .detail-action.delete {
         color: var(--color-danger);
       }
 
+      .detail-action:active:not(:disabled) {
+        opacity: 0.7;
+      }
+
+      .detail-action:focus-visible {
+        outline: var(--border-width-strong) solid var(--color-accent);
+        outline-offset: calc(-1 * var(--border-width-strong));
+      }
+
+      .detail-action:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+
       .content {
-        flex: 1;
         padding: var(--space-md);
         display: flex;
         flex-direction: column;
@@ -295,8 +308,13 @@ type ConfirmAction =
         transition: opacity var(--duration-fast);
       }
 
-      .add-btn:active {
+      .add-btn:active:not(:disabled) {
         opacity: 0.8;
+      }
+
+      .add-btn:disabled {
+        opacity: 0.45;
+        cursor: default;
       }
 
       .max-warning {
@@ -381,23 +399,45 @@ type ConfirmAction =
         opacity: 0.7;
       }
 
-      .danger-zone {
+      .footer {
+        flex-shrink: 0;
+        width: 100%;
+        padding: var(--space-sm) var(--space-md)
+          calc(var(--space-sm) + env(safe-area-inset-bottom));
+        border-top: var(--border-width) solid var(--color-bg-lighter);
+        background-color: var(--color-bg);
+      }
+
+      .footer-actions {
         width: 100%;
         max-width: 440px;
-        margin-top: auto;
-        padding-top: var(--space-lg);
-        display: flex;
-        flex-direction: column;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-sm);
-        padding-bottom: var(--space-lg);
       }
 
-      .btn-reset {
-        background-color: var(--color-bg-lighter);
+      .reset-action,
+      .return-game {
+        min-height: var(--touch-target);
+        padding: var(--space-xs) var(--space-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius-1);
+        font-weight: var(--font-weight-strong);
+        text-align: center;
       }
 
-      .btn-delete {
-        background-color: var(--color-danger);
+      .reset-action {
+        color: var(--color-text-muted);
+        cursor: pointer;
+      }
+
+      .return-game {
+        background-color: var(--color-accent);
+        color: var(--color-on-accent);
+        text-decoration: none;
       }
     `,
   ],
@@ -409,12 +449,16 @@ export class PartyDetailComponent implements OnInit {
   confirmAction: ConfirmAction | null = null;
   maxPlayers = PLAYER_COLORS.length;
 
-  iconBack = faArrowLeft;
-  iconRename = faPen;
-  iconCheck = faCheck;
-  iconCancel = faXmark;
   iconAdd = faPlus;
   iconDelete = faTrash;
+  playerNameControl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.pattern(/\S/)],
+  });
+  partyNameControl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.pattern(/\S/)],
+  });
 
   constructor(
     private app: AppService,
@@ -449,53 +493,32 @@ export class PartyDetailComponent implements OnInit {
     );
   }
 
-  addPlayer(input: HTMLInputElement): void {
-    const name = input.value.trim();
-    if (!name) return;
-    // Temporarily switch active party to this one for addPlayer to work
-    const partyId = this.route.snapshot.paramMap.get('id');
-    if (partyId) {
-      const prevActiveId = this.app.getStateSnapshot().activePartyId;
-      this.app.patchState({ activePartyId: partyId });
-      this.app.addPlayer(name);
-      if (prevActiveId !== partyId) {
-        this.app.patchState({ activePartyId: prevActiveId });
-      }
-    }
-    input.value = '';
+  addPlayer(): void {
+    if (this.playerNameControl.invalid) return;
+
+    this.app.addPlayer(this.playerNameControl.value.trim());
+    this.playerNameControl.reset();
   }
 
   removePlayer(player: Player): void {
-    const partyId = this.route.snapshot.paramMap.get('id');
-    if (partyId) {
-      const prevActiveId = this.app.getStateSnapshot().activePartyId;
-      this.app.patchState({ activePartyId: partyId });
-      this.app.removePlayer(player);
-      if (prevActiveId !== partyId) {
-        this.app.patchState({ activePartyId: prevActiveId });
-      }
-    }
+    this.app.removePlayer(player);
     this.confirmAction = null;
   }
 
-  confirmRename(input: HTMLInputElement, partyId: string): void {
-    const newName = input.value.trim();
-    if (newName) {
-      this.partyService.renameParty(partyId, newName);
-    }
+  startRenaming(partyName: string): void {
+    this.partyNameControl.setValue(partyName);
+    this.isRenaming = true;
+  }
+
+  confirmRename(partyId: string): void {
+    if (this.partyNameControl.invalid) return;
+
+    this.partyService.renameParty(partyId, this.partyNameControl.value.trim());
     this.isRenaming = false;
   }
 
   resetLevels(): void {
-    const partyId = this.route.snapshot.paramMap.get('id');
-    if (partyId) {
-      const prevActiveId = this.app.getStateSnapshot().activePartyId;
-      this.app.patchState({ activePartyId: partyId });
-      this.app.resetPlayers();
-      if (prevActiveId !== partyId) {
-        this.app.patchState({ activePartyId: prevActiveId });
-      }
-    }
+    this.app.resetPlayers();
     this.confirmAction = null;
   }
 

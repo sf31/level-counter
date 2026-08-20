@@ -16,7 +16,11 @@ import { BtnComponent } from './btn.component';
       <div class="dialog-message">{{ message() }}</div>
       <div class="dialog-actions">
         <app-btn class="btn-cancel" (click)="cancel.emit()">Cancel</app-btn>
-        <app-btn class="btn-confirm" (click)="confirm.emit()">
+        <app-btn
+          class="btn-confirm"
+          [class.danger]="danger()"
+          (click)="confirm.emit()"
+        >
           {{ confirmLabel() }}
         </app-btn>
       </div>
@@ -51,7 +55,7 @@ import { BtnComponent } from './btn.component';
         background-color: var(--color-success);
       }
 
-      :host-context(.danger) .btn-confirm {
+      .btn-confirm.danger {
         background-color: var(--color-danger);
       }
     `,
