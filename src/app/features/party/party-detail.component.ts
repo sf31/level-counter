@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  afterRenderEffect,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -34,13 +41,17 @@ type ConfirmAction =
       <div class="scrollable-section">
         <div class="detail-header">
           @if (isRenaming) {
-            <input
+            <textarea
+              #partyNameTextarea
               class="rename-input"
-              type="text"
+              rows="1"
               aria-label="Party name"
               [formControl]="partyNameControl"
-              (keyup.enter)="confirmRename(view.party.id)"
-            />
+              (input)="resizePartyNameInput(partyNameTextarea)"
+              (keydown.enter)="
+                confirmRename(view.party.id); $event.preventDefault()
+              "
+            ></textarea>
             <div class="detail-actions">
               <button
                 class="detail-action save"
@@ -140,16 +151,18 @@ type ConfirmAction =
               <div class="empty-hint">Add players above to start playing</div>
             </div>
           }
-
-          <button
-            class="reset-action"
-            type="button"
-            (click)="confirmAction = { type: 'resetLevels' }"
-          >
-            Reset Levels & Gears
-          </button>
         </div>
       </div>
+
+      <footer class="footer">
+        <button
+          class="reset-action"
+          type="button"
+          (click)="confirmAction = { type: 'resetLevels' }"
+        >
+          Reset Levels & Gears
+        </button>
+      </footer>
 
       @if (confirmAction) {
         @switch (confirmAction.type) {
@@ -168,7 +181,11 @@ type ConfirmAction =
           @case ('deleteParty') {
             <app-confirm-dialog
               title="Delete Party"
-              message="This party will be deleted. This action can not be undone."
+              [message]="
+                'Delete ' +
+                view.party.name +
+                ' and all its players? This cannot be undone.'
+              "
               confirmLabel="Delete"
               [danger]="true"
               (confirm)="deleteParty(view.party)"
@@ -178,7 +195,7 @@ type ConfirmAction =
           @case ('resetLevels') {
             <app-confirm-dialog
               title="Reset Levels & Gears"
-              message="All players will be reseted to Level 1 and Gear 0"
+              message="Reset every player to Level 1 and Gear 0?"
               confirmLabel="Reset"
               (confirm)="resetLevels()"
               (cancel)="confirmAction = null"
@@ -221,10 +238,25 @@ type ConfirmAction =
       }
 
       .rename-input {
+        display: block;
         width: 100%;
         max-width: 440px;
+        min-height: var(--touch-target);
+        overflow-y: hidden;
+        resize: none;
+        padding: var(--space-sm) var(--space-md);
+        border: var(--border-width) solid var(--color-border);
+        border-radius: var(--border-radius-1);
+        background-color: var(--color-bg-lighter);
+        color: var(--color-text);
         font-size: var(--font-size-body);
         font-weight: var(--font-weight-strong);
+        line-height: var(--line-height-body);
+        transition: border-color var(--duration-normal);
+      }
+
+      .rename-input:focus {
+        border-color: var(--color-accent);
       }
 
       .detail-actions {
@@ -393,11 +425,20 @@ type ConfirmAction =
         opacity: 0.7;
       }
 
+      .footer {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        padding: var(--space-sm) var(--space-md)
+          calc(var(--space-sm) + env(safe-area-inset-bottom));
+        border-top: var(--border-width) solid var(--color-bg-lighter);
+        background-color: var(--color-bg);
+      }
+
       .reset-action {
         width: 100%;
         max-width: 440px;
         min-height: var(--touch-target);
-        margin-top: var(--space-lg);
         padding: var(--space-sm);
         color: var(--color-text-muted);
         cursor: pointer;
@@ -409,6 +450,9 @@ type ConfirmAction =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PartyDetailComponent implements OnInit {
+  private readonly partyNameTextarea =
+    viewChild<ElementRef<HTMLTextAreaElement>>('partyNameTextarea');
+
   view$!: Observable<DetailView>;
   isRenaming = false;
   confirmAction: ConfirmAction | null = null;
@@ -430,7 +474,12 @@ export class PartyDetailComponent implements OnInit {
     private partyService: PartyService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) {
+    afterRenderEffect(() => {
+      const textarea = this.partyNameTextarea()?.nativeElement;
+      if (textarea) this.resizePartyNameInput(textarea);
+    });
+  }
 
   ngOnInit(): void {
     this.view$ = this.route.paramMap.pipe(
@@ -473,6 +522,13 @@ export class PartyDetailComponent implements OnInit {
   startRenaming(partyName: string): void {
     this.partyNameControl.setValue(partyName);
     this.isRenaming = true;
+  }
+
+  resizePartyNameInput(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${
+      textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight
+    }px`;
   }
 
   confirmRename(partyId: string): void {
