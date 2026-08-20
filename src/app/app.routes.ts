@@ -21,6 +21,18 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/pwa/pwa.component').then((m) => m.PwaComponent),
   },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./features/settings/settings.component').then(
+        (m) => m.SettingsComponent,
+      ),
+  },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./features/about/about.component').then((m) => m.AboutComponent),
+  },
   { path: '', component: HomeComponent },
   { path: '**', redirectTo: '' },
 ];

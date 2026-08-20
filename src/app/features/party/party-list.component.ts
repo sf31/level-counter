@@ -11,7 +11,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCheck, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, map } from 'rxjs';
@@ -34,7 +33,7 @@ import { PartyListItemComponent } from './party-list-item.component';
       <section class="content" aria-labelledby="parties-title">
         <div class="heading">
           <h1 id="parties-title">Parties</h1>
-          <p>Select a party to play or edit its players.</p>
+          <p>Select a party to return to the game.</p>
         </div>
 
         @if (isCreating()) {
@@ -84,7 +83,6 @@ import { PartyListItemComponent } from './party-list-item.component';
               [party]="party"
               [activePartyId]="view.activePartyId"
               (selected)="switchParty(party.id)"
-              (edit)="goToDetail(party.id)"
             />
           } @empty {
             <app-party-list-empty />
@@ -201,7 +199,6 @@ import { PartyListItemComponent } from './party-list-item.component';
 export class PartyListComponent {
   private readonly app = inject(AppService);
   private readonly partyService = inject(PartyService);
-  private readonly router = inject(Router);
 
   protected readonly iconAdd = faPlus;
   protected readonly iconConfirm = faCheck;
@@ -243,9 +240,5 @@ export class PartyListComponent {
 
   protected switchParty(partyId: string): void {
     this.partyService.switchParty(partyId);
-  }
-
-  protected goToDetail(partyId: string): void {
-    this.router.navigate(['/parties', partyId]);
   }
 }
