@@ -32,14 +32,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/pwa/pwa.component').then((m) => m.PwaComponent),
   },
-  // {
-  //   path: 'settings',
-  //   data: { headerTitle: 'Settings' },
-  //   loadComponent: () =>
-  //     import('./features/settings/settings.component').then(
-  //       (m) => m.SettingsComponent,
-  //     ),
-  // },
+  {
+    path: 'settings',
+    data: { headerTitle: 'Settings' },
+    loadComponent: () =>
+      import('./features/settings/settings.component').then(
+        (m) => m.SettingsComponent,
+      ),
+  },
   {
     path: 'about',
     data: { headerTitle: 'About' },

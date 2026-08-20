@@ -42,9 +42,12 @@ interface DraftPlayer {
             (keydown.enter)="$event.preventDefault()"
           ></textarea>
 
-          <label class="field-label players-label" for="player-name">
-            Players
-          </label>
+          <div class="players-header">
+            <label class="field-label" for="player-name">Players</label>
+            <span class="player-count">
+              {{ players().length }}/{{ maxPlayers }}
+            </span>
+          </div>
           @if (players().length < maxPlayers) {
             <form
               class="add-row"
@@ -73,9 +76,6 @@ interface DraftPlayer {
           }
 
           @if (players().length > 0) {
-            <div class="player-count">
-              {{ players().length }}/{{ maxPlayers }} players
-            </div>
             <div class="player-list">
               @for (player of players(); track player.id) {
                 <div class="player-row">
@@ -98,7 +98,7 @@ interface DraftPlayer {
               }
             </div>
           } @else {
-            <div class="empty-players">Add a player to start the game.</div>
+            <div class="empty-players">No players yet</div>
           }
         </div>
       </div>
@@ -163,8 +163,17 @@ interface DraftPlayer {
         font-size: var(--font-size-caption);
       }
 
-      .players-label {
+      .players-header {
         margin-top: var(--space-lg);
+        margin-bottom: var(--space-xs);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-sm);
+      }
+
+      .players-header .field-label {
+        margin-bottom: 0;
       }
 
       .party-name {
@@ -204,7 +213,8 @@ interface DraftPlayer {
 
       .add-button:disabled,
       .start-button:disabled {
-        opacity: 0.45;
+        background-color: var(--color-bg-lighter);
+        color: var(--color-text-muted);
         cursor: default;
       }
 
@@ -221,14 +231,12 @@ interface DraftPlayer {
       }
 
       .player-count {
-        margin: var(--space-lg) 0 var(--space-sm);
         color: var(--color-text-muted);
         font-size: var(--font-size-caption);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
       }
 
       .player-list {
+        margin-top: var(--space-sm);
         display: flex;
         flex-direction: column;
         gap: var(--space-xs);

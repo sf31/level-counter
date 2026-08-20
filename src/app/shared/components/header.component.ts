@@ -74,13 +74,13 @@ interface RouteHeader {
               >
                 Party list
               </a>
-              <a
-                routerLink="/settings"
-                [state]="childNavigationState"
-                (click)="navigationMenu.hidePopover()"
-              >
-                Settings
-              </a>
+              <!--              <a-->
+              <!--                routerLink="/settings"-->
+              <!--                [state]="childNavigationState"-->
+              <!--                (click)="navigationMenu.hidePopover()"-->
+              <!--              >-->
+              <!--                Settings-->
+              <!--              </a>-->
               <a
                 routerLink="/pwa"
                 [state]="childNavigationState"
