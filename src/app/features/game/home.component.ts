@@ -32,31 +32,33 @@ interface HomeView {
   ],
   template: `
     @if (view$ | async; as view) {
-      @if (view.showInstallNotice) {
-        <aside class="install-notice" aria-label="Install LevelCounter">
-          <fa-icon class="install-icon" [icon]="iconInstall" />
-          <span class="install-copy">
-            Install LevelCounter for offline use.
-          </span>
-          <a
-            class="install-action"
-            routerLink="/pwa"
-            [state]="childNavigationState"
-          >
-            Install
-          </a>
-          <button
-            class="install-dismiss"
-            type="button"
-            aria-label="Dismiss installation notice"
-            (click)="dismissInstall()"
-          >
-            <fa-icon [icon]="iconDismiss" />
-          </button>
-        </aside>
-      }
-
       @if (view.activeParty) {
+        <h1 class="party-title">{{ view.activeParty.name }}</h1>
+
+        @if (view.showInstallNotice) {
+          <aside class="install-notice" aria-label="Install LevelCounter">
+            <fa-icon class="install-icon" [icon]="iconInstall" />
+            <span class="install-copy">
+              Install LevelCounter for offline use.
+            </span>
+            <a
+              class="install-action"
+              routerLink="/pwa"
+              [state]="childNavigationState"
+            >
+              Install
+            </a>
+            <button
+              class="install-dismiss"
+              type="button"
+              aria-label="Dismiss installation notice"
+              (click)="dismissInstall()"
+            >
+              <fa-icon [icon]="iconDismiss" />
+            </button>
+          </aside>
+        }
+
         <div class="player-list">
           @for (player of view.playerList; track player.id) {
             <app-player
@@ -112,6 +114,13 @@ interface HomeView {
         display: flex;
         flex-direction: column;
         min-height: 100%;
+      }
+
+      .party-title {
+        margin: 0;
+        padding: var(--space-md) var(--space-sm) var(--space-xs);
+        font-size: var(--font-size-title);
+        overflow-wrap: anywhere;
       }
 
       .player-list {

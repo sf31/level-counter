@@ -42,62 +42,65 @@ interface RouteHeader {
             <div class="title text-ellipsis">
               {{ view.routeHeader.sectionTitle }}
             </div>
-          } @else if (view.activeParty) {
-            <div class="title text-ellipsis">{{ view.activeParty.name }}</div>
-
-            <button
-              class="header-action"
-              type="button"
-              popovertarget="navigation-menu"
-              aria-label="Open menu"
-            >
-              <fa-icon [icon]="menuIcon" />
-            </button>
-
-            <nav
-              #navigationMenu
-              id="navigation-menu"
-              popover
-              aria-label="Navigation"
-            >
-              <a
-                [routerLink]="['/parties', view.activeParty.id]"
-                [state]="childNavigationState"
-                (click)="navigationMenu.hidePopover()"
-              >
-                Party settings
-              </a>
-              <a
-                routerLink="/parties"
-                [state]="childNavigationState"
-                (click)="navigationMenu.hidePopover()"
-              >
-                Party list
-              </a>
-              <!--              <a-->
-              <!--                routerLink="/settings"-->
-              <!--                [state]="childNavigationState"-->
-              <!--                (click)="navigationMenu.hidePopover()"-->
-              <!--              >-->
-              <!--                Settings-->
-              <!--              </a>-->
-              <a
-                routerLink="/pwa"
-                [state]="childNavigationState"
-                (click)="navigationMenu.hidePopover()"
-              >
-                Install app
-              </a>
-              <a
-                routerLink="/about"
-                [state]="childNavigationState"
-                (click)="navigationMenu.hidePopover()"
-              >
-                About
-              </a>
-            </nav>
           } @else {
-            <div class="title text-ellipsis">LevelCounter</div>
+            <div class="title brand text-ellipsis">
+              <span class="brand-level">Level</span
+              ><span class="brand-accent">Counter</span>
+            </div>
+
+            @if (view.activeParty) {
+              <button
+                class="header-action"
+                type="button"
+                popovertarget="navigation-menu"
+                aria-label="Open menu"
+              >
+                <fa-icon [icon]="menuIcon" />
+              </button>
+
+              <nav
+                #navigationMenu
+                id="navigation-menu"
+                popover
+                aria-label="Navigation"
+              >
+                <a
+                  [routerLink]="['/parties', view.activeParty.id]"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  Party settings
+                </a>
+                <a
+                  routerLink="/parties"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  Party list
+                </a>
+                <!--              <a-->
+                <!--                routerLink="/settings"-->
+                <!--                [state]="childNavigationState"-->
+                <!--                (click)="navigationMenu.hidePopover()"-->
+                <!--              >-->
+                <!--                Settings-->
+                <!--              </a>-->
+                <a
+                  routerLink="/pwa"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  Install app
+                </a>
+                <a
+                  routerLink="/about"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  About
+                </a>
+              </nav>
+            }
           }
         </div>
       </header>
@@ -128,6 +131,21 @@ interface RouteHeader {
         flex: 1;
         font-size: var(--font-size-control);
         font-weight: var(--font-weight-strong);
+      }
+
+      .brand {
+        //letter-spacing: 0.02em;
+        //font-style: italic;
+      }
+
+      .brand-level {
+        color: var(--color-accent);
+        //color: var(--color-accent);
+      }
+
+      .brand-accent {
+        color: var(--color-text-muted);
+        //color: var(--color-text-muted);
       }
 
       .header-action {
