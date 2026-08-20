@@ -9,7 +9,11 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faArrowLeft,
+  faCircleInfo,
+  faDownload,
   faEllipsisVertical,
+  faGear,
+  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, filter, map, startWith } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
@@ -64,41 +68,57 @@ interface RouteHeader {
                 popover
                 aria-label="Navigation"
               >
-                <a
-                  [routerLink]="['/parties', view.activeParty.id]"
-                  [state]="childNavigationState"
-                  (click)="navigationMenu.hidePopover()"
+                <div
+                  class="menu-section"
+                  role="group"
+                  aria-labelledby="party-menu-label"
                 >
-                  Party settings
-                </a>
-                <a
-                  routerLink="/parties"
-                  [state]="childNavigationState"
-                  (click)="navigationMenu.hidePopover()"
+                  <div id="party-menu-label" class="menu-section-label">
+                    Party
+                  </div>
+                  <a
+                    [routerLink]="['/parties', view.activeParty.id]"
+                    [state]="childNavigationState"
+                    (click)="navigationMenu.hidePopover()"
+                  >
+                    <fa-icon class="menu-icon" [icon]="partySettingsIcon" />
+                    <span>Party settings</span>
+                  </a>
+                  <a
+                    routerLink="/parties"
+                    [state]="childNavigationState"
+                    (click)="navigationMenu.hidePopover()"
+                  >
+                    <fa-icon class="menu-icon" [icon]="partyListIcon" />
+                    <span>Party list</span>
+                  </a>
+                </div>
+
+                <div class="menu-divider" role="separator"></div>
+
+                <div
+                  class="menu-section"
+                  role="group"
+                  aria-labelledby="app-menu-label"
                 >
-                  Party list
-                </a>
-                <!--              <a-->
-                <!--                routerLink="/settings"-->
-                <!--                [state]="childNavigationState"-->
-                <!--                (click)="navigationMenu.hidePopover()"-->
-                <!--              >-->
-                <!--                Settings-->
-                <!--              </a>-->
-                <a
-                  routerLink="/pwa"
-                  [state]="childNavigationState"
-                  (click)="navigationMenu.hidePopover()"
-                >
-                  Install app
-                </a>
-                <a
-                  routerLink="/about"
-                  [state]="childNavigationState"
-                  (click)="navigationMenu.hidePopover()"
-                >
-                  About
-                </a>
+                  <div id="app-menu-label" class="menu-section-label">App</div>
+                  <a
+                    routerLink="/pwa"
+                    [state]="childNavigationState"
+                    (click)="navigationMenu.hidePopover()"
+                  >
+                    <fa-icon class="menu-icon" [icon]="installIcon" />
+                    <span>Install app</span>
+                  </a>
+                  <a
+                    routerLink="/about"
+                    [state]="childNavigationState"
+                    (click)="navigationMenu.hidePopover()"
+                  >
+                    <fa-icon class="menu-icon" [icon]="aboutIcon" />
+                    <span>About</span>
+                  </a>
+                </div>
               </nav>
             }
           }
@@ -152,8 +172,18 @@ interface RouteHeader {
         width: var(--touch-target);
         height: var(--touch-target);
         flex-shrink: 0;
+        border-radius: var(--border-radius-1);
         color: var(--color-text);
         cursor: pointer;
+      }
+
+      .header-action:is(:hover, :focus-visible) {
+        background-color: var(--color-bg-lighter);
+      }
+
+      .header-action:focus-visible {
+        outline: var(--border-width-strong) solid var(--color-accent);
+        outline-offset: calc(-1 * var(--border-width-strong));
       }
 
       nav {
@@ -163,10 +193,20 @@ interface RouteHeader {
         width: min(220px, calc(100vw - var(--space-md)));
         margin: 0;
         padding: var(--space-xs);
-        border: 0;
+        border: var(--border-width) solid var(--color-border);
         border-radius: var(--border-radius-1);
-        background-color: var(--color-bg-light);
-        box-shadow: var(--shadow-raised);
+        background-color: var(--color-bg-lighter);
+        box-shadow:
+          0 12px 28px rgba(0, 0, 0, 0.38),
+          var(--shadow-raised);
+      }
+
+      .menu-section-label {
+        padding: var(--space-sm) var(--space-md) var(--space-xs);
+        color: var(--color-text-muted);
+        font-size: 0.75rem;
+        font-weight: var(--font-weight-strong);
+        text-transform: uppercase;
       }
 
       nav a {
@@ -174,12 +214,36 @@ interface RouteHeader {
         padding: 0 var(--space-md);
         display: flex;
         align-items: center;
+        gap: var(--space-sm);
+        border-radius: var(--border-radius-1);
         color: var(--color-text);
         text-decoration: none;
       }
 
+      nav a:is(:hover, :focus-visible) {
+        background-color: var(--color-surface);
+      }
+
+      nav a:focus-visible {
+        outline: var(--border-width-strong) solid var(--color-accent);
+        outline-offset: calc(-1 * var(--border-width-strong));
+      }
+
       nav a:active {
-        background-color: var(--color-bg-lighter);
+        background-color: var(--color-surface-light);
+      }
+
+      .menu-icon {
+        width: 1.25rem;
+        flex-shrink: 0;
+        color: var(--color-text-muted);
+        text-align: center;
+      }
+
+      .menu-divider {
+        height: var(--border-width);
+        margin: var(--space-xs) var(--space-sm);
+        background-color: var(--color-border);
       }
     `,
   ],
@@ -193,6 +257,10 @@ export class HeaderComponent {
 
   protected readonly backIcon = faArrowLeft;
   protected readonly menuIcon = faEllipsisVertical;
+  protected readonly partySettingsIcon = faGear;
+  protected readonly partyListIcon = faUsers;
+  protected readonly installIcon = faDownload;
+  protected readonly aboutIcon = faCircleInfo;
   protected readonly childNavigationState = { fromGame: true };
 
   private readonly routeHeader$ = this.router.events.pipe(
