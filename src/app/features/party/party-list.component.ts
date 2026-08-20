@@ -90,6 +90,12 @@ import { PartyListItemComponent } from './party-list-item.component';
         font-weight: var(--font-weight-strong);
         cursor: pointer;
         text-decoration: none;
+        box-shadow: var(--shadow-control);
+        transition: transform var(--duration-fast);
+      }
+
+      .create-party:active {
+        transform: translateY(2px);
       }
 
       .party-list {

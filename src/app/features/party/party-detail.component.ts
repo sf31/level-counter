@@ -318,11 +318,15 @@ type ConfirmAction =
         cursor: pointer;
         flex-shrink: 0;
         border: none;
-        transition: opacity var(--duration-fast);
+        box-shadow: var(--shadow-control);
+        transition:
+          opacity var(--duration-fast),
+          transform var(--duration-fast);
       }
 
       .add-btn:active:not(:disabled) {
         opacity: 0.8;
+        transform: translateY(2px);
       }
 
       .add-btn:disabled {
@@ -363,7 +367,9 @@ type ConfirmAction =
         gap: var(--space-md);
         padding: var(--space-sm) var(--space-md);
         background-color: var(--color-bg-light);
+        border: var(--border-width) solid var(--color-border-subtle);
         border-radius: var(--border-radius-1);
+        box-shadow: var(--shadow-surface);
         min-height: var(--touch-target);
       }
 
@@ -371,6 +377,7 @@ type ConfirmAction =
         width: 14px;
         height: 14px;
         border-radius: 50%;
+        border: var(--border-width-strong) solid rgba(255, 255, 255, 0.72);
         flex-shrink: 0;
       }
 

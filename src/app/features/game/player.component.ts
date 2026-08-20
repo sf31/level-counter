@@ -51,6 +51,10 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
         display: grid;
         grid-template-columns: auto 1fr auto;
         border-radius: var(--border-radius-2);
+        border: var(--border-width) solid rgba(255, 255, 255, 0.24);
+        box-shadow:
+          inset 0 var(--border-width) 0 rgba(255, 255, 255, 0.2),
+          var(--shadow-raised);
         overflow: hidden;
         color: var(--color-text);
         padding: var(--space-sm) var(--space-md);

@@ -39,8 +39,9 @@ import { Party } from '../../types';
         align-items: flex-start;
         justify-content: center;
         background-color: var(--color-bg-light);
-        border: var(--border-width-strong) solid transparent;
+        border: var(--border-width-strong) solid var(--color-border-subtle);
         border-radius: var(--border-radius-1);
+        box-shadow: var(--shadow-surface);
         overflow: hidden;
         cursor: pointer;
         text-align: left;
@@ -55,6 +56,7 @@ import { Party } from '../../types';
 
       .party-card:active {
         background-color: var(--color-bg-lighter);
+        box-shadow: none;
       }
 
       .name {

@@ -144,8 +144,10 @@ interface HomeView {
         align-items: center;
         gap: var(--space-sm);
         border: var(--border-width) solid var(--color-border-subtle);
+        border-left: 4px solid var(--color-accent);
         border-radius: var(--border-radius-1);
         background-color: var(--color-bg-light);
+        box-shadow: var(--shadow-surface);
       }
 
       .install-icon {
@@ -214,6 +216,12 @@ interface HomeView {
         font-size: var(--font-size-body);
         text-decoration: none;
         margin-top: var(--space-md);
+        box-shadow: var(--shadow-control);
+        transition: transform var(--duration-fast);
+      }
+
+      .empty-cta:active {
+        transform: translateY(2px);
       }
 
       .fab {
@@ -230,9 +238,11 @@ interface HomeView {
         justify-content: center;
         font-size: var(--font-size-icon);
         cursor: pointer;
-        border: none;
+        border: var(--border-width) solid rgba(255, 255, 255, 0.18);
         z-index: 5;
-        transition: transform var(--duration-fast);
+        transition:
+          transform var(--duration-fast),
+          box-shadow var(--duration-fast);
       }
 
       .fab:active {

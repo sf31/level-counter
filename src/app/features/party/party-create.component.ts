@@ -209,6 +209,13 @@ interface DraftPlayer {
         border-radius: var(--border-radius-1);
         background-color: var(--color-accent);
         color: var(--color-on-accent);
+        box-shadow: var(--shadow-control);
+        transition: transform var(--duration-fast);
+      }
+
+      .add-button:active:not(:disabled),
+      .start-button:active:not(:disabled) {
+        transform: translateY(2px);
       }
 
       .add-button:disabled,
@@ -248,8 +255,10 @@ interface DraftPlayer {
         display: flex;
         align-items: center;
         gap: var(--space-md);
+        border: var(--border-width) solid var(--color-border-subtle);
         border-radius: var(--border-radius-1);
         background-color: var(--color-bg-light);
+        box-shadow: var(--shadow-surface);
       }
 
       .player-color {
@@ -257,6 +266,7 @@ interface DraftPlayer {
         height: 14px;
         flex-shrink: 0;
         border-radius: 50%;
+        border: var(--border-width-strong) solid rgba(255, 255, 255, 0.72);
       }
 
       .player-name {
@@ -289,6 +299,8 @@ interface DraftPlayer {
         color: var(--color-text);
         font-weight: var(--font-weight-strong);
         cursor: pointer;
+        box-shadow: var(--shadow-control);
+        transition: transform var(--duration-fast);
       }
     `,
   ],

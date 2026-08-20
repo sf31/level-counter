@@ -59,7 +59,9 @@
   --duration-fast: 0.15s;
   --duration-normal: 0.2s;
   --duration-slow: 0.25s;
-  --shadow-raised: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --shadow-surface: 0 2px 6px rgba(0, 0, 0, 0.18);
+  --shadow-raised: 0 6px 14px rgba(0, 0, 0, 0.26), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-control: 0 3px 0 rgba(0, 0, 0, 0.22);
 
   /* Header */
   --header-height: 56px;
@@ -95,6 +97,12 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-accent);
+  outline-offset: var(--border-width-strong);
 }
 
 /* Inputs */
