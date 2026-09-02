@@ -1,4 +1,5 @@
 import { AppState } from './types';
+import { version } from '../../package.json';
 
 export const INITIAL_APP_STATE: AppState = {
   parties: [],
@@ -7,6 +8,8 @@ export const INITIAL_APP_STATE: AppState = {
 };
 
 export const LSK_APP_STATE = 'level-counter-app-state';
+
+export const APP_VERSION = version;
 
 export const PLAYER_COLORS: string[] = [
   '#C62828',
