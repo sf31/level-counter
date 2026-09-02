@@ -5,13 +5,12 @@ import {
   output,
 } from '@angular/core';
 import { Player } from '../../types';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GenderComponent } from '../../shared/components/gender.component';
 import { PlusMinusComponent } from '../../shared/components/plus-minus.component';
 
 @Component({
   selector: 'app-player',
-  imports: [FontAwesomeModule, GenderComponent, PlusMinusComponent],
+  imports: [GenderComponent, PlusMinusComponent],
   template: `
     <div class="player shadow" [style.background-color]="player().color">
       <div class="side">
@@ -89,7 +88,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
       }
 
       .strength {
-        font-size: var(--font-size-display);
+        font-size: var(--font-size-hero);
         font-weight: var(--font-weight-heavy);
         text-align: center;
       }

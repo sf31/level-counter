@@ -153,19 +153,12 @@ interface RouteHeader {
         font-weight: var(--font-weight-strong);
       }
 
-      .brand {
-        //letter-spacing: 0.02em;
-        //font-style: italic;
-      }
-
       .brand-level {
         color: var(--color-accent);
-        //color: var(--color-accent);
       }
 
       .brand-accent {
         color: var(--color-text-muted);
-        //color: var(--color-text-muted);
       }
 
       .header-action {
