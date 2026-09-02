@@ -1,8 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
+  effect,
+  inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,7 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [FontAwesomeModule],
   template: `
     <fa-icon (click)="plus.emit()" [icon]="iconPlus" />
-    <div class="value">{{ value() }}</div>
+    <div class="value" [class.bump]="bumping()">{{ value() }}</div>
     <fa-icon (click)="minus.emit()" [icon]="iconMinus" />
   `,
   styles: [
@@ -26,6 +30,22 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       .value {
         font-size: var(--font-size-page-title);
         font-weight: var(--font-weight-strong);
+      }
+
+      .value.bump {
+        animation: bump var(--duration-slow) ease-out;
+      }
+
+      @keyframes bump {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.4);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
 
       fa-icon {
@@ -52,6 +72,32 @@ export class PlusMinusComponent {
   plus = output<void>();
   minus = output<void>();
 
+  protected readonly bumping = signal(false);
+
   iconMinus = faCaretDown;
   iconPlus = faCaretUp;
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    let initialized = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    effect(() => {
+      this.value();
+      if (!initialized) {
+        initialized = true;
+        return;
+      }
+      if (timer !== null) clearTimeout(timer);
+      this.bumping.set(true);
+      timer = setTimeout(() => {
+        this.bumping.set(false);
+        timer = null;
+      }, 250);
+    });
+
+    destroyRef.onDestroy(() => {
+      if (timer !== null) clearTimeout(timer);
+    });
+  }
 }

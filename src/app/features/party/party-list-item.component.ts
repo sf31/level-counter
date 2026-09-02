@@ -16,16 +16,28 @@ import { Party } from '../../types';
       [attr.aria-pressed]="isActive()"
       (click)="selected.emit()"
     >
-      <span class="name text-ellipsis">{{ party().name }}</span>
-      <span class="meta text-ellipsis">
-        @if (party().playerList.length === 0) {
-          No players
-        } @else {
-          {{ party().playerList.length }}
-          {{ party().playerList.length === 1 ? 'player' : 'players' }} ·
-          {{ playerNames() }}
+      <div class="name-row">
+        <span class="name text-ellipsis">{{ party().name }}</span>
+        @if (isActive()) {
+          <span class="active-badge">Active</span>
         }
-      </span>
+      </div>
+      <div class="meta-row">
+        @if (party().playerList.length === 0) {
+          <span class="meta-text">No players</span>
+        } @else {
+          <div class="swatches">
+            @for (p of party().playerList; track p.id) {
+              <div class="swatch" [style.background-color]="p.color"></div>
+            }
+          </div>
+          <span class="meta-text text-ellipsis">
+            {{ party().playerList.length }}
+            {{ party().playerList.length === 1 ? 'player' : 'players' }} ·
+            {{ playerNames() }}
+          </span>
+        }
+      </div>
     </button>
   `,
   styles: [
@@ -36,8 +48,8 @@ import { Party } from '../../types';
         padding: var(--space-sm) var(--space-md);
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
         justify-content: center;
+        gap: var(--space-xs);
         background-color: var(--color-bg-light);
         border: var(--border-width-strong) solid var(--color-border-subtle);
         border-radius: var(--border-radius-1);
@@ -59,15 +71,53 @@ import { Party } from '../../types';
         box-shadow: none;
       }
 
+      .name-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        min-width: 0;
+      }
+
       .name {
-        width: 100%;
+        flex: 1;
+        min-width: 0;
         font-size: 1.15rem;
         font-weight: var(--font-weight-strong);
       }
 
-      .meta {
-        width: 100%;
-        margin-top: var(--space-xs);
+      .active-badge {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        padding: 2px var(--space-xs);
+        background-color: var(--color-accent);
+        color: var(--color-on-accent);
+        border-radius: var(--border-radius-pill);
+        font-weight: var(--font-weight-strong);
+        letter-spacing: 0.04em;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        min-width: 0;
+      }
+
+      .swatches {
+        display: flex;
+        gap: 3px;
+        flex-shrink: 0;
+      }
+
+      .swatch {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+
+      .meta-text {
+        min-width: 0;
         color: var(--color-text-muted);
         font-size: 0.85rem;
       }
