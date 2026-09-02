@@ -160,11 +160,13 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
       }
 
       .f-4 {
-        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
       }
 
       .f-5 {
-        grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         & > .dot:first-child {
           grid-column: 1;
           grid-row: 1;
@@ -188,7 +190,8 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
       }
 
       .f-6 {
-        grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         & > .dot:first-child {
           grid-column: 1;
           grid-row: 1;
