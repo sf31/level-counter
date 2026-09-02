@@ -2,12 +2,21 @@
 
 # LevelCounter
 
-Simple web app to count levels and gears in board games.
+A minimalist level and gear tracker for board games.
 
-No login required, no ads and stuff.
+**[→ Open the app](https://lvl.fede.im/)**
 
-##  👉 [Try it out!](https://lvl.fede.im/)
+## Features
 
+- Track level and gear for multiple players across multiple parties
+- Works offline (installable as a PWA)
+- No account, no ads, no server
 
+## Development
 
-
+```bash
+npm install
+npm start        # dev server at http://localhost:4200
+npm test         # unit tests
+npm run build    # production build
+```
