@@ -9,6 +9,7 @@ import {
   faCloudArrowDown,
   faDice,
   faShieldHalved,
+  faUserPlus,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -69,6 +70,7 @@ interface HomeView {
         </div>
         @if (view.playerList.length === 0) {
           <div class="empty-state">
+            <fa-icon class="empty-icon" [icon]="iconNoPlayers" aria-hidden="true" />
             <div class="empty-title">No players yet</div>
             <div class="empty-hint">
               Open <fa-icon [icon]="iconParties" /> Parties to add players
@@ -86,6 +88,7 @@ interface HomeView {
         </button>
       } @else {
         <div class="empty-state">
+          <fa-icon class="empty-icon" [icon]="iconParties" aria-hidden="true" />
           <div class="empty-title">Welcome!</div>
           <div class="empty-hint">
             Create a party and add your players to start.
@@ -193,6 +196,12 @@ interface HomeView {
         gap: var(--space-md);
       }
 
+      .empty-icon {
+        font-size: 4rem;
+        color: var(--color-text-muted);
+        opacity: 0.45;
+      }
+
       .empty-title {
         font-size: var(--font-size-empty-title);
         font-weight: var(--font-weight-strong);
@@ -257,6 +266,7 @@ export class HomeComponent {
   showDice = false;
 
   iconParties = faShieldHalved;
+  iconNoPlayers = faUserPlus;
   iconDice = faDice;
   iconInstall = faCloudArrowDown;
   iconDismiss = faXmark;
