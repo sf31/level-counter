@@ -70,7 +70,11 @@ interface HomeView {
         </div>
         @if (view.playerList.length === 0) {
           <div class="empty-state">
-            <fa-icon class="empty-icon" [icon]="iconNoPlayers" aria-hidden="true" />
+            <fa-icon
+              class="empty-icon"
+              [icon]="iconNoPlayers"
+              aria-hidden="true"
+            />
             <div class="empty-title">No players yet</div>
             <div class="empty-hint">
               Open <fa-icon [icon]="iconParties" /> Parties to add players
