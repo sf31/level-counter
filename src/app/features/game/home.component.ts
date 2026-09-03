@@ -41,7 +41,7 @@ interface HomeView {
           <aside class="install-notice" aria-label="Install LevelCounter">
             <fa-icon class="install-icon" [icon]="iconInstall" />
             <span class="install-copy">
-              Install LevelCounter for offline use.
+              Install LevelCounter for quick offline access.
             </span>
             <a
               class="install-action"
@@ -302,7 +302,9 @@ export class HomeComponent {
         activeParty,
         playerList,
         showInstallNotice:
-          !!activeParty && !pwa.isRunningStandalone && dismissPwa === null,
+          !!activeParty &&
+          pwa.installStatus === 'available' &&
+          dismissPwa === null,
       })),
     );
   }

@@ -1,11 +1,13 @@
 {
-  "name": "level-counter",
-  "short_name": "level-counter",
+  "name": "LevelCounter",
+  "short_name": "LevelCounter",
+  "id": "/",
+  "description": "Track player levels and gear in tabletop board games. No account required.",
   "theme_color": "#4E342E",
   "background_color": "#4E342E",
   "display": "standalone",
-  "scope": "./",
-  "start_url": "./",
+  "scope": "/",
+  "start_url": "/",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

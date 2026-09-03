@@ -2,60 +2,63 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BtnComponent } from '../../shared/components/btn.component';
 import { AsyncPipe } from '@angular/common';
-import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PwaUpdateState } from '../../types';
 import { PwaService } from '../../core/services/pwa.service';
 import { AppService } from '../../core/services/app.service';
 
 @Component({
   selector: 'app-pwa',
-  imports: [BtnComponent, AsyncPipe, FontAwesomeModule],
+  imports: [BtnComponent, AsyncPipe],
   template: `
     @if (pwa$ | async; as pwa) {
       <div class="content">
-        <h1>Install App</h1>
-        @if (!pwa.installPending && !pwa.isRunningStandalone) {
-          <div class="text">
-            <p>
-              Looks like your browser supports
-              <a
-                class="link"
-                href="https://en.wikipedia.org/wiki/Progressive_web_app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span class="link-inner">Progressive Web Apps</span>
-                <fa-icon [icon]="iconLink" />
-              </a>
-            </p>
-            <p>Install this app on your device for a better experience.</p>
+        <h1>Install LevelCounter</h1>
+        <div class="text intro">
+          <p>Keep LevelCounter on your home screen and use it offline.</p>
+          <p>No account required.</p>
+        </div>
+        @if (pwa.installStatus === 'available') {
+          <app-btn class="success-btn" (click)="install()">
+            Install LevelCounter
+          </app-btn>
+          <app-btn class="dismiss-btn" (click)="dismiss()">
+            Hide install reminder
+          </app-btn>
+        } @else if (pwa.installStatus === 'prompting') {
+          <div class="text" role="status">
+            <p>Installing...</p>
+            <p>Follow the instructions from your browser.</p>
           </div>
-        }
-        @if (pwa.promptEvent && !pwa.isRunningStandalone) {
-          @if (!pwa.installPending) {
-            <app-btn class="success-btn" (click)="install(pwa)">
-              Install now
-            </app-btn>
-            <app-btn class="dismiss-btn" (click)="dismiss()">
-              Do not show again
-            </app-btn>
-          }
-          @if (pwa.installPending) {
+        } @else if (pwa.installStatus === 'installed') {
+          <div class="text success" role="status">
+            <p>LevelCounter is installed.</p>
+            <p>Open it from your home screen whenever you need it.</p>
+          </div>
+        } @else {
+          @if (pwa.installStatus === 'error' && pwa.installError) {
+            <div class="text error" role="alert">{{ pwa.installError }}</div>
+          } @else if (pwa.installStatus === 'dismissed') {
             <div class="text">
-              <p>Installing...</p>
-              <p>Follow the instructions of your browser</p>
+              Installation was canceled. You can install it later from your
+              browser menu.
             </div>
           }
-        }
-        @if (pwa.isRunningStandalone) {
-          <div class="text success">App successfully installed!</div>
-        }
-        @if (!pwa.promptEvent && !pwa.isRunningStandalone) {
-          <div class="text">Install prompt not available</div>
-          <div class="text">Open your browser menu to install the app</div>
-          <app-btn class="dismiss-btn" (click)="dismiss()">
-            Do not show again
+
+          <div class="text manual-install">
+            <p>To install manually, use your browser's menu:</p>
+            <ul>
+              <li><strong>Android/Chrome:</strong> Install app</li>
+              <li>
+                <strong>iPhone/iPad Safari:</strong> Share → Add to Home Screen
+              </li>
+              <li>
+                <strong>Desktop Chrome/Edge:</strong> Install in the address bar
+                or browser menu
+              </li>
+            </ul>
+          </div>
+
+          <app-btn class="dismiss-btn" (click)="backToApp()">
+            Back to app
           </app-btn>
         }
       </div>
@@ -90,29 +93,54 @@ import { AppService } from '../../core/services/app.service';
         line-height: var(--line-height-relaxed);
       }
 
+      .text p {
+        margin: 0;
+      }
+
+      .intro {
+        max-width: 440px;
+      }
+
+      .intro p + p {
+        margin-top: var(--space-sm);
+        color: var(--color-text-muted);
+      }
+
       .text.success {
         color: var(--color-success);
         font-size: var(--font-size-subtitle);
         font-weight: var(--font-weight-strong);
       }
 
-      .link {
-        white-space: nowrap;
-        cursor: pointer;
-        color: inherit;
+      .text.success p + p {
+        margin-top: var(--space-sm);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-body);
+        font-weight: normal;
       }
 
-      .link-inner {
-        text-decoration: underline;
-        margin-right: var(--space-xs);
+      .text.error {
+        color: var(--color-danger);
+        font-weight: var(--font-weight-strong);
       }
 
-      .link fa-icon {
-        font-size: var(--font-size-caption);
+      .manual-install {
+        max-width: 440px;
+        color: var(--color-text-muted);
+      }
+
+      .manual-install ul {
+        margin: var(--space-sm) 0 0;
+        padding-left: var(--space-lg);
+        text-align: left;
+      }
+
+      .manual-install li + li {
+        margin-top: var(--space-sm);
       }
 
       app-btn {
-        width: 220px;
+        width: min(280px, 100%);
       }
 
       .success-btn {
@@ -132,19 +160,17 @@ export class PwaComponent {
   private readonly router = inject(Router);
 
   protected readonly pwa$ = this.pwa.getState$();
-  protected readonly iconLink = faUpRightFromSquare;
 
   protected dismiss(): void {
     this.app.patchState({ dismissPwa: Date.now() });
     this.router.navigate(['/'], { replaceUrl: true }).catch();
   }
 
-  protected async install(pwa: PwaUpdateState): Promise<void> {
-    if (!pwa.promptEvent) return;
-    pwa.promptEvent.prompt();
-    this.pwa.patchState({ installPending: true });
-    const choice = await pwa.promptEvent.userChoice;
-    if (choice.outcome === 'accepted') this.pwa.updateIsRunningStandalone();
-    else this.pwa.patchState({ installPending: false });
+  protected install(): void {
+    void this.pwa.install();
+  }
+
+  protected backToApp(): void {
+    this.router.navigate(['/'], { replaceUrl: true }).catch();
   }
 }

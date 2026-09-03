@@ -52,22 +52,22 @@ interface RouteHeader {
               ><span class="brand-accent">Counter</span>
             </div>
 
-            @if (view.activeParty) {
-              <button
-                class="header-action"
-                type="button"
-                popovertarget="navigation-menu"
-                aria-label="Open menu"
-              >
-                <fa-icon [icon]="menuIcon" />
-              </button>
+            <button
+              class="header-action"
+              type="button"
+              popovertarget="navigation-menu"
+              aria-label="Open menu"
+            >
+              <fa-icon [icon]="menuIcon" />
+            </button>
 
-              <nav
-                #navigationMenu
-                id="navigation-menu"
-                popover
-                aria-label="Navigation"
-              >
+            <nav
+              #navigationMenu
+              id="navigation-menu"
+              popover
+              aria-label="Navigation"
+            >
+              @if (view.activeParty) {
                 <div
                   class="menu-section"
                   role="group"
@@ -95,32 +95,32 @@ interface RouteHeader {
                 </div>
 
                 <div class="menu-divider" role="separator"></div>
+              }
 
-                <div
-                  class="menu-section"
-                  role="group"
-                  aria-labelledby="app-menu-label"
+              <div
+                class="menu-section"
+                role="group"
+                aria-labelledby="app-menu-label"
+              >
+                <div id="app-menu-label" class="menu-section-label">App</div>
+                <a
+                  routerLink="/pwa"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
                 >
-                  <div id="app-menu-label" class="menu-section-label">App</div>
-                  <a
-                    routerLink="/pwa"
-                    [state]="childNavigationState"
-                    (click)="navigationMenu.hidePopover()"
-                  >
-                    <fa-icon class="menu-icon" [icon]="installIcon" />
-                    <span>Install app</span>
-                  </a>
-                  <a
-                    routerLink="/about"
-                    [state]="childNavigationState"
-                    (click)="navigationMenu.hidePopover()"
-                  >
-                    <fa-icon class="menu-icon" [icon]="aboutIcon" />
-                    <span>About</span>
-                  </a>
-                </div>
-              </nav>
-            }
+                  <fa-icon class="menu-icon" [icon]="installIcon" />
+                  <span>Install app</span>
+                </a>
+                <a
+                  routerLink="/about"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  <fa-icon class="menu-icon" [icon]="aboutIcon" />
+                  <span>About</span>
+                </a>
+              </div>
+            </nav>
           }
         </div>
       </header>

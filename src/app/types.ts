@@ -32,15 +32,25 @@ export type Party = z.infer<typeof partySchema>;
 export type Player = z.infer<typeof playerSchema>;
 export type LegacyAppState = z.infer<typeof legacyAppStateSchema>;
 
+export type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void> | void;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  platforms: string[];
+};
+
+export type PwaInstallStatus =
+  | 'unavailable'
+  | 'available'
+  | 'prompting'
+  | 'installed'
+  | 'dismissed'
+  | 'error';
+
 export type PwaUpdateState = {
-  promptEvent:
-    | (Event & {
-        prompt: () => void;
-        userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-        platforms: string[];
-      })
-    | null;
+  promptEvent: BeforeInstallPromptEvent | null;
   isRunningStandalone: boolean;
+  installStatus: PwaInstallStatus;
+  installError: string | null;
   updateAvailable: boolean;
-  installPending: boolean; // set true when user accepts install prompt
+  updateError: string | null;
 };
