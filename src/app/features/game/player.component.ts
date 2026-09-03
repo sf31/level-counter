@@ -1,8 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { Player } from '../../types';
 import { GenderComponent } from '../../shared/components/gender.component';
@@ -27,8 +32,8 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
         <div class="center-inner">
           <app-gender [player]="player()" (toggle)="toggleGender()" />
           <div class="fill-remaining-space"></div>
-          <div class="strength">
-            {{ player().level + player().gears }}
+          <div class="strength" [class.bump]="strengthBumping()">
+            {{ strength() }}
           </div>
           <div class="label">Strength</div>
         </div>
@@ -93,6 +98,22 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
         text-align: center;
       }
 
+      .strength.bump {
+        animation: bump var(--duration-slow) ease-out;
+      }
+
+      @keyframes bump {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.4);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
       .label {
         font-size: var(--font-size-caption);
         font-weight: var(--font-weight-strong);
@@ -111,6 +132,35 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
 export class PlayerComponent {
   player = input.required<Player>();
   playerChange = output<Player>();
+
+  protected readonly strength = computed(
+    () => this.player().level + this.player().gears,
+  );
+  protected readonly strengthBumping = signal(false);
+
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    let initialized = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    effect(() => {
+      this.strength();
+      if (!initialized) {
+        initialized = true;
+        return;
+      }
+      if (timer !== null) clearTimeout(timer);
+      this.strengthBumping.set(true);
+      timer = setTimeout(() => {
+        this.strengthBumping.set(false);
+        timer = null;
+      }, 250);
+    });
+
+    destroyRef.onDestroy(() => {
+      if (timer !== null) clearTimeout(timer);
+    });
+  }
 
   onChangeLevel(delta: number): void {
     const level = this.player().level + delta;

@@ -8,6 +8,7 @@ import { AppService } from '../../core/services/app.service';
 import {
   faCloudArrowDown,
   faDice,
+  faGear,
   faShieldHalved,
   faUserPlus,
   faXmark,
@@ -60,15 +61,16 @@ interface HomeView {
           </aside>
         }
 
-        <div class="player-list">
-          @for (player of view.playerList; track player.id) {
-            <app-player
-              [player]="player"
-              (playerChange)="onPlayerChange($event)"
-            />
-          }
-        </div>
-        @if (view.playerList.length === 0) {
+        @if (view.playerList.length > 0) {
+          <div class="player-list">
+            @for (player of view.playerList; track player.id) {
+              <app-player
+                [player]="player"
+                (playerChange)="onPlayerChange($event)"
+              />
+            }
+          </div>
+        } @else {
           <div class="empty-state">
             <fa-icon
               class="empty-icon"
@@ -77,8 +79,16 @@ interface HomeView {
             />
             <div class="empty-title">No players yet</div>
             <div class="empty-hint">
-              Open <fa-icon [icon]="iconParties" /> Parties to add players
+              Add players from this party's settings.
             </div>
+            <a
+              class="empty-cta"
+              [routerLink]="['/parties', view.activeParty.id]"
+              [state]="childNavigationState"
+            >
+              <fa-icon [icon]="iconSettings" aria-hidden="true" />
+              Add players
+            </a>
           </div>
         }
 
@@ -271,6 +281,7 @@ export class HomeComponent {
 
   iconParties = faShieldHalved;
   iconNoPlayers = faUserPlus;
+  iconSettings = faGear;
   iconDice = faDice;
   iconInstall = faCloudArrowDown;
   iconDismiss = faXmark;

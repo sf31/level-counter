@@ -4,51 +4,64 @@ import {
   input,
   output,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { Party } from '../../types';
 
 @Component({
   selector: 'app-party-list-item',
+  imports: [FontAwesomeModule, RouterLink],
   template: `
-    <button
-      class="party-card"
-      type="button"
-      [class.active]="isActive()"
-      [attr.aria-pressed]="isActive()"
-      (click)="selected.emit()"
-    >
-      <div class="name-row">
-        <span class="name text-ellipsis">{{ party().name }}</span>
-        @if (isActive()) {
-          <span class="active-badge">Active</span>
-        }
-      </div>
-      <div class="meta-row">
-        @if (party().playerList.length === 0) {
-          <span class="meta-text">No players</span>
-        } @else {
-          <div class="swatches">
-            @for (p of party().playerList; track p.id) {
-              <div class="swatch" [style.background-color]="p.color"></div>
-            }
-          </div>
-          <span class="meta-text text-ellipsis">
-            {{ party().playerList.length }}
-            {{ party().playerList.length === 1 ? 'player' : 'players' }} ·
-            {{ playerNames() }}
-          </span>
-        }
-      </div>
-    </button>
+    <div class="party-card" [class.active]="isActive()">
+      <button
+        class="party-select"
+        type="button"
+        [attr.aria-pressed]="isActive()"
+        (click)="selected.emit()"
+      >
+        <div class="name-row">
+          <span class="name text-ellipsis">{{ party().name }}</span>
+          @if (isActive()) {
+            <span class="active-badge">Active</span>
+          }
+        </div>
+        <div class="meta-row">
+          @if (party().playerList.length === 0) {
+            <span class="meta-text">No players</span>
+          } @else {
+            <div class="swatches">
+              @for (p of party().playerList; track p.id) {
+                <div class="swatch" [style.background-color]="p.color"></div>
+              }
+            </div>
+            <span class="meta-text text-ellipsis">
+              {{ party().playerList.length }}
+              {{ party().playerList.length === 1 ? 'player' : 'players' }} ·
+              {{ playerNames() }}
+            </span>
+          }
+        </div>
+      </button>
+      <a
+        class="settings-button"
+        [routerLink]="['/parties', party().id]"
+        [state]="settingsNavigationState"
+        title="Party settings"
+        [attr.aria-label]="'Open settings for ' + party().name"
+      >
+        <fa-icon [icon]="settingsIcon" aria-hidden="true" />
+      </a>
+    </div>
   `,
   styles: [
     `
       .party-card {
         min-height: 72px;
         width: 100%;
-        padding: var(--space-sm) var(--space-md);
+        padding: 0;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        align-items: stretch;
         gap: var(--space-xs);
         background-color: var(--color-bg-light);
         border: var(--border-width-strong) solid var(--color-border-subtle);
@@ -66,9 +79,50 @@ import { Party } from '../../types';
         border-color: var(--color-accent);
       }
 
-      .party-card:active {
+      .party-select {
+        min-width: 0;
+        flex: 1;
+        padding: var(--space-sm) var(--space-md);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--space-xs);
+        background-color: transparent;
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .party-select:active {
         background-color: var(--color-bg-lighter);
         box-shadow: none;
+      }
+
+      .settings-button {
+        width: var(--touch-target);
+        height: var(--touch-target);
+        margin: auto var(--space-sm) auto 0;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius-1);
+        color: var(--color-text-muted);
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .settings-button:is(:hover, :focus-visible) {
+        background-color: var(--color-bg-lighter);
+        color: var(--color-text);
+      }
+
+      .settings-button:focus-visible {
+        outline: var(--border-width-strong) solid var(--color-accent);
+        outline-offset: calc(-1 * var(--border-width-strong));
+      }
+
+      .settings-button:active {
+        opacity: 0.7;
       }
 
       .name-row {
@@ -126,6 +180,9 @@ import { Party } from '../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PartyListItemComponent {
+  protected readonly settingsIcon = faGear;
+  protected readonly settingsNavigationState = { fromGame: true };
+
   readonly party = input.required<Party>();
   readonly activePartyId = input<string | null>(null);
   readonly selected = output<void>();
