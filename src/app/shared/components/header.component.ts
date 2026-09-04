@@ -129,6 +129,8 @@ interface RouteHeader {
   styles: [
     `
       :host {
+        --header-max-width: 1024px;
+
         min-width: 0;
       }
 
@@ -138,7 +140,7 @@ interface RouteHeader {
 
       .header-inner {
         min-height: var(--header-height);
-        max-width: 1024px;
+        max-width: var(--header-max-width);
         margin: 0 auto;
         padding: 0 var(--space-sm);
         display: flex;
@@ -179,10 +181,18 @@ interface RouteHeader {
         outline-offset: calc(-1 * var(--border-width-strong));
       }
 
+      .header-action[popovertarget='navigation-menu'] {
+        anchor-name: --navigation-menu-trigger;
+      }
+
       nav {
         position: fixed;
-        inset: calc(var(--header-height) + var(--space-xs)) var(--space-sm) auto
-          auto;
+        inset: calc(var(--header-height) + var(--space-xs))
+          max(
+            var(--space-sm),
+            calc((100vw - var(--header-max-width)) / 2 + var(--space-sm))
+          )
+          auto auto;
         width: min(220px, calc(100vw - var(--space-md)));
         margin: 0;
         padding: var(--space-xs);
@@ -192,6 +202,15 @@ interface RouteHeader {
         box-shadow:
           0 12px 28px rgba(0, 0, 0, 0.38),
           var(--shadow-raised);
+      }
+
+      @supports (position-anchor: --navigation-menu-trigger) {
+        nav {
+          position-anchor: --navigation-menu-trigger;
+          inset: auto;
+          top: calc(anchor(bottom) + var(--space-xs));
+          right: anchor(right);
+        }
       }
 
       .menu-section-label {
