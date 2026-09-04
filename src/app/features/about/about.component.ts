@@ -11,17 +11,18 @@ import { APP_VERSION } from '../../const';
           <span class="brand-level">Level</span
           ><span class="brand-counter">Counter</span>
         </p>
-        <p>Track level and gear for multiple players and parties.</p>
-        <p>Works offline without account and ads.</p>
+        <p i18n>Track level and gear for multiple players and parties.</p>
+        <p i18n>Works offline without account and ads.</p>
         <a
           class="link"
           href="https://github.com/sf31/level-counter"
           target="_blank"
           rel="noopener noreferrer"
+          i18n
           >See on GitHub ↗</a
         >
       </div>
-      <p class="version">version {{ version }}</p>
+      <p class="version" i18n>version {{ version }}</p>
     </section>
   `,
   styles: [

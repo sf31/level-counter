@@ -22,8 +22,8 @@ import { PartyListItemComponent } from './party-list-item.component';
     @if (view$ | async; as view) {
       <section class="content" aria-labelledby="parties-title">
         <div class="heading">
-          <h1 id="parties-title">Parties</h1>
-          <p>Select a party to return to the game.</p>
+          <h1 id="parties-title" i18n>Parties</h1>
+          <p i18n>Select a party to return to the game.</p>
         </div>
 
         <a
@@ -33,10 +33,10 @@ import { PartyListItemComponent } from './party-list-item.component';
           [replaceUrl]="true"
         >
           <fa-icon [icon]="iconAdd" />
-          Create Party
+          <ng-container i18n>Create Party</ng-container>
         </a>
 
-        <div class="party-list" aria-label="Parties">
+        <div class="party-list" aria-label="Parties" i18n-aria-label>
           @for (party of view.parties; track party.id) {
             <app-party-list-item
               [party]="party"

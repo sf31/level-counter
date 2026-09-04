@@ -21,7 +21,9 @@ import { BtnComponent } from './btn.component';
         {{ message() }}
       </p>
       <div class="dialog-actions">
-        <app-btn class="btn-cancel" (click)="cancel.emit()">Cancel</app-btn>
+        <app-btn class="btn-cancel" (click)="cancel.emit()">
+          <ng-container i18n>Cancel</ng-container>
+        </app-btn>
         <app-btn
           class="btn-confirm"
           [class.danger]="danger()"
@@ -71,7 +73,7 @@ import { BtnComponent } from './btn.component';
 export class ConfirmDialogComponent {
   title = input.required<string>();
   message = input.required<string>();
-  confirmLabel = input('Confirm');
+  confirmLabel = input($localize`Confirm`);
   danger = input(false);
 
   confirm = output<void>();

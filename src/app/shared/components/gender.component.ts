@@ -116,6 +116,8 @@ export class GenderComponent {
 
   protected genderLabel(): string {
     const isMale = this.player().gender === 'M';
-    return `Gender: ${isMale ? 'male' : 'female'}. Switch to ${isMale ? 'female' : 'male'}`;
+    return isMale
+      ? $localize`Gender: male. Switch to female`
+      : $localize`Gender: female. Switch to male`;
   }
 }

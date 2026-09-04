@@ -4,8 +4,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-party-list-empty',
   template: `
     <div class="empty-state">
-      <div class="empty-title">No parties yet</div>
-      <div class="empty-hint">Create your first party to start playing.</div>
+      <div class="empty-title" i18n>No parties yet</div>
+      <div class="empty-hint" i18n>
+        Create your first party to start playing.
+      </div>
     </div>
   `,
   styles: [

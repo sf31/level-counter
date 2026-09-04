@@ -46,6 +46,7 @@ type ConfirmAction =
               class="rename-input"
               rows="1"
               aria-label="Party name"
+              i18n-aria-label
               [formControl]="partyNameControl"
               (input)="resizePartyNameInput(partyNameTextarea)"
               (keydown.enter)="
@@ -59,14 +60,14 @@ type ConfirmAction =
                 [disabled]="partyNameControl.invalid"
                 (click)="confirmRename(view.party.id)"
               >
-                Save name
+                <ng-container i18n>Save name</ng-container>
               </button>
               <button
                 class="detail-action"
                 type="button"
                 (click)="isRenaming = false"
               >
-                Cancel
+                <ng-container i18n>Cancel</ng-container>
               </button>
             </div>
           } @else {
@@ -77,14 +78,14 @@ type ConfirmAction =
                 type="button"
                 (click)="startRenaming(view.party.name)"
               >
-                Rename
+                <ng-container i18n>Rename</ng-container>
               </button>
               <button
                 class="detail-action delete"
                 type="button"
                 (click)="confirmAction = { type: 'deleteParty' }"
               >
-                Delete
+                <ng-container i18n>Delete</ng-container>
               </button>
             </div>
           }
@@ -99,7 +100,9 @@ type ConfirmAction =
               <input
                 type="text"
                 aria-label="Player name"
+                i18n-aria-label
                 placeholder="Player name..."
+                i18n-placeholder
                 autocomplete="off"
                 [formControl]="playerNameControl"
               />
@@ -107,20 +110,23 @@ type ConfirmAction =
                 class="add-btn"
                 type="submit"
                 aria-label="Add player"
+                i18n-aria-label
                 [disabled]="playerNameControl.invalid"
               >
                 <fa-icon [icon]="iconAdd" />
               </button>
             </form>
           } @else {
-            <div class="max-warning">
+            <div class="max-warning" i18n>
               Maximum players reached ({{ maxPlayers }})
             </div>
           }
 
           @if (view.party.playerList.length > 0) {
             <div class="section-label">
-              Players ({{ view.party.playerList.length }}/{{ maxPlayers }})
+              <ng-container i18n>
+                Players ({{ view.party.playerList.length }}/{{ maxPlayers }})
+              </ng-container>
             </div>
             <div class="player-list">
               @for (player of view.party.playerList; track player.id) {
@@ -135,7 +141,7 @@ type ConfirmAction =
                   <button
                     class="player-delete"
                     type="button"
-                    [attr.aria-label]="'Remove ' + player.name"
+                    [attr.aria-label]="removePlayerLabel(player.name)"
                     (click)="
                       confirmAction = { type: 'deletePlayer', player: player }
                     "
@@ -147,8 +153,10 @@ type ConfirmAction =
             </div>
           } @else {
             <div class="empty-players">
-              <div>No players yet</div>
-              <div class="empty-hint">Add players above to start playing</div>
+              <div i18n>No players yet</div>
+              <div class="empty-hint" i18n>
+                Add players above to start playing
+              </div>
             </div>
           }
         </div>
@@ -160,7 +168,7 @@ type ConfirmAction =
           type="button"
           (click)="confirmAction = { type: 'resetLevels' }"
         >
-          Reset Levels & Gears
+          <ng-container i18n>Reset Levels &amp; Gears</ng-container>
         </button>
       </footer>
 
@@ -168,11 +176,9 @@ type ConfirmAction =
         @switch (confirmAction.type) {
           @case ('deletePlayer') {
             <app-confirm-dialog
-              title="Remove Player"
-              [message]="
-                'Remove ' + confirmAction.player.name + ' from this party?'
-              "
-              confirmLabel="Remove"
+              [title]="removePlayerTitle"
+              [message]="removePlayerMessage(confirmAction.player.name)"
+              [confirmLabel]="removeLabel"
               [danger]="true"
               (confirm)="removePlayer(view.party.id, confirmAction.player)"
               (cancel)="confirmAction = null"
@@ -180,13 +186,9 @@ type ConfirmAction =
           }
           @case ('deleteParty') {
             <app-confirm-dialog
-              title="Delete Party"
-              [message]="
-                'Delete ' +
-                view.party.name +
-                ' and all its players? This cannot be undone.'
-              "
-              confirmLabel="Delete"
+              [title]="deletePartyTitle"
+              [message]="deletePartyMessage(view.party.name)"
+              [confirmLabel]="deleteLabel"
               [danger]="true"
               (confirm)="deleteParty(view.party)"
               (cancel)="confirmAction = null"
@@ -194,9 +196,9 @@ type ConfirmAction =
           }
           @case ('resetLevels') {
             <app-confirm-dialog
-              title="Reset Levels & Gears"
-              message="Reset every player to Level 1 and Gear 0?"
-              confirmLabel="Reset"
+              [title]="resetLevelsTitle"
+              [message]="resetLevelsMessage"
+              [confirmLabel]="resetLabel"
               (confirm)="resetLevels(view.party.id)"
               (cancel)="confirmAction = null"
             />
@@ -462,6 +464,13 @@ export class PartyDetailComponent implements OnInit {
     nonNullable: true,
     validators: [Validators.required, Validators.pattern(/\S/)],
   });
+  readonly removePlayerTitle = $localize`Remove Player`;
+  readonly deletePartyTitle = $localize`Delete Party`;
+  readonly resetLevelsTitle = $localize`Reset Levels & Gears`;
+  readonly removeLabel = $localize`Remove`;
+  readonly deleteLabel = $localize`Delete`;
+  readonly resetLabel = $localize`Reset`;
+  readonly resetLevelsMessage = $localize`Reset every player to Level 1 and Gear 0?`;
 
   constructor(
     private app: AppService,
@@ -530,6 +539,18 @@ export class PartyDetailComponent implements OnInit {
 
     this.partyService.renameParty(partyId, this.partyNameControl.value.trim());
     this.isRenaming = false;
+  }
+
+  removePlayerLabel(playerName: string): string {
+    return $localize`Remove ${playerName}:playerName:`;
+  }
+
+  removePlayerMessage(playerName: string): string {
+    return $localize`Remove ${playerName}:playerName: from this party?`;
+  }
+
+  deletePartyMessage(partyName: string): string {
+    return $localize`Delete ${partyName}:partyName: and all its players? This cannot be undone.`;
   }
 
   resetLevels(partyId: string): void {

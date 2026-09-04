@@ -18,6 +18,18 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": {
+          "code": "en",
+          "subPath": "en"
+        },
+        "locales": {
+          "it": {
+            "translation": "src/locale/messages.it.xlf",
+            "subPath": "it"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -25,26 +37,23 @@
             "outputPath": "dist/level-counter",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["@angular/localize/init", "zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
-              "src/_headers",
-              "src/_redirects",
+              "src/manifest.en.webmanifest",
+              "src/manifest.it.webmanifest",
               "src/robots.txt"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
             "production": {
+              "localize": true,
+              "i18nMissingTranslation": "error",
               "budgets": [
                 {
                   "type": "initial",
@@ -61,6 +70,19 @@
               "serviceWorker": "ngsw-config.json"
             },
             "development": {
+              "localize": false,
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "en": {
+              "localize": ["en"],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "it": {
+              "localize": ["it"],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
@@ -76,6 +98,12 @@
             },
             "development": {
               "buildTarget": "level-counter:build:development"
+            },
+            "en": {
+              "buildTarget": "level-counter:build:en"
+            },
+            "it": {
+              "buildTarget": "level-counter:build:it"
             }
           },
           "defaultConfiguration": "development"
@@ -90,6 +118,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": [
+              "@angular/localize/init",
               "zone.js",
               "zone.js/testing"
             ],
@@ -98,11 +127,10 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.en.webmanifest",
+              "src/manifest.it.webmanifest"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }

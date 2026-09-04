@@ -38,22 +38,29 @@ interface HomeView {
         <h1 class="party-title">{{ view.activeParty.name }}</h1>
 
         @if (view.showInstallNotice) {
-          <aside class="install-notice" aria-label="Install LevelCounter">
+          <aside
+            class="install-notice"
+            aria-label="Install LevelCounter"
+            i18n-aria-label
+          >
             <fa-icon class="install-icon" [icon]="iconInstall" />
             <span class="install-copy">
-              Install LevelCounter for quick offline access.
+              <ng-container i18n>
+                Install LevelCounter on your device
+              </ng-container>
             </span>
             <a
               class="install-action"
               routerLink="/pwa"
               [state]="childNavigationState"
             >
-              Install
+              <ng-container i18n>Install</ng-container>
             </a>
             <button
               class="install-dismiss"
               type="button"
               aria-label="Dismiss installation notice"
+              i18n-aria-label
               (click)="dismissInstall()"
             >
               <fa-icon [icon]="iconDismiss" />
@@ -77,8 +84,8 @@ interface HomeView {
               [icon]="iconNoPlayers"
               aria-hidden="true"
             />
-            <div class="empty-title">No players yet</div>
-            <div class="empty-hint">
+            <div class="empty-title" i18n>No players yet</div>
+            <div class="empty-hint" i18n>
               Add players from this party's settings.
             </div>
             <a
@@ -87,7 +94,7 @@ interface HomeView {
               [state]="childNavigationState"
             >
               <fa-icon [icon]="iconSettings" aria-hidden="true" />
-              Add players
+              <ng-container i18n>Add players</ng-container>
             </a>
           </div>
         }
@@ -96,6 +103,7 @@ interface HomeView {
           class="fab shadow"
           type="button"
           aria-label="Roll dice"
+          i18n-aria-label
           (click)="showDice = true"
         >
           <fa-icon [icon]="iconDice" />
@@ -103,8 +111,8 @@ interface HomeView {
       } @else {
         <div class="empty-state">
           <fa-icon class="empty-icon" [icon]="iconParties" aria-hidden="true" />
-          <div class="empty-title">Welcome!</div>
-          <div class="empty-hint">
+          <div class="empty-title" i18n>Welcome!</div>
+          <div class="empty-hint" i18n>
             Create a party and add your players to start.
           </div>
           <a
@@ -113,7 +121,7 @@ interface HomeView {
             [state]="partySetupNavigationState"
             [replaceUrl]="true"
           >
-            Create your first party
+            <ng-container i18n>Create your first party</ng-container>
           </a>
         </div>
       }

@@ -4,6 +4,7 @@ import {
   HostListener,
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { PwaService } from './core/services/pwa.service';
 import { HeaderComponent } from './shared/components/header.component';
@@ -19,12 +20,12 @@ import { BeforeInstallPromptEvent } from './types';
         @if (pwa.updateError) {
           <aside class="update-notice error" role="alert">
             <span>{{ pwa.updateError }}</span>
-            <button type="button" (click)="reload()">Reload</button>
+            <button type="button" (click)="reload()" i18n>Reload</button>
           </aside>
         } @else if (pwa.updateAvailable) {
           <aside class="update-notice" role="status">
-            <span>A new version of LevelCounter is ready.</span>
-            <button type="button" (click)="reload()">Reload</button>
+            <span i18n>A new version of LevelCounter is ready.</span>
+            <button type="button" (click)="reload()" i18n>Reload</button>
           </aside>
         }
       }
@@ -91,8 +92,25 @@ import { BeforeInstallPromptEvent } from './types';
 export class AppComponent {
   protected readonly pwa$: PwaService['state$'];
 
-  constructor(private pwa: PwaService) {
+  constructor(
+    private pwa: PwaService,
+    title: Title,
+    meta: Meta,
+  ) {
     this.pwa$ = this.pwa.state$;
+    title.setTitle($localize`LevelCounter`);
+    meta.updateTag({
+      name: 'description',
+      content: $localize`Track player levels and gear in tabletop board games. No account required.`,
+    });
+    meta.updateTag({
+      property: 'og:title',
+      content: $localize`LevelCounter — Level & Gear Counter`,
+    });
+    meta.updateTag({
+      property: 'og:description',
+      content: $localize`A simple offline tracker for player levels and gear in tabletop board games. No account required.`,
+    });
   }
 
   @HostListener('window:beforeinstallprompt', ['$event'])

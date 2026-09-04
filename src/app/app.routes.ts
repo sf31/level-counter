@@ -4,7 +4,7 @@ import { HomeComponent } from './features/game/home.component';
 export const routes: Routes = [
   {
     path: 'parties',
-    data: { headerTitle: 'Party list' },
+    data: { headerTitle: $localize`Party list` },
     loadComponent: () =>
       import('./features/party/party-list.component').then(
         (m) => m.PartyListComponent,
@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'parties/new',
-    data: { headerTitle: 'Create party', backMode: 'setup' },
+    data: { headerTitle: $localize`Create party`, backMode: 'setup' },
     loadComponent: () =>
       import('./features/party/party-create.component').then(
         (m) => m.PartyCreateComponent,
@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'parties/:id',
-    data: { headerTitle: 'Party settings' },
+    data: { headerTitle: $localize`Party settings` },
     loadComponent: () =>
       import('./features/party/party-detail.component').then(
         (m) => m.PartyDetailComponent,
@@ -28,13 +28,13 @@ export const routes: Routes = [
   },
   {
     path: 'pwa',
-    data: { headerTitle: 'Install app' },
+    data: { headerTitle: $localize`Install app` },
     loadComponent: () =>
       import('./features/pwa/pwa.component').then((m) => m.PwaComponent),
   },
   {
     path: 'settings',
-    data: { headerTitle: 'Settings' },
+    data: { headerTitle: $localize`Settings` },
     loadComponent: () =>
       import('./features/settings/settings.component').then(
         (m) => m.SettingsComponent,
@@ -42,7 +42,7 @@ export const routes: Routes = [
   },
   {
     path: 'about',
-    data: { headerTitle: 'About' },
+    data: { headerTitle: $localize`About` },
     loadComponent: () =>
       import('./features/about/about.component').then((m) => m.AboutComponent),
   },

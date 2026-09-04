@@ -17,7 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   template: `
     <button
       type="button"
-      [attr.aria-label]="'Increase ' + label()"
+      [attr.aria-label]="increaseLabel()"
       (click)="plus.emit()"
     >
       <fa-icon [icon]="iconPlus" aria-hidden="true" />
@@ -27,13 +27,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       role="status"
       aria-live="polite"
       [class.bump]="bumping()"
-      [attr.aria-label]="label() + ': ' + value()"
+      [attr.aria-label]="valueLabel()"
     >
       {{ value() }}
     </div>
     <button
       type="button"
-      [attr.aria-label]="'Decrease ' + label()"
+      [attr.aria-label]="decreaseLabel()"
       (click)="minus.emit()"
     >
       <fa-icon [icon]="iconMinus" aria-hidden="true" />
@@ -104,6 +104,24 @@ export class PlusMinusComponent {
 
   iconMinus = faCaretDown;
   iconPlus = faCaretUp;
+
+  protected increaseLabel(): string {
+    return this.label() === 'gear'
+      ? $localize`Increase gear`
+      : $localize`Increase level`;
+  }
+
+  protected decreaseLabel(): string {
+    return this.label() === 'gear'
+      ? $localize`Decrease gear`
+      : $localize`Decrease level`;
+  }
+
+  protected valueLabel(): string {
+    return this.label() === 'gear'
+      ? $localize`Gear: ${this.value()}:value:`
+      : $localize`Level: ${this.value()}:value:`;
+  }
 
   constructor() {
     const destroyRef = inject(DestroyRef);

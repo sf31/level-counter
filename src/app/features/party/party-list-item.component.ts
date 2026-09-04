@@ -23,21 +23,21 @@ import { Party } from '../../types';
         <div class="name-row">
           <span class="name text-ellipsis">{{ party().name }}</span>
           @if (isActive()) {
-            <span class="active-badge">Active</span>
+            <span class="active-badge" i18n>Active</span>
           }
         </div>
         <div class="meta-row">
           @if (party().playerList.length === 0) {
-            <span class="meta-text">No players</span>
+            <span class="meta-text" i18n>No players</span>
           } @else {
             <div class="swatches">
               @for (p of party().playerList; track p.id) {
                 <div class="swatch" [style.background-color]="p.color"></div>
               }
             </div>
-            <span class="meta-text text-ellipsis">
+            <span class="meta-text text-ellipsis" i18n>
               {{ party().playerList.length }}
-              {{ party().playerList.length === 1 ? 'player' : 'players' }} ·
+              {party().playerList.length, plural, =1 {player} other {players}} ·
               {{ playerNames() }}
             </span>
           }
@@ -48,7 +48,8 @@ import { Party } from '../../types';
         [routerLink]="['/parties', party().id]"
         [state]="settingsNavigationState"
         title="Party settings"
-        [attr.aria-label]="'Open settings for ' + party().name"
+        i18n-title
+        [attr.aria-label]="settingsLabel()"
       >
         <fa-icon [icon]="settingsIcon" aria-hidden="true" />
       </a>
@@ -195,5 +196,9 @@ export class PartyListItemComponent {
     return this.party()
       .playerList.map((player) => player.name)
       .join(', ');
+  }
+
+  protected settingsLabel(): string {
+    return $localize`Open settings for ${this.party().name}:partyName:`;
   }
 }

@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="7967484035994732534" datatype="html">
+        <source>Reload</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6619116278771655243" datatype="html">
+        <source>A new version of LevelCounter is ready.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7273372154178410092" datatype="html">
+        <source>LevelCounter</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8110994005219402121" datatype="html">
+        <source>Track player levels and gear in tabletop board games. No account required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8221870956395508413" datatype="html">
+        <source>LevelCounter — Level &amp; Gear Counter</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6651216137554161179" datatype="html">
+        <source>A simple offline tracker for player levels and gear in tabletop board games. No account required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3399460974508449132" datatype="html">
+        <source>Party list</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">97,98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6429283000677796270" datatype="html">
+        <source>Create party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1281479745537692435" datatype="html">
+        <source>Party settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">89,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="545812740404182321" datatype="html">
+        <source>Install app</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4930506384627295710" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/settings.component.ts</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">126,127</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1726363342938046830" datatype="html">
+        <source>About</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.routes.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">134,135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5866254605255506989" datatype="html">
+        <source>English</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/locale.service.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2935232983274991580" datatype="html">
+        <source>Italian</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/locale.service.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="70493190652902516" datatype="html">
+        <source>A new version could not be installed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/pwa.service.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6802402858785283141" datatype="html">
+        <source>The app needs to reload to recover.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/pwa.service.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5033101615631224857" datatype="html">
+        <source>Installation could not be completed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/pwa.service.ts</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="102340967273673442" datatype="html">
+        <source>Chrome / Edge — Android</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9136832876382228694" datatype="html">
+        <source>Open the three-dot menu.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5240736320209570236" datatype="html">
+        <source>Choose Install app or Add to Home screen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3424122894523166041" datatype="html">
+        <source>Follow the confirmation shown by the browser.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6074057733569403453" datatype="html">
+        <source>Chrome / Edge — Linux, macOS, Windows</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="941081033211695421" datatype="html">
+        <source>Select the install icon in the address bar, if shown.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8550875090089460878" datatype="html">
+        <source>Otherwise, look for Install app in the browser menu.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4223430309388052521" datatype="html">
+        <source>Firefox — Android</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8504896934573044732" datatype="html">
+        <source>Tap Install.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="926182196744466113" datatype="html">
+        <source>Confirm with Add automatically, or place the icon yourself.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5384550111677457656" datatype="html">
+        <source>Firefox — Linux/macOS (not supported)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2257425566015520251" datatype="html">
+        <source>Firefox does not currently install web apps on macOS or Linux.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1436550713715274696" datatype="html">
+        <source>You can still use LevelCounter in Firefox and bookmark it for quick access.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8576298940155399335" datatype="html">
+        <source>Firefox — Windows</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="335443386016667791" datatype="html">
+        <source>Use Firefox 143 or later.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6029398196814102771" datatype="html">
+        <source>Click the web app button in the address bar.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1182650352523330833" datatype="html">
+        <source>Optionally pin LevelCounter to the taskbar when prompted.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2841522970859583313" datatype="html">
+        <source>Safari — iPhone/iPad</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2451555632797115223" datatype="html">
+        <source>Open the Share menu.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5732672537460024840" datatype="html">
+        <source>Choose Add to Home Screen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="245641384978042536" datatype="html">
+        <source>Turn on Open as Web App, then tap Add.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7246322420727967457" datatype="html">
+        <source>Safari — macOS</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3098659533201638919" datatype="html">
+        <source>Open the File menu.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8481641510262716178" datatype="html">
+        <source>Choose Add to Dock.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7537139162612953607" datatype="html">
+        <source>Confirm with Add.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4722879914130025237" datatype="html">
+        <source>Other browser/device</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8889342767673922618" datatype="html">
+        <source>Open the browser menu and look for Install app or Add to Home screen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2330613463661639366" datatype="html">
+        <source>If it is not available, your browser or device may not support installing web apps.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/utils/pwa.utils.ts</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4713645088096979608" datatype="html">
+        <source>Track level and gear for multiple players and parties.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.ts</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5397875139655442334" datatype="html">
+        <source>Works offline without account and ads.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.ts</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5378700653736899252" datatype="html">
+        <source>See on GitHub ↗</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.ts</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3268095459835706851" datatype="html">
+        <source>version <x id="INTERPOLATION" equiv-text="{{ version }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.ts</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4558573191072390923" datatype="html">
+        <source>Install LevelCounter</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2901240334550489598" datatype="html">
+        <source> Install LevelCounter on your device </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6082171864197428613" datatype="html">
+        <source>Install</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="445577819344872784" datatype="html">
+        <source>Dismiss installation notice</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7247132660142691158" datatype="html">
+        <source>No players yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">87,88</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">103,104</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">156,157</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="365597755441009432" datatype="html">
+        <source> Add players from this party&apos;s settings. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9002899062001051734" datatype="html">
+        <source>Add players</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8216031423672801615" datatype="html">
+        <source>Roll dice</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">105,106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5890833044137447416" datatype="html">
+        <source>Welcome!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">114,115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8031974330172146451" datatype="html">
+        <source> Create a party and add your players to start. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3934428139330337505" datatype="html">
+        <source>Create your first party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/home.component.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5709710247016370368" datatype="html">
+        <source>Gear</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/player.component.ts</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6632040223751981101" datatype="html">
+        <source>Strength</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/player.component.ts</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3733215288982610673" datatype="html">
+        <source>Level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/game/player.component.ts</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7966171119522224831" datatype="html">
+        <source>Create your party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2734738701725425325" datatype="html">
+        <source>Give it a name and add at least one player.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5223845188850416625" datatype="html">
+        <source>Party name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7373619377359302437" datatype="html">
+        <source>Players</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7814586397868361598" datatype="html">
+        <source>Player name...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">104,105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2503836230581016055" datatype="html">
+        <source>Add player</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">112,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4157967838419017518" datatype="html">
+        <source> Maximum players reached (<x id="INTERPOLATION" equiv-text="{{ maxPlayers }}"/>) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">76,77</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">121,122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1123557981657403007" datatype="html">
+        <source>Start game</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2026297610436567501" datatype="html">
+        <source>Remove <x id="playerName" equiv-text="playerName"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-create.component.ts</context>
+          <context context-type="linenumber">361</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">545</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2474175100059228504" datatype="html">
+        <source>Save name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2159130950882492111" datatype="html">
+        <source>Cancel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/confirm-dialog.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6041115344061899387" datatype="html">
+        <source>Rename</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7022070615528435141" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">471</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8248947835863945714" datatype="html">
+        <source>Player name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">102,103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4988110979103576917" datatype="html">
+        <source> Players (<x id="INTERPOLATION" equiv-text="{{ view.party.playerList.length }}"/>/<x id="INTERPOLATION_1" equiv-text="{{ maxPlayers }}"/>) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">128,129</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1630432947920791715" datatype="html">
+        <source> Add players above to start playing </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5985815782826571785" datatype="html">
+        <source>Reset Levels &amp; Gears</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">469</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3913356767381371267" datatype="html">
+        <source>Remove Player</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">467</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4693366111483453965" datatype="html">
+        <source>Delete Party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">468</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4814285799071780083" datatype="html">
+        <source>Remove</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">470</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7808756054397155068" datatype="html">
+        <source>Reset</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">472</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="981448630613613729" datatype="html">
+        <source>Reset every player to Level 1 and Gear 0?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">473</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7272759005341506187" datatype="html">
+        <source>Remove <x id="playerName" equiv-text="playerName"/> from this party?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">549</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6210309520449044262" datatype="html">
+        <source>Delete <x id="partyName" equiv-text="partyName"/> and all its players? This cannot be undone.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-detail.component.ts</context>
+          <context context-type="linenumber">553</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1138845520785634961" datatype="html">
+        <source>No parties yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-empty.component.ts</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4396334305415047482" datatype="html">
+        <source> Create your first party to start playing. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-empty.component.ts</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8204176479746810612" datatype="html">
+        <source>Active</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6280687534170546649" datatype="html">
+        <source>No players</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1429333366593400849" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ party().playerList.length }}"/> <x id="ICU" equiv-text="{party().playerList.length, plural, =1 {player} other {players}}" xid="5172323071725951026"/> · <x id="INTERPOLATION_1" equiv-text="{{ playerNames() }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">39,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5172323071725951026" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {player} other {players}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1597639471691349512" datatype="html">
+        <source>Open settings for <x id="partyName" equiv-text="this.party().name"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list-item.component.ts</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3452588055062192828" datatype="html">
+        <source>Parties</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list.component.ts</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7095166399790716290" datatype="html">
+        <source>Select a party to return to the game.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list.component.ts</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="915090309125648275" datatype="html">
+        <source>Create Party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/party/party-list.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7801019142855046248" datatype="html">
+        <source>Keep LevelCounter on your home screen and use it offline.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7203613514582209807" datatype="html">
+        <source>Hide install reminder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6107151925029173962" datatype="html">
+        <source>Installing...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4874702720232079709" datatype="html">
+        <source>Follow the instructions from your browser.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4481552596082799664" datatype="html">
+        <source>LevelCounter is installed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5298053978042262249" datatype="html">
+        <source>Open it from your home screen whenever you need it.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6780242680865182056" datatype="html">
+        <source> Installation was canceled. You can install it later from your browser menu. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="981361885684780458" datatype="html">
+        <source>Different browser or device?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/pwa/pwa.component.ts</context>
+          <context context-type="linenumber">176</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2826581353496868063" datatype="html">
+        <source>Language</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/settings/settings.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9178182467454450952" datatype="html">
+        <source>Confirm</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/confirm-dialog.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1352136563927535578" datatype="html">
+        <source>Enable shake to roll</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7354014204056629203" datatype="html">
+        <source> Shake access unavailable · Tap to roll </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7819314041543176992" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6100430748622997387" datatype="html">
+        <source>Dice roller</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">249</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6842310678709738053" datatype="html">
+        <source>Rolling…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">257</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6083719154287001243" datatype="html">
+        <source>Rolled <x id="face" equiv-text="face"/> · Shake or tap again</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">262</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5533861782236741838" datatype="html">
+        <source>Rolled <x id="face" equiv-text="face"/> · Tap to roll again</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">263</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6769766275751250627" datatype="html">
+        <source>Shake or tap to roll</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">267</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4353898704212351640" datatype="html">
+        <source>Tap to roll</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/dice-dialog.component.ts</context>
+          <context context-type="linenumber">268</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2579806992689665068" datatype="html">
+        <source>Gender: male. Switch to female</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/gender.component.ts</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7077613446555543221" datatype="html">
+        <source>Gender: female. Switch to male</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/gender.component.ts</context>
+          <context context-type="linenumber">121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2005818722469409502" datatype="html">
+        <source>Open menu</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1348774649041038169" datatype="html">
+        <source>Navigation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2779790274425512112" datatype="html">
+        <source>Party</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2000040548022770858" datatype="html">
+        <source> App </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8890553633144307762" datatype="html">
+        <source>Back</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">292</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5726043902224186439" datatype="html">
+        <source>Back to game</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header.component.ts</context>
+          <context context-type="linenumber">293</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6935283558308013603" datatype="html">
+        <source>Increase gear</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5330107786190715401" datatype="html">
+        <source>Increase level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3295563869411853953" datatype="html">
+        <source>Decrease gear</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5530031450361950768" datatype="html">
+        <source>Decrease level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4062543514904651769" datatype="html">
+        <source>Gear: <x id="value" equiv-text="this.value()"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1483713399192300231" datatype="html">
+        <source>Level: <x id="value" equiv-text="this.value()"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/plus-minus.component.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

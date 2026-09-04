@@ -1,11 +1,28 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  SelectComponent,
+  SelectOption,
+} from '../../shared/components/select.component';
+import {
+  isSupportedLocale,
+  LOCALE_LABELS,
+  LocaleService,
+  SUPPORTED_LOCALES,
+} from '../../core/services/locale.service';
 
 @Component({
   selector: 'app-settings',
+  imports: [SelectComponent],
   template: `
-    <section>
-      <h1>Settings</h1>
-      <p>No app settings are available yet.</p>
+    <section aria-labelledby="settings-title">
+      <h1 id="settings-title" i18n>Settings</h1>
+      <app-select
+        controlId="language"
+        [label]="languageLabel"
+        [options]="languageOptions"
+        [value]="selectedLocale"
+        (valueChange)="changeLocale($event)"
+      />
     </section>
   `,
   styles: [
@@ -27,4 +44,20 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingsComponent {}
+export class SettingsComponent {
+  private readonly locale = inject(LocaleService);
+
+  protected readonly selectedLocale = this.locale.currentLocale;
+  protected readonly languageLabel = $localize`Language`;
+  protected readonly languageOptions: readonly SelectOption[] =
+    SUPPORTED_LOCALES.map((locale) => ({
+      value: locale,
+      label: LOCALE_LABELS[locale],
+    }));
+
+  protected changeLocale(value: string): void {
+    if (isSupportedLocale(value)) {
+      this.locale.switchLocale(value);
+    }
+  }
+}

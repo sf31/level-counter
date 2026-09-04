@@ -29,7 +29,7 @@ export class PwaService {
           break;
         case 'VERSION_INSTALLATION_FAILED':
           this.patchState({
-            updateError: 'A new version could not be installed.',
+            updateError: $localize`A new version could not be installed.`,
           });
           break;
       }
@@ -37,7 +37,7 @@ export class PwaService {
 
     this.sw.unrecoverable.subscribe(() => {
       this.patchState({
-        updateError: 'The app needs to reload to recover.',
+        updateError: $localize`The app needs to reload to recover.`,
       });
     });
   }
@@ -77,7 +77,7 @@ export class PwaService {
       this.patchState({
         promptEvent: null,
         installStatus: 'error',
-        installError: 'Installation could not be completed.',
+        installError: $localize`Installation could not be completed.`,
       });
     }
   }

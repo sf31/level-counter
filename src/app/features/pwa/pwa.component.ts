@@ -20,30 +20,30 @@ import {
     @if (pwa$ | async; as pwa) {
       <div class="content">
         <div class="text intro">
-          <p>Keep LevelCounter on your home screen and use it offline.</p>
+          <p i18n>Keep LevelCounter on your home screen and use it offline.</p>
         </div>
         @if (pwa.installStatus === 'available') {
           <app-btn class="success-btn" (click)="install()">
-            Install LevelCounter
+            <ng-container i18n>Install LevelCounter</ng-container>
           </app-btn>
           <app-btn class="dismiss-btn" (click)="dismiss()">
-            Hide install reminder
+            <ng-container i18n>Hide install reminder</ng-container>
           </app-btn>
         } @else if (pwa.installStatus === 'prompting') {
           <div class="text" role="status">
-            <p>Installing...</p>
-            <p>Follow the instructions from your browser.</p>
+            <p i18n>Installing...</p>
+            <p i18n>Follow the instructions from your browser.</p>
           </div>
         } @else if (pwa.installStatus === 'installed') {
           <div class="text success" role="status">
-            <p>LevelCounter is installed.</p>
-            <p>Open it from your home screen whenever you need it.</p>
+            <p i18n>LevelCounter is installed.</p>
+            <p i18n>Open it from your home screen whenever you need it.</p>
           </div>
         } @else {
           @if (pwa.installStatus === 'error' && pwa.installError) {
             <div class="text error" role="alert">{{ pwa.installError }}</div>
           } @else if (pwa.installStatus === 'dismissed') {
-            <div class="text">
+            <div class="text" i18n>
               Installation was canceled. You can install it later from your
               browser menu.
             </div>
@@ -62,7 +62,7 @@ import {
             <app-select
               class="guide-select"
               controlId="install-guide"
-              label="Different browser or device?"
+              [label]="guideSelectLabel"
               [options]="installGuideOptions"
               [value]="installGuide.id"
               (valueChange)="selectInstallGuide($event)"
@@ -173,6 +173,7 @@ export class PwaComponent {
   private readonly router = inject(Router);
 
   protected readonly pwa$ = this.pwa.state$;
+  protected readonly guideSelectLabel = $localize`Different browser or device?`;
   protected installGuide = detectPwaInstallGuide(
     navigator.userAgent,
     navigator.platform,

@@ -1,28 +1,77 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>LevelCounter</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Track player levels and gear in tabletop board games. No account required.">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="manifest" href="manifest.webmanifest" type="application/manifest+json">
-  <meta name="theme-color" content="#4E342E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <title>LevelCounter</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Track player levels and gear in tabletop board games. No account required."
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="theme-color" content="#4E342E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap"
+      rel="stylesheet"
+    />
 
-  <meta property="og:url" content="https://lvl.fede.im"/>
-  <meta property="og:title" content="LevelCounter — Level & Gear Counter"/>
-  <meta property="og:description"
-        content="A simple offline tracker for player levels and gear in tabletop board games. No account required."/>
-  <meta property="og:image" content="assets/og-images/og_big.png"/>
-  <meta property="og:image:width" content="1731"/>
-  <meta property="og:image:height" content="909"/>
-</head>
-<body>
-<app-root></app-root>
-<noscript>Please enable JavaScript to continue using this application.</noscript>
-</body>
+    <meta property="og:url" content="https://lvl.fede.im" />
+    <meta property="og:title" content="LevelCounter — Level & Gear Counter" />
+    <meta
+      property="og:description"
+      content="A simple offline tracker for player levels and gear in tabletop board games. No account required."
+    />
+    <meta property="og:image" content="assets/og-images/og_big.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <script>
+      (() => {
+        const isItalian =
+          window.location.pathname.split("/")[1] === "it" ||
+          document.documentElement.lang.toLowerCase().startsWith("it");
+        const metadata = isItalian
+          ? {
+              description:
+                "Tieni traccia dei livelli e dell'equipaggiamento dei giocatori nei giochi da tavolo. Nessun account richiesto.",
+              ogTitle: "LevelCounter — Contatore di livelli ed equipaggiamento",
+              ogDescription:
+                "Un semplice tracker offline per livelli ed equipaggiamento dei giocatori nei giochi da tavolo. Nessun account richiesto.",
+              manifest: "manifest.it.webmanifest",
+            }
+          : {
+              description:
+                "Track player levels and gear in tabletop board games. No account required.",
+              ogTitle: "LevelCounter — Level & Gear Counter",
+              ogDescription:
+                "A simple offline tracker for player levels and gear in tabletop board games. No account required.",
+              manifest: "manifest.en.webmanifest",
+            };
+
+        document
+          .querySelector('meta[name="description"]')
+          ?.setAttribute("content", metadata.description);
+        document
+          .querySelector('meta[property="og:title"]')
+          ?.setAttribute("content", metadata.ogTitle);
+        document
+          .querySelector('meta[property="og:description"]')
+          ?.setAttribute("content", metadata.ogDescription);
+
+        const manifest = document.createElement("link");
+        manifest.rel = "manifest";
+        manifest.href = metadata.manifest;
+        manifest.type = "application/manifest+json";
+        document.head.appendChild(manifest);
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+  </body>
 </html>

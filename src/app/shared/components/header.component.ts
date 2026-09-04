@@ -37,7 +37,9 @@ interface RouteHeader {
               class="header-action"
               type="button"
               [attr.aria-label]="
-                view.routeHeader.backMode === 'setup' ? 'Back' : 'Back to game'
+                view.routeHeader.backMode === 'setup'
+                  ? backLabel
+                  : backToGameLabel
               "
               (click)="navigateBack(view.routeHeader.backMode)"
             >
@@ -57,6 +59,7 @@ interface RouteHeader {
               type="button"
               popovertarget="navigation-menu"
               aria-label="Open menu"
+              i18n-aria-label
             >
               <fa-icon [icon]="menuIcon" />
             </button>
@@ -66,6 +69,7 @@ interface RouteHeader {
               id="navigation-menu"
               popover
               aria-label="Navigation"
+              i18n-aria-label
             >
               @if (view.activeParty) {
                 <div
@@ -74,7 +78,7 @@ interface RouteHeader {
                   aria-labelledby="party-menu-label"
                 >
                   <div id="party-menu-label" class="menu-section-label">
-                    Party
+                    <ng-container i18n>Party</ng-container>
                   </div>
                   <a
                     [routerLink]="['/parties', view.activeParty.id]"
@@ -82,7 +86,7 @@ interface RouteHeader {
                     (click)="navigationMenu.hidePopover()"
                   >
                     <fa-icon class="menu-icon" [icon]="partySettingsIcon" />
-                    <span>Party settings</span>
+                    <span i18n>Party settings</span>
                   </a>
                   <a
                     routerLink="/parties"
@@ -90,7 +94,7 @@ interface RouteHeader {
                     (click)="navigationMenu.hidePopover()"
                   >
                     <fa-icon class="menu-icon" [icon]="partyListIcon" />
-                    <span>Party list</span>
+                    <span i18n>Party list</span>
                   </a>
                 </div>
 
@@ -102,14 +106,24 @@ interface RouteHeader {
                 role="group"
                 aria-labelledby="app-menu-label"
               >
-                <div id="app-menu-label" class="menu-section-label">App</div>
+                <div id="app-menu-label" class="menu-section-label" i18n>
+                  App
+                </div>
                 <a
                   routerLink="/pwa"
                   [state]="childNavigationState"
                   (click)="navigationMenu.hidePopover()"
                 >
                   <fa-icon class="menu-icon" [icon]="installIcon" />
-                  <span>Install app</span>
+                  <span i18n>Install app</span>
+                </a>
+                <a
+                  routerLink="/settings"
+                  [state]="childNavigationState"
+                  (click)="navigationMenu.hidePopover()"
+                >
+                  <fa-icon class="menu-icon" [icon]="settingsIcon" />
+                  <span i18n>Settings</span>
                 </a>
                 <a
                   routerLink="/about"
@@ -117,7 +131,7 @@ interface RouteHeader {
                   (click)="navigationMenu.hidePopover()"
                 >
                   <fa-icon class="menu-icon" [icon]="aboutIcon" />
-                  <span>About</span>
+                  <span i18n>About</span>
                 </a>
               </div>
             </nav>
@@ -272,8 +286,11 @@ export class HeaderComponent {
   protected readonly partySettingsIcon = faGear;
   protected readonly partyListIcon = faUsers;
   protected readonly installIcon = faDownload;
+  protected readonly settingsIcon = faGear;
   protected readonly aboutIcon = faCircleInfo;
   protected readonly childNavigationState = { fromGame: true };
+  protected readonly backLabel = $localize`Back`;
+  protected readonly backToGameLabel = $localize`Back to game`;
 
   private readonly routeHeader$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),

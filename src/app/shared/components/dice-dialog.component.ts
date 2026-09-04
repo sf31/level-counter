@@ -22,7 +22,7 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
   selector: 'app-dice-dialog',
   imports: [OverlayComponent, FontAwesomeModule, BtnComponent],
   template: `
-    <app-overlay ariaLabel="Dice roller" (close)="close.emit()">
+    <app-overlay [ariaLabel]="diceRollerLabel" (close)="close.emit()">
       <div class="dice-content">
         <button
           class="dice-roll-control"
@@ -31,20 +31,7 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
           (click)="roll()"
         >
           <div class="dice-label" role="status" aria-live="polite">
-            @if (isRolling()) {
-              Rolling…
-            } @else if (currentFace(); as face) {
-              Rolled {{ face }} ·
-              {{
-                shakeStatus() === 'enabled'
-                  ? 'Shake or tap again'
-                  : 'Tap to roll again'
-              }}
-            } @else if (shakeStatus() === 'enabled') {
-              Shake or tap to roll
-            } @else {
-              Tap to roll
-            }
+            {{ diceStatus() }}
           </div>
           <div
             class="dice"
@@ -67,15 +54,17 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
         </button>
         @if (shakeStatus() === 'permission-required') {
           <app-btn class="shake-permission" (click)="enableShake($event)">
-            Enable shake to roll
+            <ng-container i18n>Enable shake to roll</ng-container>
           </app-btn>
         } @else if (shakeStatus() === 'denied') {
           <div class="dice-label" role="status">
-            Shake access unavailable · Tap to roll
+            <ng-container i18n>
+              Shake access unavailable · Tap to roll
+            </ng-container>
           </div>
         }
         <button class="dice-close" type="button" (click)="close.emit()">
-          Close
+          <ng-container i18n>Close</ng-container>
         </button>
       </div>
     </app-overlay>
@@ -257,10 +246,27 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
 export class DiceDialogComponent implements OnInit, OnDestroy {
   readonly close = output<void>();
 
+  protected readonly diceRollerLabel = $localize`Dice roller`;
+
   protected readonly currentFace = signal<number | null>(null);
   protected readonly isRolling = signal(false);
   protected readonly shakeStatus = signal<ShakeStatus>('unavailable');
   protected readonly noFaceIcon = faQuestion;
+
+  protected diceStatus(): string {
+    if (this.isRolling()) return $localize`Rolling…`;
+
+    const face = this.currentFace();
+    if (face !== null) {
+      return this.shakeStatus() === 'enabled'
+        ? $localize`Rolled ${face}:face: · Shake or tap again`
+        : $localize`Rolled ${face}:face: · Tap to roll again`;
+    }
+
+    return this.shakeStatus() === 'enabled'
+      ? $localize`Shake or tap to roll`
+      : $localize`Tap to roll`;
+  }
 
   private readonly shakeThreshold = 18;
   private readonly shakeCooldown = 1000;

@@ -25,7 +25,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
           (plus)="onChangeEquipment(1)"
           (minus)="onChangeEquipment(-1)"
         />
-        <div class="label">Gear</div>
+        <div class="label" i18n>Gear</div>
       </div>
       <div class="center">
         <div class="name text-ellipsis">{{ player().name }}</div>
@@ -35,7 +35,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
           <div class="strength" [class.bump]="strengthBumping()">
             {{ strength() }}
           </div>
-          <div class="label">Strength</div>
+          <div class="label" i18n>Strength</div>
         </div>
       </div>
       <div class="side">
@@ -45,7 +45,7 @@ import { PlusMinusComponent } from '../../shared/components/plus-minus.component
           (plus)="onChangeLevel(1)"
           (minus)="onChangeLevel(-1)"
         />
-        <div class="label">Level</div>
+        <div class="label" i18n>Level</div>
       </div>
     </div>
   `,

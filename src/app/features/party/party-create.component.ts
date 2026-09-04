@@ -24,12 +24,12 @@ interface DraftPlayer {
     <section class="setup-shell" aria-labelledby="setup-title">
       <div class="scrollable-section">
         <div class="intro">
-          <h1 id="setup-title">Create your party</h1>
-          <p>Give it a name and add at least one player.</p>
+          <h1 id="setup-title" i18n>Create your party</h1>
+          <p i18n>Give it a name and add at least one player.</p>
         </div>
 
         <div class="content">
-          <label class="field-label" for="party-name">Party name</label>
+          <label class="field-label" for="party-name" i18n>Party name</label>
           <textarea
             #partyNameTextarea
             id="party-name"
@@ -43,7 +43,7 @@ interface DraftPlayer {
           ></textarea>
 
           <div class="players-header">
-            <label class="field-label" for="player-name">Players</label>
+            <label class="field-label" for="player-name" i18n>Players</label>
             <span class="player-count">
               {{ players().length }}/{{ maxPlayers }}
             </span>
@@ -57,6 +57,7 @@ interface DraftPlayer {
                 id="player-name"
                 type="text"
                 placeholder="Player name..."
+                i18n-placeholder
                 autocomplete="off"
                 [formControl]="playerNameControl"
               />
@@ -64,13 +65,14 @@ interface DraftPlayer {
                 class="add-button"
                 type="submit"
                 aria-label="Add player"
+                i18n-aria-label
                 [disabled]="playerNameControl.invalid"
               >
                 <fa-icon [icon]="iconAdd" />
               </button>
             </form>
           } @else {
-            <div class="max-warning">
+            <div class="max-warning" i18n>
               Maximum players reached ({{ maxPlayers }})
             </div>
           }
@@ -89,7 +91,7 @@ interface DraftPlayer {
                   <button
                     class="remove-player"
                     type="button"
-                    [attr.aria-label]="'Remove ' + player.name"
+                    [attr.aria-label]="removePlayerLabel(player.name)"
                     (click)="removePlayer(player.id)"
                   >
                     <fa-icon [icon]="iconDelete" />
@@ -98,7 +100,7 @@ interface DraftPlayer {
               }
             </div>
           } @else {
-            <div class="empty-players">No players yet</div>
+            <div class="empty-players" i18n>No players yet</div>
           }
         </div>
       </div>
@@ -110,7 +112,7 @@ interface DraftPlayer {
           [disabled]="!canStart()"
           (click)="startGame()"
         >
-          Start game
+          <ng-container i18n>Start game</ng-container>
         </button>
       </footer>
     </section>
@@ -353,6 +355,10 @@ export class PartyCreateComponent {
 
   protected canStart(): boolean {
     return this.partyNameControl.valid && this.players().length > 0;
+  }
+
+  protected removePlayerLabel(playerName: string): string {
+    return $localize`Remove ${playerName}:playerName:`;
   }
 
   protected startGame(): void {
