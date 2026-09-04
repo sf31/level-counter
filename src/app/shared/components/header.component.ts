@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, filter, map, startWith } from 'rxjs';
 import { AppService } from '../../core/services/app.service';
+import { PwaService } from '../../core/services/pwa.service';
 
 type BackMode = 'game' | 'setup';
 
@@ -109,14 +110,16 @@ interface RouteHeader {
                 <div id="app-menu-label" class="menu-section-label" i18n>
                   App
                 </div>
-                <a
-                  routerLink="/pwa"
-                  [state]="childNavigationState"
-                  (click)="navigationMenu.hidePopover()"
-                >
-                  <fa-icon class="menu-icon" [icon]="installIcon" />
-                  <span i18n>Install app</span>
-                </a>
+                @if (view.pwaState.installStatus !== 'installed') {
+                  <a
+                    routerLink="/pwa"
+                    [state]="childNavigationState"
+                    (click)="navigationMenu.hidePopover()"
+                  >
+                    <fa-icon class="menu-icon" [icon]="installIcon" />
+                    <span i18n>Install app</span>
+                  </a>
+                }
                 <a
                   routerLink="/settings"
                   [state]="childNavigationState"
@@ -277,6 +280,7 @@ interface RouteHeader {
 })
 export class HeaderComponent {
   private readonly app = inject(AppService);
+  private readonly pwa = inject(PwaService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
@@ -301,7 +305,14 @@ export class HeaderComponent {
   protected readonly view$ = combineLatest([
     this.app.activeParty$,
     this.routeHeader$,
-  ]).pipe(map(([activeParty, routeHeader]) => ({ activeParty, routeHeader })));
+    this.pwa.state$,
+  ]).pipe(
+    map(([activeParty, routeHeader, pwaState]) => ({
+      activeParty,
+      routeHeader,
+      pwaState,
+    })),
+  );
 
   protected navigateBack(backMode: BackMode): void {
     if (backMode === 'setup') {
