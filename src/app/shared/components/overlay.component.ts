@@ -1,11 +1,30 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  input,
+  OnDestroy,
+  output,
+  viewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-overlay',
   imports: [],
   template: `
     <div class="backdrop" (click)="close.emit()"></div>
-    <div class="panel" role="dialog" aria-modal="true">
+    <div
+      #panel
+      class="panel"
+      role="dialog"
+      aria-modal="true"
+      tabindex="-1"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-labelledby]="labelledBy()"
+      [attr.aria-describedby]="describedBy()"
+      (keydown)="onKeydown($event)"
+    >
       <ng-content />
     </div>
   `,
@@ -75,6 +94,70 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverlayComponent {
-  close = output<void>();
+export class OverlayComponent implements OnDestroy {
+  readonly ariaLabel = input<string | null>(null);
+  readonly labelledBy = input<string | null>(null);
+  readonly describedBy = input<string | null>(null);
+  readonly close = output<void>();
+
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+  private readonly previouslyFocusedElement =
+    document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
+  constructor() {
+    afterNextRender(() => this.focusDialog());
+  }
+
+  protected onKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.close.emit();
+      return;
+    }
+
+    if (event.key !== 'Tab') return;
+
+    const panel = this.panel()?.nativeElement;
+    if (!panel) return;
+
+    const focusableElements = Array.from(
+      panel.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      panel.focus();
+      return;
+    }
+
+    const first = focusableElements[0];
+    const last = focusableElements[focusableElements.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && (active === first || active === panel)) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.previouslyFocusedElement?.focus();
+  }
+
+  private focusDialog(): void {
+    const panel = this.panel()?.nativeElement;
+    if (!panel) return;
+
+    const firstControl = panel.querySelector<HTMLElement>(
+      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled])',
+    );
+    (firstControl ?? panel).focus();
+  }
 }

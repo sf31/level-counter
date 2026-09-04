@@ -172,7 +172,7 @@ export class PwaComponent {
   private readonly pwa = inject(PwaService);
   private readonly router = inject(Router);
 
-  protected readonly pwa$ = this.pwa.getState$();
+  protected readonly pwa$ = this.pwa.state$;
   protected installGuide = detectPwaInstallGuide(
     navigator.userAgent,
     navigator.platform,

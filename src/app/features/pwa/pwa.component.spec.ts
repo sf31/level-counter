@@ -25,7 +25,7 @@ describe('PwaComponent', () => {
         {
           provide: PwaService,
           useValue: {
-            getState$: () => of(pwaState),
+            state$: of(pwaState),
             install: jasmine.createSpy('install'),
           },
         },

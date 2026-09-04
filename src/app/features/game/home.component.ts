@@ -296,7 +296,7 @@ export class HomeComponent {
       this.app.activeParty$,
       this.app.activePlayerList$,
       this.app.select$('dismissPwa'),
-      this.pwa.getState$(),
+      this.pwa.state$,
     ]).pipe(
       map(([activeParty, playerList, dismissPwa, pwa]) => ({
         activeParty,

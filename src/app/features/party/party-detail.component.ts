@@ -94,7 +94,7 @@ type ConfirmAction =
           @if (!view.maximumPlayersReached) {
             <form
               class="add-row"
-              (submit)="addPlayer(); $event.preventDefault()"
+              (submit)="addPlayer(view.party.id); $event.preventDefault()"
             >
               <input
                 type="text"
@@ -174,7 +174,7 @@ type ConfirmAction =
               "
               confirmLabel="Remove"
               [danger]="true"
-              (confirm)="removePlayer(confirmAction.player)"
+              (confirm)="removePlayer(view.party.id, confirmAction.player)"
               (cancel)="confirmAction = null"
             />
           }
@@ -197,7 +197,7 @@ type ConfirmAction =
               title="Reset Levels & Gears"
               message="Reset every player to Level 1 and Gear 0?"
               confirmLabel="Reset"
-              (confirm)="resetLevels()"
+              (confirm)="resetLevels(view.party.id)"
               (cancel)="confirmAction = null"
             />
           }
@@ -501,15 +501,15 @@ export class PartyDetailComponent implements OnInit {
     );
   }
 
-  addPlayer(): void {
+  addPlayer(partyId: string): void {
     if (this.playerNameControl.invalid) return;
 
-    this.app.addPlayer(this.playerNameControl.value.trim());
+    this.app.addPlayer(partyId, this.playerNameControl.value.trim());
     this.playerNameControl.reset();
   }
 
-  removePlayer(player: Player): void {
-    this.app.removePlayer(player);
+  removePlayer(partyId: string, player: Player): void {
+    this.app.removePlayer(partyId, player);
     this.confirmAction = null;
   }
 
@@ -532,8 +532,8 @@ export class PartyDetailComponent implements OnInit {
     this.isRenaming = false;
   }
 
-  resetLevels(): void {
-    this.app.resetPlayers();
+  resetLevels(partyId: string): void {
+    this.app.resetPlayers(partyId);
     this.confirmAction = null;
   }
 

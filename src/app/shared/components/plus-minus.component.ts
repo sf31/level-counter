@@ -15,9 +15,29 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   selector: 'app-plus-minus',
   imports: [FontAwesomeModule],
   template: `
-    <fa-icon (click)="plus.emit()" [icon]="iconPlus" />
-    <div class="value" [class.bump]="bumping()">{{ value() }}</div>
-    <fa-icon (click)="minus.emit()" [icon]="iconMinus" />
+    <button
+      type="button"
+      [attr.aria-label]="'Increase ' + label()"
+      (click)="plus.emit()"
+    >
+      <fa-icon [icon]="iconPlus" aria-hidden="true" />
+    </button>
+    <div
+      class="value"
+      role="status"
+      aria-live="polite"
+      [class.bump]="bumping()"
+      [attr.aria-label]="label() + ': ' + value()"
+    >
+      {{ value() }}
+    </div>
+    <button
+      type="button"
+      [attr.aria-label]="'Decrease ' + label()"
+      (click)="minus.emit()"
+    >
+      <fa-icon [icon]="iconMinus" aria-hidden="true" />
+    </button>
   `,
   styles: [
     `
@@ -48,7 +68,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         }
       }
 
-      fa-icon {
+      button {
         cursor: pointer;
         padding: var(--space-sm);
         font-size: var(--font-size-display);
@@ -57,18 +77,26 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         display: flex;
         align-items: center;
         justify-content: center;
+        border: 0;
+        background: none;
+        color: inherit;
       }
 
-      fa-icon:active {
+      button:active {
         opacity: 0.7;
+      }
+
+      button:focus-visible {
+        outline: var(--border-width-strong) solid currentColor;
+        border-radius: var(--border-radius-1);
       }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlusMinusComponent {
-  value = input<string | number>();
-  label = input<string>();
+  value = input.required<string | number>();
+  label = input.required<string>();
   plus = output<void>();
   minus = output<void>();
 

@@ -22,42 +22,49 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
   selector: 'app-dice-dialog',
   imports: [OverlayComponent, FontAwesomeModule, BtnComponent],
   template: `
-    <app-overlay (close)="close.emit()">
-      <div class="dice-content" (click)="roll()">
-        <div class="dice-label" role="status" aria-live="polite">
-          @if (isRolling()) {
-            Rolling…
-          } @else if (currentFace(); as face) {
-            Rolled {{ face }} ·
-            {{
-              shakeStatus() === 'enabled'
-                ? 'Shake or tap again'
-                : 'Tap to roll again'
-            }}
-          } @else if (shakeStatus() === 'enabled') {
-            Shake or tap to roll
-          } @else {
-            Tap to roll
-          }
-        </div>
-        <div
-          class="dice"
-          [class.rolling]="isRolling()"
-          [attr.aria-busy]="isRolling()"
+    <app-overlay ariaLabel="Dice roller" (close)="close.emit()">
+      <div class="dice-content">
+        <button
+          class="dice-roll-control"
+          type="button"
+          [attr.aria-disabled]="isRolling()"
+          (click)="roll()"
         >
-          <div class="face f-{{ currentFace() }}">
-            @if (currentFace() === null) {
-              <div class="no-face">
-                <fa-icon [icon]="noFaceIcon" />
-              </div>
-            }
-            @if (currentFace(); as face) {
-              @for (item of [].constructor(face); track $index) {
-                <div class="dot"></div>
-              }
+          <div class="dice-label" role="status" aria-live="polite">
+            @if (isRolling()) {
+              Rolling…
+            } @else if (currentFace(); as face) {
+              Rolled {{ face }} ·
+              {{
+                shakeStatus() === 'enabled'
+                  ? 'Shake or tap again'
+                  : 'Tap to roll again'
+              }}
+            } @else if (shakeStatus() === 'enabled') {
+              Shake or tap to roll
+            } @else {
+              Tap to roll
             }
           </div>
-        </div>
+          <div
+            class="dice"
+            [class.rolling]="isRolling()"
+            [attr.aria-busy]="isRolling()"
+          >
+            <div class="face f-{{ currentFace() }}">
+              @if (currentFace() === null) {
+                <div class="no-face">
+                  <fa-icon [icon]="noFaceIcon" aria-hidden="true" />
+                </div>
+              }
+              @if (currentFace(); as face) {
+                @for (item of [].constructor(face); track $index) {
+                  <div class="dot"></div>
+                }
+              }
+            </div>
+          </div>
+        </button>
         @if (shakeStatus() === 'permission-required') {
           <app-btn class="shake-permission" (click)="enableShake($event)">
             Enable shake to roll
@@ -67,12 +74,9 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
             Shake access unavailable · Tap to roll
           </div>
         }
-        <div
-          class="dice-close"
-          (click)="close.emit(); $event.stopPropagation()"
-        >
+        <button class="dice-close" type="button" (click)="close.emit()">
           Close
-        </div>
+        </button>
       </div>
     </app-overlay>
   `,
@@ -84,7 +88,22 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
         align-items: center;
         gap: var(--space-lg);
         padding: var(--space-md) 0;
+      }
+
+      .dice-roll-control {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-lg);
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
         cursor: pointer;
+      }
+
+      .dice-roll-control[aria-disabled='true'] {
+        cursor: wait;
       }
 
       .dice-label {
@@ -219,6 +238,8 @@ type DeviceMotionEventWithPermission = typeof DeviceMotionEvent & {
       }
 
       .dice-close {
+        border: 0;
+        background: none;
         color: var(--color-text-muted);
         cursor: pointer;
         padding: var(--space-sm) var(--space-lg);

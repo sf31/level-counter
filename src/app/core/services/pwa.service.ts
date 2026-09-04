@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BeforeInstallPromptEvent, PwaUpdateState } from '../../types';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { SwUpdate } from '@angular/service-worker';
 import { isRunningStandalone } from '../utils/app.utils';
 
@@ -8,14 +8,16 @@ import { isRunningStandalone } from '../utils/app.utils';
   providedIn: 'root',
 })
 export class PwaService {
-  private _pwaState = new BehaviorSubject<PwaUpdateState>({
+  private readonly initialStandaloneState = isRunningStandalone();
+  private readonly pwaState = new BehaviorSubject<PwaUpdateState>({
     promptEvent: null,
-    isRunningStandalone: isRunningStandalone(),
-    installStatus: isRunningStandalone() ? 'installed' : 'unavailable',
+    isRunningStandalone: this.initialStandaloneState,
+    installStatus: this.initialStandaloneState ? 'installed' : 'unavailable',
     installError: null,
     updateAvailable: false,
     updateError: null,
   });
+  readonly state$ = this.pwaState.asObservable();
 
   constructor(private sw: SwUpdate) {
     if (!this.sw.isEnabled) return;
@@ -40,16 +42,8 @@ export class PwaService {
     });
   }
 
-  getState$(): Observable<PwaUpdateState> {
-    return this._pwaState.asObservable();
-  }
-
-  patchState(state: Partial<PwaUpdateState>): void {
-    this._pwaState.next({ ...this._pwaState.getValue(), ...state });
-  }
-
   captureInstallPrompt(event: BeforeInstallPromptEvent): void {
-    const current = this._pwaState.getValue();
+    const current = this.pwaState.getValue();
     if (current.isRunningStandalone || current.installStatus === 'installed') {
       return;
     }
@@ -63,7 +57,7 @@ export class PwaService {
   }
 
   async install(): Promise<void> {
-    const current = this._pwaState.getValue();
+    const current = this.pwaState.getValue();
     const promptEvent = current.promptEvent;
     if (!promptEvent || current.installStatus !== 'available') return;
 
@@ -105,5 +99,9 @@ export class PwaService {
         ? { promptEvent: null, installStatus: 'installed' as const }
         : {}),
     });
+  }
+
+  private patchState(state: Partial<PwaUpdateState>): void {
+    this.pwaState.next({ ...this.pwaState.getValue(), ...state });
   }
 }

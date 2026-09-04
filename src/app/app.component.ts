@@ -89,10 +89,10 @@ import { BeforeInstallPromptEvent } from './types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  protected readonly pwa$: ReturnType<PwaService['getState$']>;
+  protected readonly pwa$: PwaService['state$'];
 
   constructor(private pwa: PwaService) {
-    this.pwa$ = this.pwa.getState$();
+    this.pwa$ = this.pwa.state$;
   }
 
   @HostListener('window:beforeinstallprompt', ['$event'])

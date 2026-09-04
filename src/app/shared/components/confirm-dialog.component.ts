@@ -11,9 +11,15 @@ import { BtnComponent } from './btn.component';
   selector: 'app-confirm-dialog',
   imports: [OverlayComponent, BtnComponent],
   template: `
-    <app-overlay (close)="cancel.emit()">
-      <div class="dialog-title">{{ title() }}</div>
-      <div class="dialog-message">{{ message() }}</div>
+    <app-overlay
+      labelledBy="confirm-dialog-title"
+      describedBy="confirm-dialog-message"
+      (close)="cancel.emit()"
+    >
+      <h2 id="confirm-dialog-title" class="dialog-title">{{ title() }}</h2>
+      <p id="confirm-dialog-message" class="dialog-message">
+        {{ message() }}
+      </p>
       <div class="dialog-actions">
         <app-btn class="btn-cancel" (click)="cancel.emit()">Cancel</app-btn>
         <app-btn
@@ -29,15 +35,15 @@ import { BtnComponent } from './btn.component';
   styles: [
     `
       .dialog-title {
+        margin: 0 0 var(--space-sm);
         font-size: var(--font-size-title);
         font-weight: var(--font-weight-strong);
         color: var(--color-text);
-        margin-bottom: var(--space-sm);
       }
 
       .dialog-message {
+        margin: 0 0 var(--space-lg);
         color: var(--color-text-muted);
-        margin-bottom: var(--space-lg);
         line-height: var(--line-height-body);
       }
 

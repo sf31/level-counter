@@ -58,10 +58,10 @@ export class AppService {
     localStorage.setItem(LSK_APP_STATE, JSON.stringify(this._state.getValue()));
   }
 
-  // ── Player methods (operate on active party) ────────────────────────
+  // ── Player methods ─────────────────────────────────────────────────
 
-  addPlayer(name: string): void {
-    const party = this.getActiveParty();
+  addPlayer(partyId: string, name: string): void {
+    const party = this.getParty(partyId);
     if (!party) return;
 
     const color = getFirstAvailableColor(party.playerList);
@@ -77,17 +77,17 @@ export class AppService {
       color,
     };
 
-    this.updateActiveParty({
+    this.updateParty({
       ...party,
       playerList: [...party.playerList, player],
     });
   }
 
-  removePlayer(player: Player): void {
-    const party = this.getActiveParty();
+  removePlayer(partyId: string, player: Player): void {
+    const party = this.getParty(partyId);
     if (!party) return;
 
-    this.updateActiveParty({
+    this.updateParty({
       ...party,
       playerList: removeElementFromArray(party.playerList, player, 'id'),
     });
@@ -97,17 +97,17 @@ export class AppService {
     const party = this.getActiveParty();
     if (!party) return;
 
-    this.updateActiveParty({
+    this.updateParty({
       ...party,
       playerList: upsertElementInArray(party.playerList, player, 'id'),
     });
   }
 
-  resetPlayers(): void {
-    const party = this.getActiveParty();
+  resetPlayers(partyId: string): void {
+    const party = this.getParty(partyId);
     if (!party) return;
 
-    this.updateActiveParty({
+    this.updateParty({
       ...party,
       playerList: party.playerList.map((p) => ({ ...p, level: 1, gears: 0 })),
     });
@@ -117,10 +117,14 @@ export class AppService {
 
   private getActiveParty(): Party | undefined {
     const state = this._state.getValue();
-    return state.parties.find((p) => p.id === state.activePartyId);
+    return this.getParty(state.activePartyId);
   }
 
-  private updateActiveParty(updatedParty: Party): void {
+  private getParty(partyId: string | null): Party | undefined {
+    return this._state.getValue().parties.find((p) => p.id === partyId);
+  }
+
+  private updateParty(updatedParty: Party): void {
     const state = this._state.getValue();
     const parties = upsertElementInArray(state.parties, updatedParty, 'id');
     this.patchState({ parties });
