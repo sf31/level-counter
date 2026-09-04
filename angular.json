@@ -34,6 +34,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
+              "src/_headers",
               "src/_redirects",
               "src/robots.txt"
             ],
