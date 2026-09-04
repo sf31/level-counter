@@ -14,9 +14,9 @@ import {
   selector: 'app-settings',
   imports: [SelectComponent],
   template: `
-    <section aria-labelledby="settings-title">
-      <h1 id="settings-title" i18n>Settings</h1>
+    <section aria-label="Settings" i18n-aria-label>
       <app-select
+        class="prominent-label"
         controlId="language"
         [label]="languageLabel"
         [options]="languageOptions"
@@ -30,15 +30,6 @@ import {
       section {
         padding: var(--space-xl) var(--space-md);
         text-align: center;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: var(--font-size-page-title);
-      }
-
-      p {
-        color: var(--color-text-muted);
       }
     `,
   ],

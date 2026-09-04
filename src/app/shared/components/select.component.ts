@@ -41,6 +41,13 @@ export interface SelectOption {
         font-size: var(--font-size-caption);
       }
 
+      :host(.prominent-label) label {
+        margin-bottom: var(--space-sm);
+        color: var(--color-text);
+        font-size: var(--font-size-subtitle);
+        font-weight: var(--font-weight-strong);
+      }
+
       .select-control {
         position: relative;
       }
