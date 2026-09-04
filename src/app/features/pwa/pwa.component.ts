@@ -4,17 +4,23 @@ import { BtnComponent } from '../../shared/components/btn.component';
 import { AsyncPipe } from '@angular/common';
 import { PwaService } from '../../core/services/pwa.service';
 import { AppService } from '../../core/services/app.service';
+import {
+  SelectComponent,
+  SelectOption,
+} from '../../shared/components/select.component';
+import {
+  detectPwaInstallGuide,
+  PWA_INSTALL_GUIDES,
+} from '../../core/utils/pwa.utils';
 
 @Component({
   selector: 'app-pwa',
-  imports: [BtnComponent, AsyncPipe],
+  imports: [BtnComponent, AsyncPipe, SelectComponent],
   template: `
     @if (pwa$ | async; as pwa) {
       <div class="content">
-        <h1>Install LevelCounter</h1>
         <div class="text intro">
           <p>Keep LevelCounter on your home screen and use it offline.</p>
-          <p>No account required.</p>
         </div>
         @if (pwa.installStatus === 'available') {
           <app-btn class="success-btn" (click)="install()">
@@ -43,23 +49,25 @@ import { AppService } from '../../core/services/app.service';
             </div>
           }
 
-          <div class="text manual-install">
-            <p>To install manually, use your browser's menu:</p>
-            <ul>
-              <li><strong>Android/Chrome:</strong> Install app</li>
-              <li>
-                <strong>iPhone/iPad Safari:</strong> Share → Add to Home Screen
-              </li>
-              <li>
-                <strong>Desktop Chrome/Edge:</strong> Install in the address bar
-                or browser menu
-              </li>
-            </ul>
-          </div>
+          <div class="manual-install">
+            <section class="text" aria-labelledby="recommended-guide">
+              <h1 id="recommended-guide">{{ installGuide.title }}</h1>
+              <ol>
+                @for (step of installGuide.steps; track $index) {
+                  <li>{{ step }}</li>
+                }
+              </ol>
+            </section>
 
-          <app-btn class="dismiss-btn" (click)="backToApp()">
-            Back to app
-          </app-btn>
+            <app-select
+              class="guide-select"
+              controlId="install-guide"
+              label="Different browser or device?"
+              [options]="installGuideOptions"
+              [value]="installGuide.id"
+              (valueChange)="selectInstallGuide($event)"
+            />
+          </div>
         }
       </div>
     }
@@ -77,14 +85,9 @@ import { AppService } from '../../core/services/app.service';
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: var(--space-lg);
+        justify-content: flex-start;
+        padding: var(--space-xl) var(--space-md);
         gap: var(--space-md);
-      }
-
-      h1 {
-        margin: 0 0 var(--space-md);
-        font-size: var(--font-size-page-title);
       }
 
       .text {
@@ -125,18 +128,28 @@ import { AppService } from '../../core/services/app.service';
       }
 
       .manual-install {
-        max-width: 440px;
+        width: min(440px, 100%);
         color: var(--color-text-muted);
       }
 
-      .manual-install ul {
+      .manual-install h1 {
+        margin: 0;
+        color: var(--color-text);
+        font-size: var(--font-size-subtitle);
+      }
+
+      .manual-install ol {
         margin: var(--space-sm) 0 0;
-        padding-left: var(--space-lg);
+        padding-left: var(--space-md);
         text-align: left;
       }
 
       .manual-install li + li {
         margin-top: var(--space-sm);
+      }
+
+      .guide-select {
+        margin-top: var(--space-xl);
       }
 
       app-btn {
@@ -160,6 +173,24 @@ export class PwaComponent {
   private readonly router = inject(Router);
 
   protected readonly pwa$ = this.pwa.getState$();
+  protected installGuide = detectPwaInstallGuide(
+    navigator.userAgent,
+    navigator.platform,
+    navigator.maxTouchPoints,
+  );
+  protected readonly installGuideOptions: readonly SelectOption[] =
+    PWA_INSTALL_GUIDES.map((guide) => ({
+      value: guide.id,
+      label: guide.title,
+    }));
+
+  protected selectInstallGuide(selectedId: string): void {
+    const selectedGuide = PWA_INSTALL_GUIDES.find(
+      (guide) => guide.id === selectedId,
+    );
+
+    if (selectedGuide) this.installGuide = selectedGuide;
+  }
 
   protected dismiss(): void {
     this.app.patchState({ dismissPwa: Date.now() });
@@ -168,9 +199,5 @@ export class PwaComponent {
 
   protected install(): void {
     void this.pwa.install();
-  }
-
-  protected backToApp(): void {
-    this.router.navigate(['/'], { replaceUrl: true }).catch();
   }
 }
